@@ -1,5 +1,7 @@
-import utils.Color;
-import utils.Vec2D;
+package editor;
+
+import editor.utils.Color;
+import editor.utils.Vec2D;
 
 public class Rectangle extends SimpleShape {
     private double width;

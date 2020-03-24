@@ -1,3 +1,5 @@
+package editor;
+
 import java.util.Set;
 
 public interface Shape extends Cloneable{

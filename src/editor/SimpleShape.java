@@ -1,6 +1,8 @@
-import utils.Color;
-import utils.ShapeException;
-import utils.Vec2D;
+package editor;
+
+import editor.utils.Color;
+import editor.utils.ShapeException;
+import editor.utils.Vec2D;
 
 import java.util.Set;
 
@@ -25,17 +27,17 @@ public abstract class SimpleShape implements Shape {
 
     @Override
     public void addShape(Shape s) {
-        throw new ShapeException("Cannot add a shape to a SimpleShape");
+        throw new ShapeException("Cannot add a shape to a editor.SimpleShape");
     }
 
     @Override
     public void removeShape(Shape s) {
-        throw new ShapeException("Cannot remove a shape to a SimpleShape");
+        throw new ShapeException("Cannot remove a shape to a editor.SimpleShape");
     }
 
     @Override
     public void collapse() {
-        throw new ShapeException("Cannot collapse a SimpleShape");
+        throw new ShapeException("Cannot collapse a editor.SimpleShape");
     }
 
     @Override

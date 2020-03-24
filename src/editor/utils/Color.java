@@ -1,4 +1,4 @@
-package utils;
+package editor.utils;
 
 public class Color {
     public final int r;

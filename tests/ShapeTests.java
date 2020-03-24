@@ -1,6 +1,10 @@
+import editor.Polygon;
+import editor.Rectangle;
+import editor.Shape;
+import editor.ShapeGroup;
 import org.junit.Test;
-import utils.Color;
-import utils.Vec2D;
+import editor.utils.Color;
+import editor.utils.Vec2D;
 
 import static org.junit.Assert.*;
 
