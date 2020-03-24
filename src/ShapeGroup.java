@@ -2,7 +2,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class ShapeGroup implements Shape {
-    private Set<Shape> shapes;
+    private Set<Shape> shapes = new HashSet<>();
 
     @Override
     public void addShape(Shape s) {
