@@ -23,4 +23,9 @@ public class ShapeGroup implements Shape {
     public void collapse() {
         //TODO how to collapse a group ?
     }
+
+    @Override
+    public Shape clone() throws CloneNotSupportedException {
+        return (Shape) super.clone();
+    }
 }

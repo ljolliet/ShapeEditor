@@ -38,4 +38,9 @@ public abstract class SimpleShape implements Shape {
         throw new ShapeException("Cannot collapse a SimpleShape");
     }
 
+    @Override
+    public Shape clone() throws CloneNotSupportedException {
+        return (Shape) super.clone();
+    }
+
 }
