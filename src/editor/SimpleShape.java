@@ -8,6 +8,7 @@ import java.util.Set;
 
 public abstract class SimpleShape implements Shape {
     private Vec2D position;
+
     private Color color;
     private Vec2D rotationCenter;
     private double rotation;
@@ -45,4 +46,19 @@ public abstract class SimpleShape implements Shape {
         return (Shape) super.clone();
     }
 
+    public Vec2D getPosition() {
+        return position;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public Vec2D getRotationCenter() {
+        return rotationCenter;
+    }
+
+    public double getRotation() {
+        return rotation;
+    }
 }

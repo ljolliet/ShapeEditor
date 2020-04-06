@@ -1,22 +1,26 @@
 package ui;
 
+import editor.Rectangle;
+import editor.Shape;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 public class JavaFXApp extends Application implements ApplicationI {
 
-//    Editor editor;
+    Editor editor;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle(WINDOW_TITLE);
         primaryStage.setResizable(false);
-
+        editor = new Editor();
 //        Stage
 //        |  Scene
 //        |  |  VBox (windowLayout)
@@ -47,6 +51,17 @@ public class JavaFXApp extends Application implements ApplicationI {
         toolbarBox.setPrefWidth(TOOLBAR_WIDTH);
         toolbarBox.setStyle("-fx-background-color: lightgray");
         editorLayout.getChildren().add(toolbarBox);
+        for(Rectangle s : editor.toolbar.shapes) //TODO change to shape
+        {
+            //TODO change with builder ?
+            javafx.scene.shape.Rectangle r = new javafx.scene.shape.Rectangle(s.getWidth(), s.getHeight());
+            r.setX(s.getPosition().x);
+            r.setY(s.getPosition().y);
+            r.setFill(Color.rgb(s.getColor().r, s.getColor().g, s.getColor().b));
+            toolbarBox.getChildren().add(r);
+
+        }
+
 
         // Scene layout
         Group root = new Group();
