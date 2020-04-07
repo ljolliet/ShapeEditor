@@ -2,6 +2,7 @@ package ui;
 
 import editor.Polygon;
 import editor.Rectangle;
+import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
