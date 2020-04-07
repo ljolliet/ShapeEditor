@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class Toolbar {
 
-    Set<Rectangle> shapes = new HashSet<>();
+    Set<Shape> shapes = new HashSet<>();
 
     Toolbar(){
         double width = (double) (ApplicationI.TOOLBAR_WIDTH / 2);
@@ -18,7 +18,7 @@ public class Toolbar {
         addShape(new Rectangle(width, height, 0,  new Vec2D((ApplicationI.TOOLBAR_WIDTH-width)/2,100), new Color(55,55,255), new Vec2D(0.,0.), 0.));
     }
 
-    public void addShape(Rectangle s) {
+    public void addShape(Shape s) {
         shapes.add(s);
     }
 

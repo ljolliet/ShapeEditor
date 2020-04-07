@@ -12,4 +12,9 @@ public class Polygon extends SimpleShape {
         this.nbSide = nbSide;
         this.sideLength = sideLength;
     }
+
+    @Override
+    public void draw(Object context) {
+        //TODO draw
+    }
 }
