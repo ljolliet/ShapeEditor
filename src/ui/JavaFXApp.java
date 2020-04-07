@@ -2,6 +2,8 @@ package ui;
 
 import editor.Shape;
 import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -47,6 +49,9 @@ public class JavaFXApp extends Application implements ApplicationI {
         toolbarBox.setPrefHeight(WINDOW_HEIGHT);
         toolbarBox.setPrefWidth(TOOLBAR_WIDTH);
         toolbarBox.setStyle("-fx-background-color: lightgray");
+        toolbarBox.setPadding(new Insets(TOOLBAR_SPACING));
+        toolbarBox.setAlignment(Pos.BASELINE_CENTER);
+        toolbarBox.setSpacing(TOOLBAR_SPACING);
         editorLayout.getChildren().add(toolbarBox);
         for(Shape s : editor.toolbar.shapes) {
             s.setRendering(new JFxRendering());
