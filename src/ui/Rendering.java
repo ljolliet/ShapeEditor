@@ -4,6 +4,6 @@ import editor.Polygon;
 import editor.Rectangle;
 
 public interface Rendering {
-    void draw(Object context, Rectangle rectangle);
-    void draw(Object context, Polygon rectangle);
+    void drawRectangle(Object context, Rectangle rectangle);
+    void drawPolygon(Object context, Polygon polygon);
 }
