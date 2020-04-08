@@ -64,7 +64,7 @@ public class JavaFXApp extends Application implements ApplicationI {
         toolbarBox.setAlignment(Pos.BASELINE_CENTER);
         toolbarBox.setSpacing(TOOLBAR_SPACING);
         editorLayout.getChildren().add(toolbarBox);
-        for(Shape s : editor.toolbar.shapes) {
+        for(Shape s : editor.getToolbar().getShapes()) {
             VBox elem = new VBox();
             elem.setOnMousePressed(mouseEvent -> selectShapeInToolbar(toolbarBox, elem, mouseEvent));
             elem.setAlignment(Pos.BASELINE_CENTER);
@@ -93,7 +93,7 @@ public class JavaFXApp extends Application implements ApplicationI {
             Shape shape = new Polygon(6, 20, coords,
                     new Color(255,0,255), new Vec2D(0,0), 45);
 
-            editor.scene.addShape(shape);
+            editor.getScene().addShape(shape);
         });
 
         this.toolbarBox.setOnMousePressed(event -> {
@@ -105,7 +105,7 @@ public class JavaFXApp extends Application implements ApplicationI {
             int i = 0;
             for (Node node: toolbarBox.getChildren()) {
                 if (event.getPickResult().getIntersectedNode() == node) {
-                    System.out.println("found: " + editor.toolbar.shapes.get(i));
+                    System.out.println("found: " + editor.getToolbar().getShapes().get(i));
                     break;
                 }
                 i++;
@@ -120,7 +120,7 @@ public class JavaFXApp extends Application implements ApplicationI {
         mouseEvent.setDragDetect(true);
         for(int i = 0; i< toolbarBox.getChildren().size(); i++){
             if(toolbarBox.getChildren().get(i) == elem){
-                shapeDragged = editor.toolbar.shapes.get(i);
+                shapeDragged = editor.getToolbar().getShapes().get(i);
             }
         }
     }
@@ -130,7 +130,7 @@ public class JavaFXApp extends Application implements ApplicationI {
         if(shapeDragged != null)
             try {
                 Shape newShape = shapeDragged.clone();
-                editor.scene.addShape(newShape);
+                editor.getScene().addShape(newShape);
                 newShape.setPosition(new Vec2D(mouseEvent.getX(), mouseEvent.getY()));
                 newShape.setRendering(new JFxRendering());
                 newShape.draw(editorLayout);
