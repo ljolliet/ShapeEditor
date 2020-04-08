@@ -45,4 +45,19 @@ public abstract class SimpleShape implements Shape {
         return (Shape) super.clone();
     }
 
+    public double getX() {
+        return position.x;
+    }
+
+    public double getY() {
+        return position.y;
+    }
+
+    public double getRotation() {
+        return rotation;
+    }
+
+    public Color getColor() {
+        return color;
+    }
 }
