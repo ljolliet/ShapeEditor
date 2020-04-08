@@ -1,10 +1,14 @@
 package editor;
 
+import editor.utils.Vec2D;
+import ui.Rendering;
+
 import java.util.HashSet;
 import java.util.Set;
 
 public class ShapeGroup implements Shape {
     private Set<Shape> shapes = new HashSet<>();
+    private Rendering rendering;
 
     @Override
     public void addShape(Shape s) {
@@ -29,5 +33,21 @@ public class ShapeGroup implements Shape {
     @Override
     public Shape clone() throws CloneNotSupportedException {
         return (Shape) super.clone();
+    }
+
+    @Override
+    public void setRendering(Rendering r) {
+        this.rendering = r;
+    }
+
+    @Override
+    public void draw(Object context) {
+        for(Shape s : shapes)
+            s.draw(context);
+    }
+
+    @Override
+    public void setPosition(Vec2D vec2D) {
+        //TODO set position of a group
     }
 }

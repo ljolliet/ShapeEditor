@@ -37,4 +37,17 @@ public class Polygon extends SimpleShape {
 
         return points;
     }
+
+    public int getNbSide() {
+        return nbSide;
+    }
+
+    public double getSideLength() {
+        return sideLength;
+    }
+
+    @Override
+    public void draw(Object context) {
+        rendering.drawPolygon(context, this);
+    }
 }

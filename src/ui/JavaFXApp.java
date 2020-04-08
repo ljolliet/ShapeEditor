@@ -9,16 +9,20 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.input.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class JavaFXApp extends Application implements ApplicationI {
 
     private final Editor editor = new Editor();
 
-    private Group root;
+    private Pane root;
     private VBox toolbarBox;
+    Shape shapeDragged = null;
 
     @Override
     public void start(Stage primaryStage) {
@@ -31,7 +35,7 @@ public class JavaFXApp extends Application implements ApplicationI {
 //        |  |  |  HBox (optionLayout)
 //        |  |  |  HBox (editorLayout)
 //        |  |  |  |  VBox (toolbarBox)
-//        |  |  |  |  Group (root)
+//        |  |  |  |  Pane (root)
 //        |  |  |  |  |  Canvas
 
         VBox windowLayout = new VBox();
@@ -54,10 +58,22 @@ public class JavaFXApp extends Application implements ApplicationI {
         toolbarBox.setPrefHeight(WINDOW_HEIGHT);
         toolbarBox.setPrefWidth(TOOLBAR_WIDTH);
         toolbarBox.setStyle("-fx-background-color: lightgray");
+        toolbarBox.setPadding(new Insets(TOOLBAR_SPACING));
+        toolbarBox.setAlignment(Pos.BASELINE_CENTER);
+        toolbarBox.setSpacing(TOOLBAR_SPACING);
         editorLayout.getChildren().add(toolbarBox);
+        for(Shape s : editor.toolbar.shapes) {
+            VBox elem = new VBox();
+            elem.setOnMousePressed(mouseEvent -> selectShapeInToolbar(toolbarBox, elem, mouseEvent));
+            elem.setAlignment(Pos.BASELINE_CENTER);
+            s.setRendering(new JFxRendering());
+            s.draw(elem);
+            toolbarBox.getChildren().add(elem);
+        }
 
         // Scene layout
-        this.root = new Group();
+        this.root = new Pane();
+        //root.setOnMouseReleased(mouseEvent -> dropShapeInScene(root, mouseEvent));
         editorLayout.getChildren().add(root);
 
         Canvas canvas = new Canvas();
@@ -65,23 +81,10 @@ public class JavaFXApp extends Application implements ApplicationI {
         canvas.setHeight(WINDOW_HEIGHT - OPTION_HEIGHT);
         root.getChildren().add(canvas);
 
-//        drawShape(new Rectangle(100, 200, new Vec2D(200, 200),
-//                  new Color(0,0,0), new Vec2D(0,0), 0));
 
-//        drawShape(new Polygon(6, 20, new Vec2D(300, 300),
-//                  new Color(255,0,255), new Vec2D(0,0), 45));
 
         Scene scene = new Scene(windowLayout, WINDOW_WIDTH, WINDOW_HEIGHT);
         primaryStage.setScene(scene);
-
-        Shape s = new Rectangle(100, 200, null,
-                new Color(255,0,255), new Vec2D(0,0), 45);
-
-        Shape s2 = new Rectangle(200, 100, null,
-                new Color(0,255,255), new Vec2D(0,0), 45);
-
-        editor.getToolbar().addShape(s);
-        editor.getToolbar().addShape(s2);
 
         this.root.setOnMouseClicked(event -> {
             Vec2D coords = new Vec2D(event.getX(), event.getY());
@@ -107,59 +110,31 @@ public class JavaFXApp extends Application implements ApplicationI {
 
         });
 
-        new AnimationTimer()
-        {
-            public void handle(long currentNanoTime)
-            {
-                root.getChildren().clear();
-                toolbarBox.getChildren().clear();
-
-                for (Shape shape: editor.getScene().getShapes())
-                    drawShape(shape);
-
-                drawToolbar();
-            }
-        }.start();
-
         primaryStage.show();
     }
 
-    public void drawShape(Shape shape) {
-        if (shape instanceof Rectangle)
-            drawShape((Rectangle) shape);
-        else if (shape instanceof Polygon)
-            drawShape((Polygon) shape);
-        else if (shape instanceof ShapeGroup)
-            drawShape((ShapeGroup) shape);
-    }
-
-    public void drawShape(Rectangle r) {
-        javafx.scene.shape.Rectangle rect = new javafx.scene.shape.Rectangle(r.getX(), r.getY(), r.getWidth(), r.getHeight());
-        this.root.getChildren().add(rect);
-    }
-
-    public void drawShape(Polygon p) {
-        javafx.scene.shape.Polygon polygon = new javafx.scene.shape.Polygon(p.getPoints());
-        float r = p.getColor().r / 255f;
-        float g = p.getColor().g / 255f;
-        float b = p.getColor().b / 255f;
-        polygon.setFill(new javafx.scene.paint.Color(r, g, b, 1));
-        this.root.getChildren().add(polygon);
-    }
-
-    public void drawShape(ShapeGroup group) {
-        for (Shape s: group.getChild())
-            drawShape(s);
-    }
-
-    public void drawToolbar() {
-        for (Shape s: editor.getToolbar().getShapes()) {
-            if (s instanceof Rectangle) {
-                Rectangle r = (Rectangle) s;
-                double ratio = (r.getWidth() / TOOLBAR_WIDTH) / 2 ;
-                javafx.scene.shape.Rectangle rect = new javafx.scene.shape.Rectangle(r.getWidth() * ratio, r.getHeight() * ratio);
-                this.toolbarBox.getChildren().add(rect);
+    private void selectShapeInToolbar(VBox toolbarBox, VBox elem, MouseEvent mouseEvent) {
+        System.out.println("mouse pressed");
+        mouseEvent.setDragDetect(true);
+        for(int i = 0; i< toolbarBox.getChildren().size(); i++){
+            if(toolbarBox.getChildren().get(i) == elem){
+                shapeDragged = editor.toolbar.shapes.get(i);
             }
         }
+    }
+
+    private void dropShapeInScene(Pane editorLayout, MouseEvent mouseEvent) {
+        System.out.println("mouse released");
+        if(shapeDragged != null)
+            try {
+                Shape newShape = shapeDragged.clone();
+                editor.scene.addShape(newShape);
+                newShape.setPosition(new Vec2D(mouseEvent.getX(), mouseEvent.getY()));
+                newShape.setRendering(new JFxRendering());
+                newShape.draw(editorLayout);
+
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
     }
 }
