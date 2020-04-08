@@ -3,8 +3,9 @@ package ui;
 import editor.*;
 import editor.utils.Color;
 import editor.utils.Vec2D;
-import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -31,14 +32,16 @@ public class JavaFXApp extends Application implements ApplicationI {
         primaryStage.setTitle(WINDOW_TITLE);
         primaryStage.setResizable(false);
 
-//        Stage
-//        |  Scene
-//        |  |  VBox (windowLayout)
-//        |  |  |  HBox (optionLayout)
-//        |  |  |  HBox (editorLayout)
-//        |  |  |  |  VBox (toolbarBox)
-//        |  |  |  |  Pane (root)
-//        |  |  |  |  |  Canvas
+/*
+        Stage
+        |  Scene
+        |  |  VBox (windowLayout)
+        |  |  |  HBox (optionLayout)
+        |  |  |  HBox (editorLayout)
+        |  |  |  |  VBox (toolbarBox)
+        |  |  |  |  Pane (root)
+        |  |  |  |  |  Canvas
+*/
 
         VBox windowLayout = new VBox();
 
@@ -63,19 +66,15 @@ public class JavaFXApp extends Application implements ApplicationI {
         toolbarBox.setPadding(new Insets(TOOLBAR_SPACING));
         toolbarBox.setAlignment(Pos.BASELINE_CENTER);
         toolbarBox.setSpacing(TOOLBAR_SPACING);
-        editorLayout.getChildren().add(toolbarBox);
         for(Shape s : editor.getToolbar().getShapes()) {
-            VBox elem = new VBox();
-            elem.setOnMousePressed(mouseEvent -> selectShapeInToolbar(toolbarBox, elem, mouseEvent));
-            elem.setAlignment(Pos.BASELINE_CENTER);
             s.setRendering(new JFxRendering());
-            s.draw(elem);
-            toolbarBox.getChildren().add(elem);
+            s.draw(toolbarBox);
         }
 
         // Scene layout
         this.root = new Pane();
-        //root.setOnMouseReleased(mouseEvent -> dropShapeInScene(root, mouseEvent));
+
+        editorLayout.getChildren().add(toolbarBox);
         editorLayout.getChildren().add(root);
 
         Canvas canvas = new Canvas();
@@ -85,58 +84,86 @@ public class JavaFXApp extends Application implements ApplicationI {
 
 
 
-        Scene scene = new Scene(windowLayout, WINDOW_WIDTH, WINDOW_HEIGHT);
-        primaryStage.setScene(scene);
+        this.toolbarBox.setOnDragDone(event -> {
+            System.out.println("mouse released");
+            System.out.println(event.getX() + " - " + event.getY());
+            if(shapeDragged != null)
+                try {
+                    Shape newShape = shapeDragged.clone();
+                    newShape.setPosition(new Vec2D(event.getX(), event.getY()));
+                    editor.getScene().addShape(newShape);
+                    newShape.draw(root);
 
-        this.root.setOnMouseClicked(event -> {
-            Vec2D coords = new Vec2D(event.getX(), event.getY());
-            Shape shape = new Polygon(6, 20, coords,
-                    new Color(255,0,255), new Vec2D(0,0), 45);
-
-            editor.getScene().addShape(shape);
+                } catch (CloneNotSupportedException e) {
+                    e.printStackTrace();
+                }
+            event.consume();
         });
 
-        this.toolbarBox.setOnMousePressed(event -> {
+        root.setOnDragOver(event -> {
+            /* data is dragged over the target */
+            System.out.println("onDragOver");
+
+            /*
+             * accept it only if it is not dragged from the same node and if it
+             * has a string data
+             */
+            if (event.getGestureSource() != root && event.getDragboard().hasString()) {
+                /* allow for both copying and moving, whatever user chooses */
+                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            }
+
+            event.consume();
+        });
+
+
+        root.setOnDragDropped(event -> {
+            /* data dropped */
+            System.out.println("onDragDropped");
+            /* if there is a string data on dragboard, read it and use it */
+            Dragboard db = event.getDragboard();
+            boolean success = false;
+            if (db.hasString()) {
+                //root.setText(db.getString());
+                success = true;
+            }
+            /*
+             * let the source know whether the string was successfully
+             * transferred and used
+             */
+            event.setDropCompleted(success);
+
+            event.consume();
+        });
+
+
+        this.toolbarBox.setOnDragDetected(event -> {
             System.out.println("click toolbar");
-
-            System.out.println(event.getPickResult().getIntersectedNode());
-            System.out.println(toolbarBox.getChildren().size());
-
             int i = 0;
             for (Node node: toolbarBox.getChildren()) {
+                System.out.println(node);
                 if (event.getPickResult().getIntersectedNode() == node) {
-                    System.out.println("found: " + editor.getToolbar().getShapes().get(i));
+                    shapeDragged = editor.getToolbar().getShapes().get(i);
+                    System.out.println("found: " + shapeDragged);
                     break;
                 }
                 i++;
             }
+            /* allow any transfer mode */
+            Dragboard db = toolbarBox.startDragAndDrop(TransferMode.ANY);
+
+            /* put a string on dragboard */
+            ClipboardContent content = new ClipboardContent();
+            content.putString(toolbarBox.toString());
+            db.setContent(content);
+
+            event.consume();
         });
 
+
+
+        Scene scene = new Scene(windowLayout, WINDOW_WIDTH, WINDOW_HEIGHT);
+        primaryStage.setScene(scene);
         primaryStage.show();
-    }
-
-    private void selectShapeInToolbar(VBox toolbarBox, VBox elem, MouseEvent mouseEvent) {
-        System.out.println("mouse pressed");
-        mouseEvent.setDragDetect(true);
-        for(int i = 0; i< toolbarBox.getChildren().size(); i++){
-            if(toolbarBox.getChildren().get(i) == elem){
-                shapeDragged = editor.getToolbar().getShapes().get(i);
-            }
-        }
-    }
-
-    private void dropShapeInScene(Pane editorLayout, MouseEvent mouseEvent) {
-        System.out.println("mouse released");
-        if(shapeDragged != null)
-            try {
-                Shape newShape = shapeDragged.clone();
-                editor.getScene().addShape(newShape);
-                newShape.setPosition(new Vec2D(mouseEvent.getX(), mouseEvent.getY()));
-                newShape.setRendering(new JFxRendering());
-                newShape.draw(editorLayout);
-
-            } catch (CloneNotSupportedException e) {
-                e.printStackTrace();
-            }
     }
 }
