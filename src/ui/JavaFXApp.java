@@ -5,6 +5,8 @@ import editor.utils.Color;
 import editor.utils.Vec2D;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -91,23 +93,23 @@ public class JavaFXApp extends Application implements ApplicationI {
             Shape shape = new Polygon(6, 20, coords,
                     new Color(255,0,255), new Vec2D(0,0), 45);
 
-            editor.getScene().addShape(shape);
+            editor.scene.addShape(shape);
         });
 
         this.toolbarBox.setOnMousePressed(event -> {
             System.out.println("click toolbar");
 
+            System.out.println(event.getPickResult().getIntersectedNode());
+            System.out.println(toolbarBox.getChildren().size());
+
             int i = 0;
             for (Node node: toolbarBox.getChildren()) {
-                // TODO it's always different because left: javafx.Rectangle - right: editor.Rectangle
-                if (event.getPickResult().getIntersectedNode() == toolbarBox.getChildren().get(i)) {
-                    System.out.println("found: " + editor.getToolbar().getShapes().get(i));
+                if (event.getPickResult().getIntersectedNode() == node) {
+                    System.out.println("found: " + editor.toolbar.shapes.get(i));
                     break;
                 }
                 i++;
             }
-
-
         });
 
         primaryStage.show();

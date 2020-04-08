@@ -15,7 +15,7 @@ public class ShapeTests {
     }
 
     public Rectangle createRectangle(){
-        return new Rectangle(5., 10., new Vec2D(0.,0.), new Color(255,255,255), new Vec2D(0.,0.), 0.);
+        return new Rectangle(5., 10., 0,  new Vec2D(0.,0.), new Color(255,255,255), new Vec2D(0.,0.), 0.);
     }
 
     @Test
