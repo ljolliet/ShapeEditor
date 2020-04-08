@@ -53,6 +53,10 @@ public abstract class SimpleShape implements Shape {
         this.rendering = r;
     }
 
+    @Override
+    public void setPosition(Vec2D position) {
+        this.position = position;
+    }
 
     public Vec2D getPosition() {
         return position;

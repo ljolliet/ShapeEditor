@@ -1,5 +1,6 @@
 package editor;
 
+import editor.utils.Vec2D;
 import ui.Rendering;
 
 import java.util.HashSet;
@@ -43,5 +44,10 @@ public class ShapeGroup implements Shape {
     public void draw(Object context) {
         for(Shape s : shapes)
             s.draw(context);
+    }
+
+    @Override
+    public void setPosition(Vec2D vec2D) {
+        //TODO set position of a group
     }
 }
