@@ -12,4 +12,17 @@ public class Polygon extends SimpleShape {
         this.nbSide = nbSide;
         this.sideLength = sideLength;
     }
+
+    public int getNbSide() {
+        return nbSide;
+    }
+
+    public double getSideLength() {
+        return sideLength;
+    }
+
+    @Override
+    public void draw(Object context) {
+        rendering.drawPolygon(context, this);
+    }
 }
