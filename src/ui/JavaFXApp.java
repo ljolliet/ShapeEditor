@@ -3,12 +3,9 @@ package ui;
 import editor.Editor;
 import editor.Polygon;
 import editor.Shape;
-import editor.ShapeGroup;
 import editor.utils.Color;
 import editor.utils.Vec2D;
 import javafx.application.Application;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -77,7 +74,6 @@ public class JavaFXApp extends Application implements ApplicationI {
 
         // Scene layout
         this.root = new Group();
-        //root.setOnMouseReleased(mouseEvent -> dropShapeInScene(root, mouseEvent));
         editorLayout.getChildren().add(root);
 
         Canvas canvas = new Canvas();

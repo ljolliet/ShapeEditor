@@ -22,7 +22,7 @@ public class Polygon extends SimpleShape {
 
     /**
      * A polygon is composed of points depending on the number of sides,
-     * @return
+     * @return A list of points
      */
     public double[] getPoints(double radius) {
         double[] points = new double[nbSide * 2];

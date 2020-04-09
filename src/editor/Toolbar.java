@@ -14,8 +14,8 @@ public class Toolbar {
     public Toolbar() {
         this.shapes = new ArrayList<>();
 
-        addShape(new Rectangle(200, 100, 0,  new Vec2D(0,0), new Color(55,55,255), new Vec2D(0,0), 0));
-        addShape(new Polygon(6, 100,  new Vec2D(0,0), new Color(255,55,55), new Vec2D(0,0), Math.PI));
+        addShape(new Rectangle(100, 50, 0,  new Vec2D(0,0), new Color(55,55,255), new Vec2D(0,0), 0));
+        addShape(new Polygon(6, 50,  new Vec2D(0,0), new Color(255,55,55), new Vec2D(0,0), Math.PI));
     }
 
     public void addShape(Shape shape) {
