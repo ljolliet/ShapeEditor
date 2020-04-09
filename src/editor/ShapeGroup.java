@@ -36,14 +36,15 @@ public class ShapeGroup implements Shape {
     }
 
     @Override
-    public void setRendering(Rendering r) {
-        this.rendering = r;
+    public void drawInScene(Rendering rendering) {
+        for(Shape s : shapes)
+            s.drawInScene(rendering);
     }
 
     @Override
-    public void draw(Object context) {
+    public void drawInToolbar(Rendering rendering) {
         for(Shape s : shapes)
-            s.draw(context);
+            s.drawInToolbar(rendering);
     }
 
     @Override

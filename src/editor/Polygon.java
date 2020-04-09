@@ -1,10 +1,9 @@
 package editor;
 
+import com.sun.istack.internal.Nullable;
 import editor.utils.Color;
 import editor.utils.Vec2D;
-
-import java.util.ArrayList;
-import java.util.List;
+import ui.Rendering;
 
 public class Polygon extends SimpleShape {
     private int nbSide;
@@ -19,14 +18,14 @@ public class Polygon extends SimpleShape {
     }
 
     private void computeRadius() {
-        this.radius = sideLength / (2 * Math.sin(180d / nbSide));
+        this.radius = sideLength / (2 * Math.sin(Math.PI / nbSide));
     }
 
     /**
      * A polygon is composed of points depending on the number of sides,
      * @return
      */
-    public double[] getPoints() {
+    public double[] getPoints(double radius) {
         double[] points = new double[nbSide * 2];
         int cpt = 0;
 
@@ -38,16 +37,30 @@ public class Polygon extends SimpleShape {
         return points;
     }
 
+    public double[] getPoints() {
+        return this.getPoints(this.radius);
+    }
+
+    @Override
+    public void drawInScene(Rendering rendering) {
+        rendering.drawInScene(this);
+    }
+
+    @Override
+    public void drawInToolbar(Rendering rendering) {
+        rendering.drawInToolbar(this);
+    }
+
+    public void setSideLength(double sideLength) {
+        this.sideLength = sideLength;
+        computeRadius();
+    }
+
     public int getNbSide() {
         return nbSide;
     }
 
     public double getSideLength() {
         return sideLength;
-    }
-
-    @Override
-    public void draw(Object context) {
-        rendering.drawPolygon(context, this);
     }
 }

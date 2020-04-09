@@ -13,7 +13,6 @@ public abstract class SimpleShape implements Shape {
     private Color color;
     private Vec2D rotationCenter;
     private double rotation;
-    public Rendering rendering;
     // translation TODO
 
     public SimpleShape(Vec2D position, Color color, Vec2D rotationCenter, double rotation) {
@@ -54,11 +53,6 @@ public abstract class SimpleShape implements Shape {
 
     public double getY() {
         return position.y;
-    }
-
-    @Override
-    public void setRendering(Rendering r) {
-        this.rendering = r;
     }
 
     @Override

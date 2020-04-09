@@ -2,6 +2,7 @@ package editor;
 
 import editor.utils.Color;
 import editor.utils.Vec2D;
+import ui.Rendering;
 
 public class Rectangle extends SimpleShape {
     private double width;
@@ -15,6 +16,16 @@ public class Rectangle extends SimpleShape {
         this.borderRadius = borderRadius;
     }
 
+    @Override
+    public void drawInScene(Rendering rendering) {
+        rendering.drawInScene(this);
+    }
+
+    @Override
+    public void drawInToolbar(Rendering rendering) {
+        rendering.drawInToolbar(this);
+    }
+
     public double getWidth() {
         return width;
     }
@@ -25,12 +36,5 @@ public class Rectangle extends SimpleShape {
 
     public int getBorderRadius() {
         return borderRadius;
-    }
-
-
-
-    @Override
-    public void draw(Object context) {
-        rendering.drawRectangle(context, this);
     }
 }

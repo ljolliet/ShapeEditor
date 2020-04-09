@@ -1,6 +1,9 @@
 package ui;
 
-import editor.*;
+import editor.Editor;
+import editor.Polygon;
+import editor.Shape;
+import editor.ShapeGroup;
 import editor.utils.Color;
 import editor.utils.Vec2D;
 import javafx.application.Application;
@@ -12,18 +15,20 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.input.*;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class JavaFXApp extends Application implements ApplicationI {
 
     private final Editor editor = new Editor();
+    private Rendering rendering;
 
-    private Pane root;
+    private Group root;
     private VBox toolbarBox;
     Shape shapeDragged = null;
 
@@ -39,11 +44,13 @@ public class JavaFXApp extends Application implements ApplicationI {
         |  |  |  HBox (optionLayout)
         |  |  |  HBox (editorLayout)
         |  |  |  |  VBox (toolbarBox)
-        |  |  |  |  Pane (root)
+        |  |  |  |  Group (root)
         |  |  |  |  |  Canvas
 */
 
         VBox windowLayout = new VBox();
+        Scene scene = new Scene(windowLayout, WINDOW_WIDTH, WINDOW_HEIGHT);
+        primaryStage.setScene(scene);
 
         // Top option bar
         HBox optionLayout = new HBox();
@@ -66,15 +73,11 @@ public class JavaFXApp extends Application implements ApplicationI {
         toolbarBox.setPadding(new Insets(TOOLBAR_SPACING));
         toolbarBox.setAlignment(Pos.BASELINE_CENTER);
         toolbarBox.setSpacing(TOOLBAR_SPACING);
-        for(Shape s : editor.getToolbar().getShapes()) {
-            s.setRendering(new JFxRendering());
-            s.draw(toolbarBox);
-        }
+        editorLayout.getChildren().add(toolbarBox);
 
         // Scene layout
-        this.root = new Pane();
-
-        editorLayout.getChildren().add(toolbarBox);
+        this.root = new Group();
+        //root.setOnMouseReleased(mouseEvent -> dropShapeInScene(root, mouseEvent));
         editorLayout.getChildren().add(root);
 
         Canvas canvas = new Canvas();
@@ -82,7 +85,25 @@ public class JavaFXApp extends Application implements ApplicationI {
         canvas.setHeight(WINDOW_HEIGHT - OPTION_HEIGHT);
         root.getChildren().add(canvas);
 
+        this.root.setOnMouseClicked(event -> {
+            dropShapeInScene(event.getX(), event.getY());
+        });
 
+        this.toolbarBox.setOnMousePressed(event -> {
+            System.out.println("click toolbar");
+
+            System.out.println(event.getPickResult().getIntersectedNode());
+            System.out.println(toolbarBox.getChildren().size());
+
+            int i = 0;
+            for (Node node: toolbarBox.getChildren()) {
+                if (event.getPickResult().getIntersectedNode() == node) {
+                    System.out.println("found: " + editor.getToolbar().getShapes().get(i));
+                    break;
+                }
+                i++;
+            }
+        });
 
         this.toolbarBox.setOnDragDone(event -> {
             System.out.println("mouse released");
@@ -92,8 +113,7 @@ public class JavaFXApp extends Application implements ApplicationI {
                     Shape newShape = shapeDragged.clone();
                     newShape.setPosition(new Vec2D(event.getX(), event.getY()));
                     editor.getScene().addShape(newShape);
-                    newShape.draw(root);
-
+                    editor.draw(rendering);
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
                 }
@@ -160,10 +180,31 @@ public class JavaFXApp extends Application implements ApplicationI {
             event.consume();
         });
 
+        // Set rendering
+        this.rendering = new JFxRendering(toolbarBox, root);
+        // Draw editor
+        editor.draw(rendering);
 
-
-        Scene scene = new Scene(windowLayout, WINDOW_WIDTH, WINDOW_HEIGHT);
-        primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    private void selectShapeInToolbar(VBox toolbarBox, VBox elem, MouseEvent mouseEvent) {
+        System.out.println("selectShapeInToolbar");
+        mouseEvent.setDragDetect(true);
+        for(int i = 0; i< toolbarBox.getChildren().size(); i++){
+            if(toolbarBox.getChildren().get(i) == elem){
+                shapeDragged = editor.getToolbar().getShapes().get(i);
+            }
+        }
+    }
+
+    private void dropShapeInScene(double x, double y) {
+        System.out.println("dropShapeInScene");
+
+        Shape s1 = new Polygon(6, 50, new Vec2D(x, y),
+                new Color(0, 128, 0), new Vec2D(0, 0), 0);
+
+        editor.getScene().getShapes().add(s1);
+        editor.draw(rendering);
     }
 }

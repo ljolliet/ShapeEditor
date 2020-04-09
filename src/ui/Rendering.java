@@ -4,6 +4,13 @@ import editor.Polygon;
 import editor.Rectangle;
 
 public interface Rendering {
-    void drawRectangle(Object context, Rectangle rectangle);
-    void drawPolygon(Object context, Polygon polygon);
+
+    void init();
+
+    void drawInScene(Rectangle rectangle);
+    void drawInScene(Polygon polygon);
+
+    void drawInToolbar(Rectangle rectangle);
+    void drawInToolbar(Polygon polygon);
+
 }
