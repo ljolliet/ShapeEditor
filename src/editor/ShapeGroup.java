@@ -6,7 +6,8 @@ import ui.Rendering;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ShapeGroup implements Shape {
+public class ShapeGroup extends ShapeObservable {
+
     private Set<Shape> shapes = new HashSet<>();
     private Rendering rendering;
 

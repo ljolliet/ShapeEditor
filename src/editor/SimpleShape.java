@@ -7,7 +7,7 @@ import ui.Rendering;
 
 import java.util.Set;
 
-public abstract class SimpleShape implements Shape {
+public abstract class SimpleShape extends ShapeObservable {
     private Vec2D position;
 
     private Color color;
@@ -58,6 +58,7 @@ public abstract class SimpleShape implements Shape {
     @Override
     public void setPosition(Vec2D position) {
         this.position = position;
+        notifyObservers();
     }
 
     public Vec2D getPosition() {
