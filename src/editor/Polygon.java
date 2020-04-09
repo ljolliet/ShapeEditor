@@ -1,6 +1,5 @@
 package editor;
 
-import com.sun.istack.internal.Nullable;
 import editor.utils.Color;
 import editor.utils.Vec2D;
 import ui.Rendering;
