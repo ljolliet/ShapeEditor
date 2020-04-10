@@ -18,9 +18,4 @@ public interface Shape extends Cloneable {
     void setPosition(Vec2D vec2D);
 
     //TODO add Memento
-
-    //Observable
-    void addObserver(ShapeObserverI so);
-    void removeObserver(ShapeObserverI so);
-    void notifyObservers();
 }
