@@ -52,7 +52,16 @@ public class JFxRendering implements Rendering {
 //            angle += angleStep;
 //        }
 
-        javafx.scene.shape.Polygon polygon = new javafx.scene.shape.Polygon(p.getPoints());
+        double[][] pre_points = p.getPoints();
+
+        double[] points = new double[p.getNbSide() * 2];
+        int cpt = 0;
+        for (int i = 0; i < p.getNbSide(); i++) {
+            points[cpt++] = pre_points[i][0];
+            points[cpt++] = pre_points[i][1];
+        }
+
+        javafx.scene.shape.Polygon polygon = new javafx.scene.shape.Polygon(points);
         polygon.setFill(Color.rgb(p.getColor().r, p.getColor().g, p.getColor().b));
         root.getChildren().add(polygon);
         // TODO include rotationCenter, translation
@@ -73,7 +82,16 @@ public class JFxRendering implements Rendering {
     public void drawInToolbar(Polygon p) {
         double width = ApplicationI.TOOLBAR_WIDTH / 4d;
 
-        javafx.scene.shape.Polygon polygon = new javafx.scene.shape.Polygon(p.getPoints(width));
+        double[][] pre_points = p.getPoints(width);
+
+        double[] points = new double[p.getNbSide() * 2];
+        int cpt = 0;
+        for (int i = 0; i < p.getNbSide(); i++) {
+            points[cpt++] = pre_points[i][0];
+            points[cpt++] = pre_points[i][1];
+        }
+
+        javafx.scene.shape.Polygon polygon = new javafx.scene.shape.Polygon(points);
         polygon.setFill(Color.rgb(p.getColor().r, p.getColor().g, p.getColor().b));
         toolbarBox.getChildren().add(polygon);
     }

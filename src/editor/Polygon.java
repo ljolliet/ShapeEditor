@@ -22,21 +22,20 @@ public class Polygon extends SimpleShape {
 
     /**
      * A polygon is composed of points depending on the number of sides,
-     * @return A list of points
+     * @return A 2D array of points
      */
-    public double[] getPoints(double radius) {
-        double[] points = new double[nbSide * 2];
-        int cpt = 0;
+    public double[][] getPoints(double radius) {
+        double[][] points = new double[nbSide][2];
 
         for (int i = 0; i < nbSide; i++) {
-            points[cpt++] = getX() + radius * Math.cos(2 * Math.PI * i / nbSide + Math.toRadians(getRotation())); // X
-            points[cpt++] = getY() + radius * Math.sin(2 * Math.PI * i / nbSide + Math.toRadians(getRotation())); // Y
+            points[i][0] = getX() + radius * Math.cos(2 * Math.PI * i / nbSide + Math.toRadians(getRotation())); // X
+            points[i][1] = getY() + radius * Math.sin(2 * Math.PI * i / nbSide + Math.toRadians(getRotation())); // Y
         }
 
         return points;
     }
 
-    public double[] getPoints() {
+    public double[][] getPoints() {
         return this.getPoints(this.radius);
     }
 
