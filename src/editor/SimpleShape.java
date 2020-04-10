@@ -56,8 +56,8 @@ public abstract class SimpleShape extends ShapeObservable {
     }
 
     @Override
-    public void setPosition(Vec2D position) {
-        this.position = position;
+    public void setPosition(Vec2D pos) {
+        this.position = pos;
         notifyObservers();
     }
 

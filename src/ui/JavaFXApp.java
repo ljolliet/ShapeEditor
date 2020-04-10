@@ -84,7 +84,18 @@ public class JavaFXApp extends Application implements ApplicationI {
         this.root.setOnMouseClicked(event -> {
             System.out.println("click scene");
             System.out.println(event.getX() + " - " + event.getY());
-            if(shapeDragged != null)
+            boolean dragging = true; //TODO remove once drag and drop implemented
+            //click on an existing shape
+            for (Shape s : editor.getScene().getShapes()) {
+                if (s.contains(new Vec2D(event.getX(), event.getY()))) {
+                    System.out.println("found: " + s);
+                    dragging = false;
+                    break;
+                }
+            }
+
+            // create a shape
+            if(dragging && shapeDragged != null)
                 try {
                     Shape newShape = shapeDragged.clone();
                     newShape.setPosition(new Vec2D(event.getX(), event.getY()));

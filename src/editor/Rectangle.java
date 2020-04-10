@@ -26,6 +26,12 @@ public class Rectangle extends SimpleShape {
         rendering.drawInToolbar(this);
     }
 
+    @Override
+    public boolean contains(Vec2D pos) {
+        return  getPosition().x <= pos.x && pos.x <= getPosition().x + width
+                && getPosition().y <= pos.y && pos.y <= getPosition().y + height;
+    }
+
     public double getWidth() {
         return width;
     }

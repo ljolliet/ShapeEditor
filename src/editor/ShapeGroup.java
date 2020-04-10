@@ -49,7 +49,12 @@ public class ShapeGroup extends ShapeObservable {
     }
 
     @Override
-    public void setPosition(Vec2D vec2D) {
+    public boolean contains(Vec2D pos) {
+        return false;   //TODO true if the group contains the position
+    }
+
+    @Override
+    public void setPosition(Vec2D pos) {
         //TODO set position of a group
     }
 }

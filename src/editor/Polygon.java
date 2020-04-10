@@ -50,6 +50,11 @@ public class Polygon extends SimpleShape {
         rendering.drawInToolbar(this);
     }
 
+    @Override
+    public boolean contains(Vec2D pos) {
+        return false;
+    }
+
     public void setSideLength(double sideLength) {
         this.sideLength = sideLength;
         computeRadius();
