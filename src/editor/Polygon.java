@@ -5,19 +5,20 @@ import editor.utils.Vec2D;
 import ui.Rendering;
 
 public class Polygon extends SimpleShape {
-    private int nbSide;
+    private int nbSides;
     private double sideLength;
+
     private double radius;
 
-    public Polygon(int nbSide, double sideLength, Vec2D position, Color color, Vec2D rotationCenter, double rotation) {
+    public Polygon(int nbSides, double sideLength, Vec2D position, Color color, Vec2D rotationCenter, double rotation) {
         super(position, color, rotationCenter, rotation);
-        this.nbSide = nbSide;
+        this.nbSides = nbSides;
         this.sideLength = sideLength;
         computeRadius();
     }
 
     private void computeRadius() {
-        this.radius = sideLength / (2 * Math.sin(Math.PI / nbSide));
+        this.radius = sideLength / (2 * Math.sin(Math.PI / nbSides));
     }
 
     /**
@@ -25,11 +26,11 @@ public class Polygon extends SimpleShape {
      * @return A 2D array of points
      */
     public double[][] getPoints(double radius) {
-        double[][] points = new double[nbSide][2];
+        double[][] points = new double[nbSides][2];
 
-        for (int i = 0; i < nbSide; i++) {
-            points[i][0] = getX() + radius * Math.cos(2 * Math.PI * i / nbSide + Math.toRadians(getRotation())); // X
-            points[i][1] = getY() + radius * Math.sin(2 * Math.PI * i / nbSide + Math.toRadians(getRotation())); // Y
+        for (int i = 0; i < nbSides; i++) {
+            points[i][0] = getX() + radius * Math.cos(2 * Math.PI * i / nbSides + Math.toRadians(getRotation())); // X
+            points[i][1] = getY() + radius * Math.sin(2 * Math.PI * i / nbSides + Math.toRadians(getRotation())); // Y
         }
 
         return points;
@@ -54,11 +55,15 @@ public class Polygon extends SimpleShape {
         computeRadius();
     }
 
-    public int getNbSide() {
-        return nbSide;
+    public int getNbSides() {
+        return nbSides;
     }
 
     public double getSideLength() {
         return sideLength;
+    }
+
+    public double getRadius() {
+        return radius;
     }
 }

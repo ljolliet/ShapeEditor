@@ -1,13 +1,11 @@
 package ui;
 
-import editor.Editor;
 import editor.Polygon;
 import editor.Rectangle;
-import editor.Shape;
 import javafx.scene.Group;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.transform.Rotate;
 
 public class JFxRendering implements Rendering {
 
@@ -28,12 +26,12 @@ public class JFxRendering implements Rendering {
 
     @Override
     public void drawInScene(Rectangle r) {
-        javafx.scene.shape.Rectangle rectangle = new javafx.scene.shape.Rectangle(r.getWidth(), r.getHeight());
+        javafx.scene.shape.Rectangle rectangle = createRectangle(r, r.getWidth(), r.getHeight());
+        // Set coords
         rectangle.setX(r.getX());
         rectangle.setY(r.getY());
-        rectangle.setFill(Color.rgb(r.getColor().r, r.getColor().g, r.getColor().b));
+
         root.getChildren().add(rectangle);
-        // TODO add other attributes rotation, rotationCenter, translation, radius
     }
 
     @Override
@@ -52,19 +50,9 @@ public class JFxRendering implements Rendering {
 //            angle += angleStep;
 //        }
 
-        double[][] pre_points = p.getPoints();
+        javafx.scene.shape.Polygon polygon = createPolygon(p, p.getRadius());
 
-        double[] points = new double[p.getNbSide() * 2];
-        int cpt = 0;
-        for (int i = 0; i < p.getNbSide(); i++) {
-            points[cpt++] = pre_points[i][0];
-            points[cpt++] = pre_points[i][1];
-        }
-
-        javafx.scene.shape.Polygon polygon = new javafx.scene.shape.Polygon(points);
-        polygon.setFill(Color.rgb(p.getColor().r, p.getColor().g, p.getColor().b));
         root.getChildren().add(polygon);
-        // TODO include rotationCenter, translation
     }
 
     @Override
@@ -72,27 +60,53 @@ public class JFxRendering implements Rendering {
         double width = ApplicationI.TOOLBAR_WIDTH / 2d;
         double height = ApplicationI.TOOLBAR_WIDTH / 3d;
 
-        javafx.scene.shape.Rectangle rectangle = new javafx.scene.shape.Rectangle(width, height);
-        rectangle.setFill(Color.rgb(r.getColor().r, r.getColor().g, r.getColor().b));
+        javafx.scene.shape.Rectangle rectangle = createRectangle(r, width, height);
+
         toolbarBox.getChildren().add(rectangle);
-        // TODO add other attributes rotation, rotationCenter, translation, radius
     }
 
     @Override
     public void drawInToolbar(Polygon p) {
-        double width = ApplicationI.TOOLBAR_WIDTH / 4d;
+        double radius = ApplicationI.TOOLBAR_WIDTH / 4d;
 
-        double[][] pre_points = p.getPoints(width);
+        javafx.scene.shape.Polygon polygon = createPolygon(p, radius);
 
-        double[] points = new double[p.getNbSide() * 2];
+        toolbarBox.getChildren().add(polygon);
+    }
+
+    private javafx.scene.shape.Rectangle createRectangle(Rectangle r, double width, double height) {
+        javafx.scene.shape.Rectangle rectangle = new javafx.scene.shape.Rectangle(width, height);
+        rectangle.setFill(Color.rgb(r.getColor().r, r.getColor().g, r.getColor().b));
+        // TODO add other attributes
+        //  - rotation
+        //  - rotationCenter
+        //  - translation
+        //  - radius
+
+        return rectangle;
+    }
+
+    private javafx.scene.shape.Polygon createPolygon(Polygon p, double radius) {
+        double[] points = getPolygonPoints(p.getPoints(radius), p.getNbSides());
+
+        javafx.scene.shape.Polygon polygon = new javafx.scene.shape.Polygon(points);
+        polygon.setFill(Color.rgb(p.getColor().r, p.getColor().g, p.getColor().b));
+        // TODO add other attributes
+        //  - rotationCenter
+        //  - translation
+
+        return polygon;
+    }
+
+    private double[] getPolygonPoints(double[][] pre_points, int nbSides) {
+        double[] points = new double[nbSides * 2];
         int cpt = 0;
-        for (int i = 0; i < p.getNbSide(); i++) {
+
+        for (int i = 0; i < nbSides; i++) {
             points[cpt++] = pre_points[i][0];
             points[cpt++] = pre_points[i][1];
         }
 
-        javafx.scene.shape.Polygon polygon = new javafx.scene.shape.Polygon(points);
-        polygon.setFill(Color.rgb(p.getColor().r, p.getColor().g, p.getColor().b));
-        toolbarBox.getChildren().add(polygon);
+        return points;
     }
 }
