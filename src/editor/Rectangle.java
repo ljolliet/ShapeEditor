@@ -43,4 +43,9 @@ public class Rectangle extends SimpleShape {
     public int getBorderRadius() {
         return borderRadius;
     }
+
+    @Override
+    public void setPosition(Vec2D position) {
+        super.setPosition(new Vec2D(position.x - width/2, position.y - height/2));
+    }
 }
