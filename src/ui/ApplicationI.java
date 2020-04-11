@@ -7,7 +7,7 @@ public interface ApplicationI {
     int WINDOW_WIDTH  = 800;
 
     int TOOLBAR_WIDTH = 100;
-    double TOOLBAR_SPACING = 10.;
+    int TOOLBAR_SPACING = 10;
 
     int OPTION_HEIGHT = 50;
 

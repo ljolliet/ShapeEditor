@@ -57,13 +57,16 @@ public class JFxRendering implements Rendering {
 
     @Override
     public void drawInToolbar(Rectangle r) {
-        double width = ApplicationI.TOOLBAR_WIDTH / 2d;
-        double height = ApplicationI.TOOLBAR_WIDTH / 3d;
+        double max = Math.max(r.getHeight(), r.getWidth());
+        double ratio = (ApplicationI.TOOLBAR_WIDTH / 2d) / max;
 
-        javafx.scene.shape.Rectangle rectangle = createRectangle(r, width, height);
+        javafx.scene.shape.Rectangle rectangle = createRectangle(r, r.getWidth() * ratio, r.getHeight() * ratio);
         // For toolbar, special rotation
         rectangle.getTransforms().clear();
         rectangle.setRotate(r.getRotation());
+        // Set border radius
+        rectangle.setArcWidth(r.getBorderRadius() * ratio);
+        rectangle.setArcHeight(r.getBorderRadius() * ratio);
 
         toolbarBox.getChildren().add(rectangle);
     }
@@ -79,12 +82,17 @@ public class JFxRendering implements Rendering {
 
     private javafx.scene.shape.Rectangle createRectangle(Rectangle r, double width, double height) {
         javafx.scene.shape.Rectangle rectangle = new javafx.scene.shape.Rectangle(width, height);
+        // Color
         rectangle.setFill(Color.rgb(r.getColor().r, r.getColor().g, r.getColor().b));
+        // Rotation
         Rotate rotate = new Rotate(r.getRotation());
         rotate.setPivotX(r.getX() + r.getRotationCenter().x);
         rotate.setPivotY(r.getY() + r.getRotationCenter().y);
-
         rectangle.getTransforms().add(rotate);
+        // Radius
+        rectangle.setArcHeight(r.getBorderRadius());
+        rectangle.setArcWidth(r.getBorderRadius());
+
         // TODO add other attributes
         //  - translation
         //  - radius
