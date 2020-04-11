@@ -61,6 +61,9 @@ public class JFxRendering implements Rendering {
         double height = ApplicationI.TOOLBAR_WIDTH / 3d;
 
         javafx.scene.shape.Rectangle rectangle = createRectangle(r, width, height);
+        // For toolbar, special rotation
+        rectangle.getTransforms().clear();
+        rectangle.setRotate(r.getRotation());
 
         toolbarBox.getChildren().add(rectangle);
     }
@@ -77,9 +80,12 @@ public class JFxRendering implements Rendering {
     private javafx.scene.shape.Rectangle createRectangle(Rectangle r, double width, double height) {
         javafx.scene.shape.Rectangle rectangle = new javafx.scene.shape.Rectangle(width, height);
         rectangle.setFill(Color.rgb(r.getColor().r, r.getColor().g, r.getColor().b));
+        Rotate rotate = new Rotate(r.getRotation());
+        rotate.setPivotX(r.getX() + r.getRotationCenter().x);
+        rotate.setPivotY(r.getY() + r.getRotationCenter().y);
+
+        rectangle.getTransforms().add(rotate);
         // TODO add other attributes
-        //  - rotation
-        //  - rotationCenter
         //  - translation
         //  - radius
 
