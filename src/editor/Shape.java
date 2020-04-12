@@ -15,7 +15,7 @@ public interface Shape extends Cloneable {
     void drawInScene(Rendering rendering);
     void drawInToolbar(Rendering rendering);
 
-    boolean contains(Vec2D pos);
+    boolean contains(Vec2D position);
     void setPosition(Vec2D pos);
 
     //TODO add Memento

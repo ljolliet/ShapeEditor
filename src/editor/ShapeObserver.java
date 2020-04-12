@@ -1,7 +1,4 @@
-package editor.utils;
-
-import editor.Shape;
-import editor.ShapeObserverI;
+package editor;
 
 public class ShapeObserver implements ShapeObserverI {
 

@@ -51,7 +51,7 @@ public class Polygon extends SimpleShape {
     }
 
     @Override
-    public boolean contains(Vec2D pos) {
+    public boolean contains(Vec2D position) {
         return false;
     }
 

@@ -27,9 +27,9 @@ public class Rectangle extends SimpleShape {
     }
 
     @Override
-    public boolean contains(Vec2D pos) {
-        return  getPosition().x <= pos.x && pos.x <= getPosition().x + width
-                && getPosition().y <= pos.y && pos.y <= getPosition().y + height;
+    public boolean contains(Vec2D position) {
+        return  getPosition().x <= position.x && position.x <= getPosition().x + width
+                && getPosition().y <= position.y && position.y <= getPosition().y + height;
     }
 
     public double getWidth() {

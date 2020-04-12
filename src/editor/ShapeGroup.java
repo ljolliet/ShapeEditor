@@ -48,9 +48,15 @@ public class ShapeGroup extends ShapeObservable {
             s.drawInToolbar(rendering);
     }
 
+    /**
+     * @return true if the position is contained by a child shape
+     */
     @Override
-    public boolean contains(Vec2D pos) {
-        return false;   //TODO true if the group contains the position
+    public boolean contains(Vec2D position) {
+        for(Shape child : shapes)
+            if(child.contains(position))
+                return true;
+        return false;
     }
 
     @Override

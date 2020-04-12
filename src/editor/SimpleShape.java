@@ -44,7 +44,7 @@ public abstract class SimpleShape extends ShapeObservable {
 
     @Override
     public Shape clone() throws CloneNotSupportedException {
-        return (Shape) super.clone();
+        return super.clone();
     }
 
     public double getX() {
