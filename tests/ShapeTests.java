@@ -1,10 +1,10 @@
-import editor.Polygon;
-import editor.Rectangle;
-import editor.Shape;
-import editor.ShapeGroup;
+import java.editor.Polygon;
+import java.editor.Rectangle;
+import java.editor.Shape;
+import java.editor.ShapeGroup;
 import org.junit.Test;
-import editor.utils.Color;
-import editor.utils.Vec2D;
+import java.editor.utils.Color;
+import java.editor.utils.Vec2D;
 
 import static org.junit.Assert.*;
 

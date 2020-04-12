@@ -1,4 +1,4 @@
-package editor;
+package java.editor;
 
 public class ShapeObserver implements ShapeObserverI {
 

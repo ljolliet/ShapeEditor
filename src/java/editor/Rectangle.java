@@ -1,8 +1,8 @@
-package editor;
+package java.editor;
 
-import editor.utils.Color;
-import editor.utils.Vec2D;
-import ui.Rendering;
+import java.editor.utils.Color;
+import java.editor.utils.Vec2D;
+import java.ui.Rendering;
 
 public class Rectangle extends SimpleShape {
     private double width;

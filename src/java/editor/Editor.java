@@ -1,6 +1,6 @@
-package editor;
+package java.editor;
 
-import ui.Rendering;
+import java.ui.Rendering;
 
 public class Editor {
 

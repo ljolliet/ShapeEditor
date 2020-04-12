@@ -1,7 +1,7 @@
-package ui;
+package java.ui;
 
-import editor.Polygon;
-import editor.Rectangle;
+import java.editor.Polygon;
+import java.editor.Rectangle;
 
 public interface Rendering {
 

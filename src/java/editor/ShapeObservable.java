@@ -1,4 +1,4 @@
-package editor;
+package java.editor;
 
 import java.util.HashSet;
 import java.util.LinkedList;

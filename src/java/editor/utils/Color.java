@@ -1,4 +1,4 @@
-package editor.utils;
+package java.editor.utils;
 
 public class Color {
     public final int r;

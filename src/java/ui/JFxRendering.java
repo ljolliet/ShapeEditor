@@ -1,7 +1,7 @@
-package ui;
+package java.ui;
 
-import editor.Polygon;
-import editor.Rectangle;
+import java.editor.Polygon;
+import java.editor.Rectangle;
 import javafx.scene.Group;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;

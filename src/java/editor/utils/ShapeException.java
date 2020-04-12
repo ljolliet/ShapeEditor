@@ -1,4 +1,4 @@
-package editor.utils;
+package java.editor.utils;
 
 public class ShapeException extends RuntimeException {
     public ShapeException(String m) {

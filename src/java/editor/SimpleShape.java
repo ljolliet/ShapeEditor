@@ -1,9 +1,8 @@
-package editor;
+package java.editor;
 
-import editor.utils.Color;
-import editor.utils.ShapeException;
-import editor.utils.Vec2D;
-import ui.Rendering;
+import java.editor.utils.Color;
+import java.editor.utils.ShapeException;
+import java.editor.utils.Vec2D;
 
 import java.util.Set;
 

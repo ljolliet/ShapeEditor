@@ -1,4 +1,4 @@
-package ui;
+package java.ui;
 
 public interface ApplicationI {
 
@@ -11,5 +11,5 @@ public interface ApplicationI {
 
     int OPTION_HEIGHT = 50;
 
-    // TODO Add some methods to communicate with the editor
+    // TODO Add some methods to communicate with the java.editor
 }
