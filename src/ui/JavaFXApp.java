@@ -10,15 +10,16 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.net.Inet4Address;
 import java.util.*;
 
 public class JavaFXApp extends Application implements ApplicationI {
@@ -41,7 +42,8 @@ public class JavaFXApp extends Application implements ApplicationI {
         |  |  VBox (windowLayout)
         |  |  |  HBox (optionLayout)
         |  |  |  HBox (editorLayout)
-        |  |  |  |  VBox (toolbarBox)
+        |  |  |  |  BorderPane (toolbarRoot)
+        |  |  |  |  |   VBox (toolbarBox)
         |  |  |  |  Group (root)
         |  |  |  |  |  Canvas
 */
@@ -99,15 +101,27 @@ public class JavaFXApp extends Application implements ApplicationI {
         editorLayout.setPrefWidth(WINDOW_WIDTH);
         windowLayout.getChildren().add(editorLayout);
 
+        //Toolbar root
+        BorderPane borderPane = new BorderPane();
+        borderPane.setPrefHeight(WINDOW_HEIGHT);
+        borderPane.setPrefWidth(TOOLBAR_WIDTH);
+        borderPane.setStyle("-fx-background-color: lightgray");
         // Toolbar
         this.toolbarBox = new VBox();
-        toolbarBox.setPrefHeight(WINDOW_HEIGHT);
-        toolbarBox.setPrefWidth(TOOLBAR_WIDTH);
-        toolbarBox.setStyle("-fx-background-color: lightgray");
         toolbarBox.setPadding(new Insets(TOOLBAR_SPACING));
         toolbarBox.setAlignment(Pos.BASELINE_CENTER);
         toolbarBox.setSpacing(TOOLBAR_SPACING);
-        editorLayout.getChildren().add(toolbarBox);
+        borderPane.setTop(toolbarBox);
+
+        //trash
+        //TODO refacto
+        ImageView trashim = new ImageView( new Image(getClass().getClassLoader().getResource("trash.png").toString()));
+        trashim.setPreserveRatio(true);
+        trashim.setFitHeight(TRASH_HEIGHT);
+        borderPane.setBottom(trashim);
+        BorderPane.setAlignment(trashim, Pos.CENTER);
+        BorderPane.setMargin(trashim, new Insets(TOOLBAR_SPACING));
+        editorLayout.getChildren().add(borderPane);
 
         // Scene layout
         this.root = new Group();

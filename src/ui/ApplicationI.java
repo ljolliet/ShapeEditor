@@ -8,6 +8,7 @@ public interface ApplicationI {
 
     int TOOLBAR_WIDTH = 100;
     int TOOLBAR_SPACING = 10;
+    int TRASH_HEIGHT = 40;
 
     int OPTION_HEIGHT = 50;
     int OPTION_SPACING = 10;
