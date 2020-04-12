@@ -15,8 +15,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.util.*;
 
 public class JavaFXApp extends Application implements ApplicationI {
@@ -70,6 +72,25 @@ public class JavaFXApp extends Application implements ApplicationI {
             iv.setFitHeight(scale);
             optionLayout.getChildren().add(iv);
         }
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Text Files", "*.txt")); //TODO set extension once decided
+        openIm.setOnMouseClicked(mouseEvent -> {
+            File file = fileChooser.showOpenDialog(primaryStage);
+            if (file != null) {
+                System.out.println("open file : " + file.getName());
+                //TODO open file method
+            }
+        });
+
+        saveIm.setOnMouseClicked(mouseEvent -> {
+            File file = fileChooser.showSaveDialog(primaryStage);
+            if (file != null) {
+                System.out.println("save file : " + file.getName());
+                //TODO save file method
+            }
+        });
 
 
         // Editor layout
