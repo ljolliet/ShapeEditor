@@ -1,9 +1,7 @@
 package ui;
 
 import editor.Editor;
-import editor.Polygon;
 import editor.Shape;
-import editor.utils.Color;
 import editor.utils.Vec2D;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -12,18 +10,14 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class JavaFXApp extends Application implements ApplicationI {
 
-    private final Editor editor = new Editor();
     private Rendering rendering;
+    private Editor editor;
 
     private Group root;
     private VBox toolbarBox;
@@ -100,7 +94,7 @@ public class JavaFXApp extends Application implements ApplicationI {
                     Shape newShape = shapeDragged.clone();
                     newShape.setPosition(new Vec2D(event.getX(), event.getY()));
                     editor.getScene().addShape(newShape);
-                    editor.draw(rendering);
+                    editor.draw();
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
                 }
@@ -124,8 +118,10 @@ public class JavaFXApp extends Application implements ApplicationI {
 
         // Set rendering
         this.rendering = new JFxRendering(toolbarBox, root);
+        this.editor = new Editor(this.rendering);
+
         // Draw editor
-        editor.draw(rendering);
+        editor.draw();
 
         primaryStage.show();
     }

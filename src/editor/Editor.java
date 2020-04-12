@@ -6,13 +6,15 @@ public class Editor {
 
     private final Scene scene;
     private final Toolbar toolbar;
+    private final Rendering rendering;
 
-    public Editor() {
+    public Editor(Rendering r) {
+        this.rendering = r;
         this.scene = new Scene();
         this.toolbar = new Toolbar();
     }
 
-    public void draw(Rendering rendering) {
+    public void draw() {
         rendering.init();
 
         // Draw scene
