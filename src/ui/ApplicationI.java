@@ -10,6 +10,7 @@ public interface ApplicationI {
     int TOOLBAR_SPACING = 10;
 
     int OPTION_HEIGHT = 50;
+    int OPTION_SPACING = 10;
 
     // TODO Add some methods to communicate with the editor
 }

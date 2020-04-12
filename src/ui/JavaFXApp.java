@@ -10,9 +10,14 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.util.*;
 
 public class JavaFXApp extends Application implements ApplicationI {
 
@@ -47,8 +52,25 @@ public class JavaFXApp extends Application implements ApplicationI {
         HBox optionLayout = new HBox();
         optionLayout.setPrefHeight(OPTION_HEIGHT);
         optionLayout.setPrefWidth(WINDOW_WIDTH);
+        optionLayout.setSpacing(OPTION_SPACING);
+        optionLayout.setPadding(new Insets(OPTION_SPACING));
         optionLayout.setStyle("-fx-background-color: darkred");
         windowLayout.getChildren().add(optionLayout);
+
+        //TODO refacto
+        final double scale = (double) OPTION_HEIGHT/2;
+        ImageView saveIm = new ImageView( new Image(getClass().getClassLoader().getResource("save.png").toString()));
+        ImageView openIm = new ImageView( new Image(getClass().getClassLoader().getResource("open.png").toString()));
+        ImageView undoIm = new ImageView( new Image(getClass().getClassLoader().getResource("undo.png").toString()));
+        ImageView redoIm = new ImageView( new Image(getClass().getClassLoader().getResource("redo.png").toString()));
+        ImageView[] optionsIm = new ImageView[] {saveIm, openIm, undoIm, redoIm};
+        List<ImageView> options = new ArrayList<>(Arrays.asList(optionsIm));
+        for(ImageView iv : options){
+            iv.setPreserveRatio(true);
+            iv.setFitHeight(scale);
+            optionLayout.getChildren().add(iv);
+        }
+
 
         // Editor layout
         HBox editorLayout = new HBox();
