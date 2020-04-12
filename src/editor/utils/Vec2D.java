@@ -1,4 +1,4 @@
-package java.editor.utils;
+package editor.utils;
 
 public class Vec2D {
     public final double x;

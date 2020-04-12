@@ -1,8 +1,8 @@
-package java.editor;
+package editor;
 
-import java.editor.utils.Color;
-import java.editor.utils.Vec2D;
-import java.ui.ApplicationI;
+import editor.utils.Color;
+import editor.utils.Vec2D;
+import ui.ApplicationI;
 
 public class ShapeFactory {
     public static Rectangle makeRectangle(){

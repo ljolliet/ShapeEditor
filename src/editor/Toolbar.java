@@ -1,7 +1,7 @@
-package java.editor;
+package editor;
 
-import java.editor.utils.Color;
-import java.editor.utils.Vec2D;
+import editor.utils.Color;
+import editor.utils.Vec2D;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,8 +1,8 @@
-package java.ui;
+package ui;
 
-import java.editor.Editor;
-import java.editor.Shape;
-import java.editor.utils.Vec2D;
+import editor.Editor;
+import editor.Shape;
+import editor.utils.Vec2D;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -120,7 +120,7 @@ public class JavaFXApp extends Application implements ApplicationI {
         this.rendering = new JFxRendering(toolbarBox, root);
         this.editor = new Editor(this.rendering);
 
-        // Draw java.editor
+        // Draw editor
         editor.draw();
 
         primaryStage.show();
@@ -134,8 +134,8 @@ public class JavaFXApp extends Application implements ApplicationI {
 //            try {
 //                Shape newShape = shapeDragged.clone();
 //                newShape.setPosition(new Vec2D(event.getX(), event.getY()));
-//                java.editor.getScene().addShape(newShape);
-//                java.editor.draw(rendering);
+//                editor.getScene().addShape(newShape);
+//                editor.draw(rendering);
 //            } catch (CloneNotSupportedException e) {
 //                e.printStackTrace();
 //            }
@@ -184,7 +184,7 @@ public class JavaFXApp extends Application implements ApplicationI {
 //            for (Node node: toolbarBox.getChildren()) {
 //                System.out.println(node);
 //                if (event.getPickResult().getIntersectedNode() == node) {
-//                    shapeDragged = java.editor.getToolbar().getShapes().get(i);
+//                    shapeDragged = editor.getToolbar().getShapes().get(i);
 //                    System.out.println("found: " + shapeDragged);
 //                    break;
 //                }

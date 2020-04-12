@@ -1,8 +1,8 @@
-package java.editor;
+package editor;
 
-import java.editor.utils.Color;
-import java.editor.utils.Vec2D;
-import java.ui.Rendering;
+import editor.utils.Color;
+import editor.utils.Vec2D;
+import ui.Rendering;
 
 public class Polygon extends SimpleShape {
     private int nbSides;

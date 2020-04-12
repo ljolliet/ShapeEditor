@@ -1,7 +1,7 @@
-package java.editor;
+package editor;
 
-import java.editor.utils.Vec2D;
-import java.ui.Rendering;
+import editor.utils.Vec2D;
+import ui.Rendering;
 
 import java.util.Set;
 
