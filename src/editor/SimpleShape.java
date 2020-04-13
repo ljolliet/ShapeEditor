@@ -60,6 +60,12 @@ public abstract class SimpleShape extends ShapeObservable {
         notifyObservers();
     }
 
+    @Override
+    public void setColor(Color color) {
+        this.color = color;
+        notifyObservers();
+    }
+
     public Vec2D getPosition() {
         return position;
     }

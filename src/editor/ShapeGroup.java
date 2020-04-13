@@ -1,5 +1,6 @@
 package editor;
 
+import editor.utils.Color;
 import editor.utils.Vec2D;
 import ui.Rendering;
 
@@ -62,5 +63,11 @@ public class ShapeGroup extends ShapeObservable {
     @Override
     public void setPosition(Vec2D pos) {
         //TODO set position of a group
+    }
+
+    @Override
+    public void setColor(Color color) {
+        for (Shape s: shapes)
+            s.setColor(color);
     }
 }

@@ -22,7 +22,11 @@ public abstract class ShapeObservable implements Shape {
 
     @Override
     public Shape clone() throws CloneNotSupportedException{
-        return (Shape)super.clone();
+        ShapeObservable newShape = (ShapeObservable) super.clone();
+        for (ShapeObserverI o: observers)
+            newShape.addObserver(o);
+
+        return newShape;
     }
 
 }

@@ -2,6 +2,8 @@ package ui;
 
 import editor.Editor;
 import editor.Shape;
+import editor.ShapeObservable;
+import editor.utils.Color;
 import editor.utils.Vec2D;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -140,6 +142,7 @@ public class JavaFXApp extends Application implements ApplicationI {
             for (Shape s : editor.getScene().getShapes()) {
                 if (s.contains(new Vec2D(event.getX(), event.getY()))) {
                     System.out.println("found: " + s);
+                    s.setColor(new Color(0,0,0));
                     dragging = false;
                     break;
                 }
@@ -150,8 +153,9 @@ public class JavaFXApp extends Application implements ApplicationI {
                 try {
                     Shape newShape = shapeDragged.clone();
                     newShape.setPosition(new Vec2D(event.getX(), event.getY()));
-                    editor.getScene().addShape(newShape);
-                    editor.draw();
+                    editor.addShapeInScene((ShapeObservable) newShape);
+                    //editor.getScene().addShape(newShape);
+                    //editor.draw();
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
                 }
@@ -174,11 +178,12 @@ public class JavaFXApp extends Application implements ApplicationI {
 
 
         // Set rendering
-        this.rendering = new JFxRendering(toolbarBox, root);
-        this.editor = new Editor(this.rendering);
+        this.editor = new Editor();
+        this.rendering = new JFxRendering(this.editor, toolbarBox, root);
+        editor.setRendering(rendering);
 
         // Draw editor
-        editor.draw();
+        rendering.drawEditor();
 
         primaryStage.show();
     }

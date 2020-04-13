@@ -6,24 +6,32 @@ public class Editor {
 
     private final Scene scene;
     private final Toolbar toolbar;
-    private final Rendering rendering;
+    private Rendering rendering;
+    private ShapeObserverI observer;
 
-    public Editor(Rendering r) {
-        this.rendering = r;
+    public Editor() {
         this.scene = new Scene();
         this.toolbar = new Toolbar();
     }
 
-    public void draw() {
-        rendering.init();
+    public void setRendering(Rendering r) {
+        this.rendering = r;
+        this.observer = new ShapeObserver(rendering);
+    }
 
-        // Draw scene
-        for (Shape s: scene.getShapes())
-            s.drawInScene(rendering);
+    public void addShapeInScene(ShapeObservable shape) {
+        this.scene.addShape(shape);
+        shape.addObserver(this.observer);
 
-        // Draw toolbar
-        for (Shape s: toolbar.getShapes())
-            s.drawInToolbar(rendering);
+        if (this.rendering != null)
+            this.rendering.drawEditor();
+    }
+
+    public void addShapeInToolbar(Shape shape) {
+        this.toolbar.addShape(shape);
+
+        if (this.rendering != null)
+            this.rendering.drawEditor();
     }
 
     public Scene getScene() {

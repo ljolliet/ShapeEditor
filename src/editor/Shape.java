@@ -1,5 +1,6 @@
 package editor;
 
+import editor.utils.Color;
 import editor.utils.Vec2D;
 import ui.Rendering;
 
@@ -17,6 +18,8 @@ public interface Shape extends Cloneable {
 
     boolean contains(Vec2D position);
     void setPosition(Vec2D pos);
+
+    void setColor(Color color);
 
     //TODO add Memento
 }

@@ -1,7 +1,9 @@
 package ui;
 
+import editor.Editor;
 import editor.Polygon;
 import editor.Rectangle;
+import editor.Shape;
 import javafx.scene.Group;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -9,19 +11,35 @@ import javafx.scene.transform.Rotate;
 
 public class JFxRendering implements Rendering {
 
+    private Editor editor;
     private VBox toolbarBox;
     private Group root;
 
-    JFxRendering(VBox toolbarBox, Group root) {
+    JFxRendering(Editor editor, VBox toolbarBox, Group root) {
+        this.editor = editor;
         this.toolbarBox = toolbarBox;
         this.root = root;
     }
 
-    @Override
-    public void init() {
+    private void init() {
         // Remove all shapes of the scene and of the toolbar
         root.getChildren().removeIf(child -> child instanceof javafx.scene.shape.Shape);
         toolbarBox.getChildren().removeIf(child -> child instanceof javafx.scene.shape.Shape);
+    }
+
+    @Override
+    public void drawEditor() {
+        // Clear shapes
+        this.init();
+
+        // Draw scene
+        System.out.println(editor);
+        for (Shape s: editor.getScene().getShapes())
+            s.drawInScene(this);
+
+        // Draw toolbar
+        for (Shape s: editor.getToolbar().getShapes())
+            s.drawInToolbar(this);
     }
 
     @Override
