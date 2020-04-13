@@ -9,7 +9,6 @@ import editor.utils.Vec2D;
 import javafx.scene.Group;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.StrokeType;
 import javafx.scene.transform.Rotate;
 
 public class JFxRendering implements Rendering {
@@ -46,16 +45,21 @@ public class JFxRendering implements Rendering {
     }
 
     @Override
-    public void drawSelectionFrame(Point2D position, double width, double height){
+    public void drawSelectionFrame(){
         drawEditor();
+        Point2D p1 = editor.getSelectionStartPoint();
+        Point2D p2 = editor.getSelectionEndPoint();
+        double x = Math.min(p1.x, p2.x);
+        double y = Math.min(p1.y, p2.y);
+
+        double width = Math.abs(p2.x - p1.x);
+        double height = Math.abs(p2.y -  p1.y);
 
         javafx.scene.shape.Rectangle selectionFrame = new javafx.scene.shape.Rectangle(width, height);
         selectionFrame.setStroke(Color.DARKRED);
         selectionFrame.setFill(Color.TRANSPARENT);
-        // Set coords
-        selectionFrame.setX(position.x);
-        selectionFrame.setY(position.y);
-
+        selectionFrame.setX(x);
+        selectionFrame.setY(y);
 
         root.getChildren().add(selectionFrame);
     }

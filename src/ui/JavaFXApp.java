@@ -33,10 +33,6 @@ public class JavaFXApp extends Application implements ApplicationI {
     private Group root;
     private VBox toolbarBox;
 
-    private Shape shapeDragged;
-    private Point2D selectionStartPoint;
-    private Point2D selectionEndPoint;
-
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle(WINDOW_TITLE);
@@ -145,12 +141,10 @@ public class JavaFXApp extends Application implements ApplicationI {
             toolbarBox.startFullDrag();
 
             if (event.getButton() == MouseButton.PRIMARY) {
-                System.out.println("click toolbar");
                 int i = 0;
                 for (Node node : toolbarBox.getChildren()) {
                     if (event.getPickResult().getIntersectedNode() == node) {
-                        shapeDragged = editor.getToolbar().getShapes().get(i);
-                        System.out.println("found: " + shapeDragged);
+                        editor.setShapeDragged(editor.getToolbar().getShapes().get(i));
                         break;
                     }
                     i++;
@@ -169,9 +163,9 @@ public class JavaFXApp extends Application implements ApplicationI {
             System.out.println("drag released");
 
             // create a shape
-            if (shapeDragged != null)
+            if (editor.getShapeDragged() != null)
                 try {
-                    Shape newShape = shapeDragged.clone();
+                    Shape newShape = editor.getShapeDragged().clone();
                     newShape.setPosition(new Point2D(event.getX(), event.getY()));
                     editor.addShapeInScene((ShapeObservable) newShape);
                 } catch (CloneNotSupportedException e) {
@@ -190,32 +184,31 @@ public class JavaFXApp extends Application implements ApplicationI {
                 for (Shape s : editor.getScene().getShapes()) {
                     if (s.contains(new Point2D(event.getX(), event.getY()))) {
                         System.out.println("found: " + s);
-                        shapeDragged = s;
+                        editor.setShapeDragged(s);
                         inShape = true;
                         break;
                     }
                 }
                 // selecte shapes
                 if(!inShape){
-                    selectionStartPoint = new Point2D(event.getX(), event.getY());
+                    editor.setSelectionStartPoint(new Point2D(event.getX(), event.getY()));
                 }
             }
             event.consume();
         });
 
         this.root.setOnMouseDragged(mouseEvent -> {
-            if(shapeDragged != null) {
-                shapeDragged.setPosition(new Point2D(mouseEvent.getX(),mouseEvent.getY()));
+            if(editor.getShapeDragged() != null) {
+                editor.getShapeDragged().setPosition(new Point2D(mouseEvent.getX(),mouseEvent.getY()));
             }
             else{
-                selectionEndPoint = new Point2D(mouseEvent.getX(), mouseEvent.getY());
-                rendering.drawSelectionFrame(selectionStartPoint, selectionEndPoint.x - selectionStartPoint.x,
-                        selectionEndPoint.y - selectionStartPoint.y);
+                editor.setSelectionEndPoint(new Point2D(mouseEvent.getX(), mouseEvent.getY()));
+                rendering.drawSelectionFrame();
             }
         });
 
         this.root.setOnMouseReleased(mouseEvent -> {
-            shapeDragged = null;
+            editor.setShapeDragged(null);
             rendering.drawEditor();
         });
 
