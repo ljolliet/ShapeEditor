@@ -4,6 +4,7 @@ import editor.Editor;
 import editor.Polygon;
 import editor.Rectangle;
 import editor.Shape;
+import editor.utils.Point2D;
 import javafx.scene.Group;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -124,13 +125,13 @@ public class JFxRendering implements Rendering {
         return polygon;
     }
 
-    private double[] getPolygonPoints(double[][] pre_points, int nbSides) {
+    private double[] getPolygonPoints(Point2D[] pre_points, int nbSides) {
         double[] points = new double[nbSides * 2];
         int cpt = 0;
 
         for (int i = 0; i < nbSides; i++) {
-            points[cpt++] = pre_points[i][0];
-            points[cpt++] = pre_points[i][1];
+            points[cpt++] = pre_points[i].x;
+            points[cpt++] = pre_points[i].y;
         }
 
         return points;

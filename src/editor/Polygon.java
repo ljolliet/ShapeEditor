@@ -25,18 +25,19 @@ public class Polygon extends SimpleShape {
      * A polygon is composed of points depending on the number of sides,
      * @return A 2D array of points
      */
-    public double[][] getPoints(double radius) {
-        double[][] points = new double[nbSides][2];
+    public Point2D[] getPoints(double radius) {
+        Point2D[] points = new Point2D[nbSides];
 
         for (int i = 0; i < nbSides; i++) {
-            points[i][0] = getX() + radius * Math.cos(2 * Math.PI * i / nbSides); // X
-            points[i][1] = getY() + radius * Math.sin(2 * Math.PI * i / nbSides); // Y
+            double x = getX() + radius * Math.cos(2 * Math.PI * i / nbSides); // X
+            double y = getY() + radius * Math.sin(2 * Math.PI * i / nbSides); // Y
+            points[i] = new Point2D(x,y);
         }
 
         return points;
     }
 
-    public double[][] getPoints() {
+    public Point2D[] getPoints() {
         return this.getPoints(this.radius);
     }
 
@@ -52,7 +53,16 @@ public class Polygon extends SimpleShape {
 
     @Override
     public boolean contains(Point2D position) {
-        return false;
+        //inspired by :
+        //https://web.archive.org/web/20161108113341/https://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
+        boolean result = false;
+        Point2D[] points = getPoints();
+        for (int i = 0, j = points.length - 1; i < points.length; j = i++)
+            if ((points[i].y > position.y) != (points[j].y > position.y) &&
+                    (position.x < (points[j].x - points[i].x) * (position.y - points[i].y)
+                            / (points[j].y - points[i].y) + points[i].x))
+                result = !result;
+        return result;
     }
 
     public void setSideLength(double sideLength) {
