@@ -48,6 +48,9 @@ public class JFxRendering implements Rendering {
         // Set coords
         rectangle.setX(r.getX());
         rectangle.setY(r.getY());
+        // Set Translation
+        rectangle.setTranslateX(r.getTranslation().width);
+        rectangle.setTranslateY(r.getTranslation().height);
 
         root.getChildren().add(rectangle);
     }
@@ -69,6 +72,9 @@ public class JFxRendering implements Rendering {
 //        }
 
         javafx.scene.shape.Polygon polygon = createPolygon(p, p.getRadius());
+        // Set Translation
+        polygon.setTranslateX(p.getTranslation().width);
+        polygon.setTranslateY(p.getTranslation().height);
 
         root.getChildren().add(polygon);
     }
@@ -94,6 +100,9 @@ public class JFxRendering implements Rendering {
         double radius = ApplicationI.TOOLBAR_WIDTH / 4d;
 
         javafx.scene.shape.Polygon polygon = createPolygon(p, radius);
+        // For toolbar, special rotation
+        polygon.getTransforms().clear();
+        polygon.setRotate(p.getRotation());
 
         toolbarBox.getChildren().add(polygon);
     }
@@ -111,10 +120,6 @@ public class JFxRendering implements Rendering {
         rectangle.setArcHeight(r.getBorderRadius());
         rectangle.setArcWidth(r.getBorderRadius());
 
-        // TODO add other attributes
-        //  - translation
-        //  - radius
-
         return rectangle;
     }
 
@@ -122,10 +127,13 @@ public class JFxRendering implements Rendering {
         double[] points = getPolygonPoints(p.getPoints(radius), p.getNbSides());
 
         javafx.scene.shape.Polygon polygon = new javafx.scene.shape.Polygon(points);
+        // Color
         polygon.setFill(Color.rgb(p.getColor().r, p.getColor().g, p.getColor().b));
-        // TODO add other attributes
-        //  - rotationCenter
-        //  - translation
+        // Rotation
+        Rotate rotate = new Rotate(p.getRotation());
+        rotate.setPivotX(p.getX() + p.getRotationCenter().x);
+        rotate.setPivotY(p.getY() + p.getRotationCenter().y);
+        polygon.getTransforms().add(rotate);
 
         return polygon;
     }

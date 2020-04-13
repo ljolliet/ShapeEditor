@@ -71,16 +71,19 @@ public abstract class SimpleShape extends ShapeObservable {
     @Override
     public void setRotation(double angle) {
         this.rotation = angle;
+        notifyObservers();
     }
 
     @Override
     public void setRotationCenter(Point2D pos) {
         this.rotationCenter = pos;
+        notifyObservers();
     }
 
     @Override
     public void setTranslation(Vec2D translation) {
         this.translation = translation;
+        notifyObservers();
     }
 
     @Override

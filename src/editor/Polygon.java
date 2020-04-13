@@ -29,8 +29,8 @@ public class Polygon extends SimpleShape {
         double[][] points = new double[nbSides][2];
 
         for (int i = 0; i < nbSides; i++) {
-            points[i][0] = getX() + radius * Math.cos(2 * Math.PI * i / nbSides + Math.toRadians(getRotation())); // X
-            points[i][1] = getY() + radius * Math.sin(2 * Math.PI * i / nbSides + Math.toRadians(getRotation())); // Y
+            points[i][0] = getX() + radius * Math.cos(2 * Math.PI * i / nbSides); // X
+            points[i][1] = getY() + radius * Math.sin(2 * Math.PI * i / nbSides); // Y
         }
 
         return points;
