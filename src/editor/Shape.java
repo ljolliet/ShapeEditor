@@ -1,7 +1,7 @@
 package editor;
 
 import editor.utils.Color;
-import editor.utils.Vec2D;
+import editor.utils.Point2D;
 import ui.Rendering;
 
 import java.util.Set;
@@ -16,8 +16,8 @@ public interface Shape extends Cloneable {
     void drawInScene(Rendering rendering);
     void drawInToolbar(Rendering rendering);
 
-    boolean contains(Vec2D position);
-    void setPosition(Vec2D pos);
+    boolean contains(Point2D position);
+    void setPosition(Point2D pos);
 
     void setColor(Color color);
 

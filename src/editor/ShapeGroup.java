@@ -1,7 +1,7 @@
 package editor;
 
 import editor.utils.Color;
-import editor.utils.Vec2D;
+import editor.utils.Point2D;
 import ui.Rendering;
 
 import java.util.HashSet;
@@ -53,7 +53,7 @@ public class ShapeGroup extends ShapeObservable {
      * @return true if the position is contained by a child shape
      */
     @Override
-    public boolean contains(Vec2D position) {
+    public boolean contains(Point2D position) {
         for(Shape child : shapes)
             if(child.contains(position))
                 return true;
@@ -61,7 +61,7 @@ public class ShapeGroup extends ShapeObservable {
     }
 
     @Override
-    public void setPosition(Vec2D pos) {
+    public void setPosition(Point2D pos) {
         //TODO set position of a group
     }
 

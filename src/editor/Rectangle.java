@@ -1,7 +1,7 @@
 package editor;
 
 import editor.utils.Color;
-import editor.utils.Vec2D;
+import editor.utils.Point2D;
 import ui.Rendering;
 
 public class Rectangle extends SimpleShape {
@@ -9,7 +9,7 @@ public class Rectangle extends SimpleShape {
     private double height;
     private int borderRadius;
 
-    public Rectangle(double width, double height, int borderRadius, Vec2D position, Color color, Vec2D rotationCenter, double rotation) {
+    public Rectangle(double width, double height, int borderRadius, Point2D position, Color color, Point2D rotationCenter, double rotation) {
         super(position, color, rotationCenter, rotation);
         this.width = width;
         this.height = height;
@@ -27,7 +27,7 @@ public class Rectangle extends SimpleShape {
     }
 
     @Override
-    public boolean contains(Vec2D position) {
+    public boolean contains(Point2D position) {
         return  getPosition().x <= position.x && position.x <= getPosition().x + width
                 && getPosition().y <= position.y && position.y <= getPosition().y + height;
     }
@@ -45,7 +45,7 @@ public class Rectangle extends SimpleShape {
     }
 
     @Override
-    public void setPosition(Vec2D position) {
-        super.setPosition(new Vec2D(position.x - width/2, position.y - height/2));
+    public void setPosition(Point2D position) {
+        super.setPosition(new Point2D(position.x - width/2, position.y - height/2));
     }
 }

@@ -2,19 +2,19 @@ package editor;
 
 import editor.utils.Color;
 import editor.utils.ShapeException;
-import editor.utils.Vec2D;
+import editor.utils.Point2D;
 
 import java.util.Set;
 
 public abstract class SimpleShape extends ShapeObservable {
-    private Vec2D position;
+    private Point2D position;
 
     private Color color;
-    private Vec2D rotationCenter;
+    private Point2D rotationCenter;
     private double rotation;
     // translation TODO
 
-    public SimpleShape(Vec2D position, Color color, Vec2D rotationCenter, double rotation) {
+    public SimpleShape(Point2D position, Color color, Point2D rotationCenter, double rotation) {
         this.position = position;
         this.color = color;
         this.rotationCenter = rotationCenter;
@@ -55,7 +55,7 @@ public abstract class SimpleShape extends ShapeObservable {
     }
 
     @Override
-    public void setPosition(Vec2D pos) {
+    public void setPosition(Point2D pos) {
         this.position = pos;
         notifyObservers();
     }
@@ -66,7 +66,11 @@ public abstract class SimpleShape extends ShapeObservable {
         notifyObservers();
     }
 
-    public Vec2D getPosition() {
+    public void setTranslation(double[] values) {
+
+    }
+
+    public Point2D getPosition() {
         return position;
     }
 
@@ -74,7 +78,7 @@ public abstract class SimpleShape extends ShapeObservable {
         return color;
     }
 
-    public Vec2D getRotationCenter() {
+    public Point2D getRotationCenter() {
         return rotationCenter;
     }
 

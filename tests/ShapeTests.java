@@ -4,18 +4,18 @@ import editor.Shape;
 import editor.ShapeGroup;
 import org.junit.Test;
 import editor.utils.Color;
-import editor.utils.Vec2D;
+import editor.utils.Point2D;
 
 import static org.junit.Assert.*;
 
 public class ShapeTests {
 
     public Polygon createPolygon(){
-        return new Polygon(5, 2., new Vec2D(0.,0.), new Color(255,255,255), new Vec2D(0.,0.), 0.);
+        return new Polygon(5, 2., new Point2D(0.,0.), new Color(255,255,255), new Point2D(0.,0.), 0.);
     }
 
     public Rectangle createRectangle(){
-        return new Rectangle(5., 10., 0,  new Vec2D(0.,0.), new Color(255,255,255), new Vec2D(0.,0.), 0.);
+        return new Rectangle(5., 10., 0,  new Point2D(0.,0.), new Color(255,255,255), new Point2D(0.,0.), 0.);
     }
 
     @Test

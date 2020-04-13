@@ -1,7 +1,7 @@
 package editor;
 
 import editor.utils.Color;
-import editor.utils.Vec2D;
+import editor.utils.Point2D;
 import ui.Rendering;
 
 public class Polygon extends SimpleShape {
@@ -10,7 +10,7 @@ public class Polygon extends SimpleShape {
 
     private double radius;
 
-    public Polygon(int nbSides, double sideLength, Vec2D position, Color color, Vec2D rotationCenter, double rotation) {
+    public Polygon(int nbSides, double sideLength, Point2D position, Color color, Point2D rotationCenter, double rotation) {
         super(position, color, rotationCenter, rotation);
         this.nbSides = nbSides;
         this.sideLength = sideLength;
@@ -51,7 +51,7 @@ public class Polygon extends SimpleShape {
     }
 
     @Override
-    public boolean contains(Vec2D position) {
+    public boolean contains(Point2D position) {
         return false;
     }
 

@@ -4,7 +4,7 @@ import editor.Editor;
 import editor.Shape;
 import editor.ShapeObservable;
 import editor.utils.Color;
-import editor.utils.Vec2D;
+import editor.utils.Point2D;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -21,7 +21,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.net.Inet4Address;
 import java.util.*;
 
 public class JavaFXApp extends Application implements ApplicationI {
@@ -140,7 +139,7 @@ public class JavaFXApp extends Application implements ApplicationI {
             boolean dragging = true; //TODO remove once drag and drop implemented
             //click on an existing shape
             for (Shape s : editor.getScene().getShapes()) {
-                if (s.contains(new Vec2D(event.getX(), event.getY()))) {
+                if (s.contains(new Point2D(event.getX(), event.getY()))) {
                     System.out.println("found: " + s);
                     s.setColor(new Color(0,0,0));
                     dragging = false;
@@ -152,7 +151,7 @@ public class JavaFXApp extends Application implements ApplicationI {
             if(dragging && shapeDragged != null)
                 try {
                     Shape newShape = shapeDragged.clone();
-                    newShape.setPosition(new Vec2D(event.getX(), event.getY()));
+                    newShape.setPosition(new Point2D(event.getX(), event.getY()));
                     editor.addShapeInScene((ShapeObservable) newShape);
                     //editor.getScene().addShape(newShape);
                     //editor.draw();
