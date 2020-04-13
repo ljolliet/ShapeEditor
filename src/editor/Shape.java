@@ -2,6 +2,7 @@ package editor;
 
 import editor.utils.Color;
 import editor.utils.Point2D;
+import editor.utils.Vec2D;
 import ui.Rendering;
 
 import java.util.Set;
@@ -17,9 +18,18 @@ public interface Shape extends Cloneable {
     void drawInToolbar(Rendering rendering);
 
     boolean contains(Point2D position);
-    void setPosition(Point2D pos);
 
+    void setPosition(Point2D pos);
     void setColor(Color color);
+    void setRotation(double angle);
+    void setRotationCenter(Point2D pos);
+    void setTranslation(Vec2D translation);
+
+    Point2D getPosition();
+    Color getColor();
+    double getRotation();
+    Point2D getRotationCenter();
+    Vec2D getTranslation();
 
     //TODO add Memento
 }
