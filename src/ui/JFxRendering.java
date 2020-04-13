@@ -57,20 +57,6 @@ public class JFxRendering implements Rendering {
 
     @Override
     public void drawInScene(Polygon p) {
-//        javafx.scene.shape.Polygon p = new javafx.scene.shape.Polygon();
-//        //create all the polygon corner positions (https://bit.ly/3ecEGmm)
-//        final double angleStep = Math.PI * 2 / polygon.getNbSide();
-//        double angle = polygon.getRotation();
-//        for (int i = 0; i < polygon.getNbSide(); i++) {
-//            // calculate radius fom side length (https://www.mathopenref.com/polygonradius.html)
-//            double radius = polygon.getSideLength() / (2 * Math.sin(Math.PI / polygon.getNbSide()));
-//            p.getPoints().addAll(
-//                    Math.sin(angle) * radius + polygon.getRotationCenter().x,
-//                    Math.cos(angle) * radius + polygon.getRotationCenter().y
-//            );
-//            angle += angleStep;
-//        }
-
         javafx.scene.shape.Polygon polygon = createPolygon(p, p.getRadius());
         // Set Translation
         polygon.setTranslateX(p.getTranslation().width);

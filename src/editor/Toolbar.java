@@ -27,7 +27,6 @@ public class Toolbar {
     }
 
     public List<Shape> getShapes() {
-        // TODO clones shapes?
         return shapes;
     }
 }
