@@ -193,13 +193,11 @@ public class JavaFXApp extends Application implements ApplicationI {
             System.out.println("click scene");
             System.out.println(event.getX() + " - " + event.getY());
             if (event.getButton() == MouseButton.PRIMARY) {
-                boolean dragging = true; //TODO remove once drag and drop implemented
                 //click on an existing shape
                 for (Shape s : editor.getScene().getShapes()) {
                     if (s.contains(new Point2D(event.getX(), event.getY()))) {
                         System.out.println("found: " + s);
                         shapeDragged = s;
-                        dragging = false;
                         break;
                     }
                 }
@@ -218,7 +216,6 @@ public class JavaFXApp extends Application implements ApplicationI {
         this.root.setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.SECONDARY) {
                 for(Shape s : editor.getScene().getShapes()){
-                    //TODO Contains didn't works
                     if(s.contains(new Point2D(e.getX(), e.getY()))) {
                         System.out.println("right click on shape");
                         contextMenu.show(this.root, e.getScreenX(), e.getScreenY());
@@ -239,80 +236,4 @@ public class JavaFXApp extends Application implements ApplicationI {
 
         primaryStage.show();
     }
-
-    /*  Drag and drop try   */
-//    this.toolbarBox.setOnDragDone(event -> {
-//        System.out.println("mouse released");
-//        System.out.println(event.getX() + " - " + event.getY());
-//        if(shapeDragged != null)
-//            try {
-//                Shape newShape = shapeDragged.clone();
-//                newShape.setPosition(new Vec2D(event.getX(), event.getY()));
-//                editor.getScene().addShape(newShape);
-//                editor.draw(rendering);
-//            } catch (CloneNotSupportedException e) {
-//                e.printStackTrace();
-//            }
-//        event.consume();
-//    });
-//    root.setOnDragOver(event -> {
-//            /* data is dragged over the target */
-//            System.out.println("onDragOver");
-//
-//            /*
-//             * accept it only if it is not dragged from the same node and if it
-//             * has a string data
-//             */
-//            if (event.getGestureSource() != root && event.getDragboard().hasString()) {
-//                /* allow for both copying and moving, whatever user chooses */
-//                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-//            }
-//
-//            event.consume();
-//        });
-//
-//
-//            root.setOnDragDropped(event -> {
-//            /* data dropped */
-//            System.out.println("onDragDropped");
-//            /* if there is a string data on dragboard, read it and use it */
-//            Dragboard db = event.getDragboard();
-//            boolean success = false;
-//            if (db.hasString()) {
-//                //root.setText(db.getString());
-//                success = true;
-//            }
-//            /*
-//             * let the source know whether the string was successfully
-//             * transferred and used
-//             */
-//            event.setDropCompleted(success);
-//
-//            event.consume();
-//        });
-//
-//
-//            this.toolbarBox.setOnDragDetected(event -> {
-//            System.out.println("click toolbar");
-//            int i = 0;
-//            for (Node node: toolbarBox.getChildren()) {
-//                System.out.println(node);
-//                if (event.getPickResult().getIntersectedNode() == node) {
-//                    shapeDragged = editor.getToolbar().getShapes().get(i);
-//                    System.out.println("found: " + shapeDragged);
-//                    break;
-//                }
-//                i++;
-//            }
-//            /* allow any transfer mode */
-//            Dragboard db = toolbarBox.startDragAndDrop(TransferMode.ANY);
-//
-//            /* put a string on dragboard */
-//            ClipboardContent content = new ClipboardContent();
-//            content.putString(toolbarBox.toString());
-//            db.setContent(content);
-//
-//            event.consume();
-//        });
-
 }
