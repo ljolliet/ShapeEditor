@@ -27,12 +27,15 @@ import java.util.*;
 
 public class JavaFXApp extends Application implements ApplicationI {
 
-    private Rendering rendering;
     private Editor editor;
+    private Rendering rendering;
 
     private Group root;
     private VBox toolbarBox;
-    Shape shapeDragged = null;
+
+    private Shape shapeDragged;
+    private Point2D selectionStartPoint;
+    private Point2D selectionEndPoint;
 
     @Override
     public void start(Stage primaryStage) {
@@ -117,9 +120,6 @@ public class JavaFXApp extends Application implements ApplicationI {
         toolbarBox.setSpacing(TOOLBAR_SPACING);
         borderPane.setTop(toolbarBox);
 
-
-
-
         //trash
         //TODO refacto
         ImageView trashim = new ImageView( new Image(getClass().getClassLoader().getResource("trash.png").toString()));
@@ -174,8 +174,6 @@ public class JavaFXApp extends Application implements ApplicationI {
                     Shape newShape = shapeDragged.clone();
                     newShape.setPosition(new Point2D(event.getX(), event.getY()));
                     editor.addShapeInScene((ShapeObservable) newShape);
-                    //editor.getScene().addShape(newShape);
-                    //editor.draw();
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
                 }
@@ -184,25 +182,41 @@ public class JavaFXApp extends Application implements ApplicationI {
         });
 
         /* scene to scene drag and drop */
-        this.root.setOnMouseDragged(mouseEvent -> {
-            if(shapeDragged != null)
-                shapeDragged.setPosition(new Point2D(mouseEvent.getX(),mouseEvent.getY()));
-        });
 
         this.root.setOnMousePressed(event -> {
-            System.out.println("click scene");
-            System.out.println(event.getX() + " - " + event.getY());
             if (event.getButton() == MouseButton.PRIMARY) {
+                boolean inShape = false;
                 //click on an existing shape
                 for (Shape s : editor.getScene().getShapes()) {
                     if (s.contains(new Point2D(event.getX(), event.getY()))) {
                         System.out.println("found: " + s);
                         shapeDragged = s;
+                        inShape = true;
                         break;
                     }
                 }
-                event.consume();
+                // selecte shapes
+                if(!inShape){
+                    selectionStartPoint = new Point2D(event.getX(), event.getY());
+                }
             }
+            event.consume();
+        });
+
+        this.root.setOnMouseDragged(mouseEvent -> {
+            if(shapeDragged != null) {
+                shapeDragged.setPosition(new Point2D(mouseEvent.getX(),mouseEvent.getY()));
+            }
+            else{
+                selectionEndPoint = new Point2D(mouseEvent.getX(), mouseEvent.getY());
+                rendering.drawSelectionFrame(selectionStartPoint, selectionEndPoint.x - selectionStartPoint.x,
+                        selectionEndPoint.y - selectionStartPoint.y);
+            }
+        });
+
+        this.root.setOnMouseReleased(mouseEvent -> {
+            shapeDragged = null;
+            rendering.drawEditor();
         });
 
         //Contextual menu
@@ -228,7 +242,7 @@ public class JavaFXApp extends Application implements ApplicationI {
 
         // Set rendering
         this.editor = new Editor();
-        this.rendering = new JFxRendering(this.editor, toolbarBox, root);
+        rendering = new JFxRendering(this.editor, toolbarBox, root);
         editor.setRendering(rendering);
 
         // Draw editor

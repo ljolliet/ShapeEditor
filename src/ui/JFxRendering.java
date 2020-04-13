@@ -5,9 +5,11 @@ import editor.Polygon;
 import editor.Rectangle;
 import editor.Shape;
 import editor.utils.Point2D;
+import editor.utils.Vec2D;
 import javafx.scene.Group;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.StrokeType;
 import javafx.scene.transform.Rotate;
 
 public class JFxRendering implements Rendering {
@@ -41,6 +43,21 @@ public class JFxRendering implements Rendering {
         // Draw toolbar
         for (Shape s: editor.getToolbar().getShapes())
             s.drawInToolbar(this);
+    }
+
+    @Override
+    public void drawSelectionFrame(Point2D position, double width, double height){
+        drawEditor();
+
+        javafx.scene.shape.Rectangle selectionFrame = new javafx.scene.shape.Rectangle(width, height);
+        selectionFrame.setStroke(Color.DARKRED);
+        selectionFrame.setFill(Color.TRANSPARENT);
+        // Set coords
+        selectionFrame.setX(position.x);
+        selectionFrame.setY(position.y);
+
+
+        root.getChildren().add(selectionFrame);
     }
 
     @Override
