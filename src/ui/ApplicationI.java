@@ -13,5 +13,8 @@ public interface ApplicationI {
     int OPTION_HEIGHT = 50;
     int OPTION_SPACING = 10;
 
+    int SCENE_HEIGHT = 600;
+    int SCENE_WIDTH = 700;
+
     // TODO Add some methods to communicate with the editor
 }

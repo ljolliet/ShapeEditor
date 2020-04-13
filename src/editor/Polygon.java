@@ -2,6 +2,7 @@ package editor;
 
 import editor.utils.Color;
 import editor.utils.Point2D;
+import ui.ApplicationI;
 import ui.Rendering;
 
 public class Polygon extends SimpleShape {
@@ -67,6 +68,14 @@ public class Polygon extends SimpleShape {
     public void setSideLength(double sideLength) {
         this.sideLength = sideLength;
         computeRadius();
+    }
+
+    @Override
+    public void setPosition(Point2D pos) {
+        double x = Math.max(radius, Math.min(ApplicationI.SCENE_WIDTH - radius, pos.x));
+        double y = Math.max(radius, Math.min(ApplicationI.SCENE_HEIGHT - radius, pos.y));
+
+        super.setPosition(new Point2D(x, y));
     }
 
     public int getNbSides() {

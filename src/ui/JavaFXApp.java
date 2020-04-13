@@ -51,13 +51,13 @@ public class JavaFXApp extends Application implements ApplicationI {
 */
 
         VBox windowLayout = new VBox();
-        Scene scene = new Scene(windowLayout, WINDOW_WIDTH, WINDOW_HEIGHT);
+        Scene scene = new Scene(windowLayout);
         primaryStage.setScene(scene);
 
         // Top option bar
         HBox optionLayout = new HBox();
         optionLayout.setPrefHeight(OPTION_HEIGHT);
-        optionLayout.setPrefWidth(WINDOW_WIDTH);
+        //optionLayout.setPrefWidth(WINDOW_WIDTH);
         optionLayout.setSpacing(OPTION_SPACING);
         optionLayout.setPadding(new Insets(OPTION_SPACING));
         optionLayout.setStyle("-fx-background-color: darkred");
@@ -100,7 +100,7 @@ public class JavaFXApp extends Application implements ApplicationI {
 
         // Editor layout
         HBox editorLayout = new HBox();
-        editorLayout.setPrefHeight(WINDOW_HEIGHT - OPTION_HEIGHT);
+        //editorLayout.setPrefHeight(WINDOW_HEIGHT - OPTION_HEIGHT);
         editorLayout.setPrefWidth(WINDOW_WIDTH);
         windowLayout.getChildren().add(editorLayout);
 
@@ -131,8 +131,8 @@ public class JavaFXApp extends Application implements ApplicationI {
         editorLayout.getChildren().add(root);
 
         Canvas canvas = new Canvas();
-        canvas.setWidth(WINDOW_WIDTH - TOOLBAR_WIDTH);
-        canvas.setHeight(WINDOW_HEIGHT - OPTION_HEIGHT);
+        canvas.setWidth(SCENE_WIDTH);
+        canvas.setHeight(SCENE_HEIGHT);
         root.getChildren().add(canvas);
 
         //toolbar to scene drag and drop

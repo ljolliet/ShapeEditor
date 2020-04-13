@@ -2,6 +2,7 @@ package editor;
 
 import editor.utils.Color;
 import editor.utils.Point2D;
+import ui.ApplicationI;
 import ui.Rendering;
 
 public class Rectangle extends SimpleShape {
@@ -45,7 +46,10 @@ public class Rectangle extends SimpleShape {
     }
 
     @Override
-    public void setPosition(Point2D position) {
-        super.setPosition(new Point2D(position.x - width/2, position.y - height/2));
+    public void setPosition(Point2D pos) {
+        double x = Math.max(width/2, Math.min(ApplicationI.SCENE_WIDTH - width/2, pos.x));
+        double y = Math.max(height/2, Math.min(ApplicationI.SCENE_HEIGHT - height/2, pos.y));
+
+        super.setPosition(new Point2D(x - width/2, y - height/2));
     }
 }

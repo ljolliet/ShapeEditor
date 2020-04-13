@@ -4,6 +4,7 @@ import editor.utils.Color;
 import editor.utils.ShapeException;
 import editor.utils.Point2D;
 import editor.utils.Vec2D;
+import ui.ApplicationI;
 
 import java.util.Set;
 
