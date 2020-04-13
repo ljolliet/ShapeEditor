@@ -3,11 +3,8 @@ package ui;
 import editor.Editor;
 import editor.Shape;
 import editor.ShapeObservable;
-import editor.utils.Color;
 import editor.utils.Point2D;
-import editor.utils.Vec2D;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -19,7 +16,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -103,14 +99,11 @@ public class JavaFXApp extends Application implements ApplicationI {
             }
         });
 
-
         // Editor layout
         HBox editorLayout = new HBox();
         editorLayout.setPrefHeight(WINDOW_HEIGHT - OPTION_HEIGHT);
         editorLayout.setPrefWidth(WINDOW_WIDTH);
         windowLayout.getChildren().add(editorLayout);
-
-
 
         //Toolbar root
         BorderPane borderPane = new BorderPane();
@@ -123,6 +116,9 @@ public class JavaFXApp extends Application implements ApplicationI {
         toolbarBox.setAlignment(Pos.BASELINE_CENTER);
         toolbarBox.setSpacing(TOOLBAR_SPACING);
         borderPane.setTop(toolbarBox);
+
+
+
 
         //trash
         //TODO refacto
@@ -143,8 +139,51 @@ public class JavaFXApp extends Application implements ApplicationI {
         canvas.setHeight(WINDOW_HEIGHT - OPTION_HEIGHT);
         root.getChildren().add(canvas);
 
+        //toolbar to scene drag and drop
+        toolbarBox.setOnDragDetected(event -> {
+            System.out.println("drag detected");
+            toolbarBox.startFullDrag();
 
+            if (event.getButton() == MouseButton.PRIMARY) {
+                System.out.println("click toolbar");
+                int i = 0;
+                for (Node node : toolbarBox.getChildren()) {
+                    if (event.getPickResult().getIntersectedNode() == node) {
+                        shapeDragged = editor.getToolbar().getShapes().get(i);
+                        System.out.println("found: " + shapeDragged);
+                        break;
+                    }
+                    i++;
+                }
+            }
 
+            event.consume();
+        });
+
+        toolbarBox.setOnMouseDragged(event -> {
+            //TODO display shape
+            event.consume();
+        });
+
+        root.setOnMouseDragReleased(event -> {
+            System.out.println("drag released");
+
+            // create a shape
+            if (shapeDragged != null)
+                try {
+                    Shape newShape = shapeDragged.clone();
+                    newShape.setPosition(new Point2D(event.getX(), event.getY()));
+                    editor.addShapeInScene((ShapeObservable) newShape);
+                    //editor.getScene().addShape(newShape);
+                    //editor.draw();
+                } catch (CloneNotSupportedException e) {
+                    e.printStackTrace();
+                }
+
+            event.consume();
+        });
+
+        /* scene to scene drag and drop */
         this.root.setOnMouseDragged(mouseEvent -> {
             if(shapeDragged != null)
                 shapeDragged.setPosition(new Point2D(mouseEvent.getX(),mouseEvent.getY()));
@@ -164,34 +203,7 @@ public class JavaFXApp extends Application implements ApplicationI {
                         break;
                     }
                 }
-
-                // create a shape
-                if (dragging && shapeDragged != null)
-                    try {
-                        Shape newShape = shapeDragged.clone();
-                        newShape.setPosition(new Point2D(event.getX(), event.getY()));
-                        editor.addShapeInScene((ShapeObservable) newShape);
-                        //editor.getScene().addShape(newShape);
-                        //editor.draw();
-                    } catch (CloneNotSupportedException e) {
-                        e.printStackTrace();
-                    }
                 event.consume();
-            }
-        });
-
-        this.toolbarBox.setOnMouseClicked(event -> {
-            if (event.getButton() == MouseButton.PRIMARY) {
-                System.out.println("click toolbar");
-                int i = 0;
-                for (Node node : toolbarBox.getChildren()) {
-                    if (event.getPickResult().getIntersectedNode() == node) {
-                        shapeDragged = editor.getToolbar().getShapes().get(i);
-                        System.out.println("found: " + shapeDragged);
-                        break;
-                    }
-                    i++;
-                }
             }
         });
 

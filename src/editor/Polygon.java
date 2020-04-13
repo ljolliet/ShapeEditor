@@ -7,7 +7,6 @@ import ui.Rendering;
 public class Polygon extends SimpleShape {
     private int nbSides;
     private double sideLength;
-
     private double radius;
 
     public Polygon(int nbSides, double sideLength, Point2D position, Color color, Point2D rotationCenter, double rotation) {
