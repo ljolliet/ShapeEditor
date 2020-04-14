@@ -17,4 +17,16 @@ public class Color {
         this.g = green;
         this.b = blue;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+
+        if (!(obj instanceof Color))
+            return false;
+
+        Color other = (Color) obj;
+        return r == other.r && g == other.g && b == other.b;
+    }
 }
