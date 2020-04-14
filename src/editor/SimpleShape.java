@@ -46,14 +46,13 @@ public abstract class SimpleShape extends ShapeObservable {
         return super.clone();
     }
 
-    public double getX() {
-        return position.x;
+    @Override
+    public boolean contained(SelectionShape s) {
+        for(Point2D p : getPoints())
+            if(!s.contains(p))
+                return false;
+        return true;
     }
-
-    public double getY() {
-        return position.y;
-    }
-
 
     @Override
     public void setPosition(Point2D pos) {
@@ -85,6 +84,14 @@ public abstract class SimpleShape extends ShapeObservable {
         notifyObservers();
     }
 
+    public double getX() {
+        return position.x;
+    }
+
+    public double getY() {
+        return position.y;
+    }
+
     @Override
     public Point2D getPosition() {
         return position;
@@ -109,4 +116,6 @@ public abstract class SimpleShape extends ShapeObservable {
     public Vec2D getTranslation() {
         return translation;
     }
+
+
 }

@@ -15,8 +15,8 @@ public class SelectionRectangle implements SelectionShape {
     @Override
     public boolean contains(Point2D p) {
         Point2D position = getPosition();
-        return  getPosition().x <= position.x && position.x <= getPosition().x + getWidth()
-                && getPosition().y <= position.y && position.y <= getPosition().y + getHeight();
+        return  position.x <= p.x && p.x <= position.x + getWidth()
+                && position.y <= p.y && p.y <= position.y + getHeight();
     }
 
     @Override

@@ -33,11 +33,7 @@ public class Rectangle extends SimpleShape {
         return  getPosition().x <= position.x && position.x <= getPosition().x + width
                 && getPosition().y <= position.y && position.y <= getPosition().y + height;
     }
-
-    @Override
-    public boolean contained(SelectionShape s) {
-        return false;
-    }
+    
 
     @Override
     public Point2D[] getPoints() {
