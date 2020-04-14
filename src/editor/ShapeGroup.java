@@ -76,13 +76,18 @@ public class ShapeGroup extends ShapeObservable {
         return (Point2D[]) points.toArray();
     }
 
-    /*
-     * TODO Write all setters & getters
-     */
-
     @Override
-    public void setPosition(Point2D pos) {
-        //TODO set position of a group
+    public void setPosition(Point2D newPos) {
+        Point2D position = getPosition();
+
+        double deltaX = newPos.x - position.x;
+        double deltaY = newPos.y - position.y;
+
+        for (Shape s: shapes)
+            s.setPosition(new Point2D(
+                    s.getPosition().x + deltaX,
+                    s.getPosition().y + deltaY
+            ));
     }
 
     @Override
@@ -93,12 +98,14 @@ public class ShapeGroup extends ShapeObservable {
 
     @Override
     public void setRotation(double angle) {
-
+        for (Shape s: shapes)
+            s.setRotation(angle);
     }
 
     @Override
     public void setRotationCenter(Point2D pos) {
-
+        for (Shape s: shapes)
+            s.setRotationCenter(pos);
     }
 
     @Override
@@ -124,6 +131,10 @@ public class ShapeGroup extends ShapeObservable {
 
         return new Point2D((minX + maxX) / 2, (minY + maxY) / 2);
     }
+
+    /*
+     * TODO Write all getters
+     */
 
     @Override
     public Color getColor() {
