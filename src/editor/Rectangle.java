@@ -39,6 +39,24 @@ public class Rectangle extends SimpleShape {
         return false;
     }
 
+    @Override
+    public Point2D[] getPoints() {
+        return new Point2D[] {
+                new Point2D(getX(), getY()),                           // Top left
+                new Point2D(getX() + width, getY()),                // Top right
+                new Point2D(getX(), getY() + height),               // Bottom left
+                new Point2D(getX() + width, getY() + height)     // Bottom right
+        };
+    }
+
+    @Override
+    public void setPosition(Point2D pos) {
+        double x = Math.max(width/2, Math.min(ApplicationI.SCENE_WIDTH - width/2, pos.x));
+        double y = Math.max(height/2, Math.min(ApplicationI.SCENE_HEIGHT - height/2, pos.y));
+
+        super.setPosition(new Point2D(x - width/2, y - height/2));
+    }
+
     public double getWidth() {
         return width;
     }
@@ -49,13 +67,5 @@ public class Rectangle extends SimpleShape {
 
     public int getBorderRadius() {
         return borderRadius;
-    }
-
-    @Override
-    public void setPosition(Point2D pos) {
-        double x = Math.max(width/2, Math.min(ApplicationI.SCENE_WIDTH - width/2, pos.x));
-        double y = Math.max(height/2, Math.min(ApplicationI.SCENE_HEIGHT - height/2, pos.y));
-
-        super.setPosition(new Point2D(x - width/2, y - height/2));
     }
 }

@@ -38,6 +38,7 @@ public class Polygon extends SimpleShape {
         return points;
     }
 
+    @Override
     public Point2D[] getPoints() {
         return this.getPoints(this.radius);
     }

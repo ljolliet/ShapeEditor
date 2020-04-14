@@ -4,15 +4,14 @@ import editor.utils.Color;
 import editor.utils.Point2D;
 import editor.utils.SelectionShape;
 import editor.utils.Vec2D;
+import ui.ApplicationI;
 import ui.Rendering;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class ShapeGroup extends ShapeObservable {
 
     private Set<Shape> shapes = new HashSet<>();
-    private Rendering rendering;
 
     @Override
     public void addShape(Shape s) {
@@ -67,6 +66,16 @@ public class ShapeGroup extends ShapeObservable {
         return false;
     }
 
+    @Override
+    public Point2D[] getPoints() {
+        List<Point2D> points = new ArrayList<>();
+
+        for (Shape s: shapes)
+            points.addAll(Arrays.asList(s.getPoints()));
+
+        return (Point2D[]) points.toArray();
+    }
+
     /*
      * TODO Write all setters & getters
      */
@@ -100,7 +109,20 @@ public class ShapeGroup extends ShapeObservable {
 
     @Override
     public Point2D getPosition() {
-        return null;
+        double minX = 0, minY = 0,
+                maxX = ApplicationI.SCENE_WIDTH,
+                maxY = ApplicationI.SCENE_HEIGHT;
+
+        for (Shape s: shapes) {
+            for (Point2D point: s.getPoints()) {
+                minX = Math.min(minX, point.x);
+                minY = Math.min(minY, point.y);
+                maxX = Math.min(maxX, point.x);
+                maxY = Math.min(maxY, point.y);
+            }
+        }
+
+        return new Point2D((minX + maxX) / 2, (minY + maxY) / 2);
     }
 
     @Override
