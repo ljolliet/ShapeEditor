@@ -2,6 +2,7 @@ package editor;
 
 import editor.utils.Color;
 import editor.utils.Point2D;
+import editor.utils.SelectionShape;
 import editor.utils.Vec2D;
 import ui.Rendering;
 
@@ -58,6 +59,11 @@ public class ShapeGroup extends ShapeObservable {
         for(Shape child : shapes)
             if(child.contains(position))
                 return true;
+        return false;
+    }
+
+    @Override
+    public boolean contained(SelectionShape s) {
         return false;
     }
 

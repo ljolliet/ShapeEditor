@@ -1,9 +1,6 @@
 package editor;
 
-import editor.utils.Color;
-import editor.utils.ShapeException;
-import editor.utils.Point2D;
-import editor.utils.Vec2D;
+import editor.utils.*;
 import ui.ApplicationI;
 
 import java.util.Set;
@@ -56,6 +53,7 @@ public abstract class SimpleShape extends ShapeObservable {
     public double getY() {
         return position.y;
     }
+
 
     @Override
     public void setPosition(Point2D pos) {

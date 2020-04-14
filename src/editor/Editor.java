@@ -1,6 +1,8 @@
 package editor;
 
 import editor.utils.Point2D;
+import editor.utils.SelectionRectangle;
+import editor.utils.SelectionShape;
 import ui.Rendering;
 
 public class Editor {
@@ -11,8 +13,7 @@ public class Editor {
     private ShapeObserverI observer;
 
     private Shape shapeDragged;
-    private Point2D selectionStartPoint;
-    private Point2D selectionEndPoint;
+    private SelectionShape selectionShape = new SelectionRectangle();
 
     public Editor() {
         this.scene = new Scene();
@@ -55,19 +56,7 @@ public class Editor {
         this.shapeDragged = shapeDragged;
     }
 
-    public Point2D getSelectionStartPoint() {
-        return selectionStartPoint;
-    }
-
-    public void setSelectionStartPoint(Point2D selectionStartPoint) {
-        this.selectionStartPoint = selectionStartPoint;
-    }
-
-    public Point2D getSelectionEndPoint() {
-        return selectionEndPoint;
-    }
-
-    public void setSelectionEndPoint(Point2D selectionEndPoint) {
-        this.selectionEndPoint = selectionEndPoint;
+    public SelectionShape getSelectionShape() {
+        return this.selectionShape;
     }
 }

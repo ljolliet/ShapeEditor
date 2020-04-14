@@ -2,6 +2,7 @@ package editor;
 
 import editor.utils.Color;
 import editor.utils.Point2D;
+import editor.utils.SelectionShape;
 import ui.ApplicationI;
 import ui.Rendering;
 
@@ -31,6 +32,11 @@ public class Rectangle extends SimpleShape {
     public boolean contains(Point2D position) {
         return  getPosition().x <= position.x && position.x <= getPosition().x + width
                 && getPosition().y <= position.y && position.y <= getPosition().y + height;
+    }
+
+    @Override
+    public boolean contained(SelectionShape s) {
+        return false;
     }
 
     public double getWidth() {

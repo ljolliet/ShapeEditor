@@ -5,7 +5,8 @@ import editor.Polygon;
 import editor.Rectangle;
 import editor.Shape;
 import editor.utils.Point2D;
-import editor.utils.Vec2D;
+import editor.utils.SelectionRectangle;
+import editor.utils.SelectionShape;
 import javafx.scene.Group;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -35,7 +36,6 @@ public class JFxRendering implements Rendering {
         this.init();
 
         // Draw scene
-        System.out.println(editor);
         for (Shape s: editor.getScene().getShapes())
             s.drawInScene(this);
 
@@ -47,19 +47,13 @@ public class JFxRendering implements Rendering {
     @Override
     public void drawSelectionFrame(){
         drawEditor();
-        Point2D p1 = editor.getSelectionStartPoint();
-        Point2D p2 = editor.getSelectionEndPoint();
-        double x = Math.min(p1.x, p2.x);
-        double y = Math.min(p1.y, p2.y);
+        SelectionRectangle s = (SelectionRectangle)editor.getSelectionShape();
 
-        double width = Math.abs(p2.x - p1.x);
-        double height = Math.abs(p2.y -  p1.y);
-
-        javafx.scene.shape.Rectangle selectionFrame = new javafx.scene.shape.Rectangle(width, height);
+        javafx.scene.shape.Rectangle selectionFrame = new javafx.scene.shape.Rectangle(s.getWidth(), s.getHeight());
         selectionFrame.setStroke(Color.DARKRED);
         selectionFrame.setFill(Color.TRANSPARENT);
-        selectionFrame.setX(x);
-        selectionFrame.setY(y);
+        selectionFrame.setX(s.getPosition().x);
+        selectionFrame.setY(s.getPosition().y);
 
         root.getChildren().add(selectionFrame);
     }

@@ -2,6 +2,7 @@ package editor;
 
 import editor.utils.Color;
 import editor.utils.Point2D;
+import editor.utils.SelectionShape;
 import editor.utils.Vec2D;
 import ui.Rendering;
 
@@ -18,17 +19,19 @@ public interface Shape extends Cloneable {
     void drawInToolbar(Rendering rendering);
 
     boolean contains(Point2D position);
+    boolean contained(SelectionShape s);
 
     void setPosition(Point2D pos);
     void setColor(Color color);
     void setRotation(double angle);
     void setRotationCenter(Point2D pos);
-    void setTranslation(Vec2D translation);
 
+    void setTranslation(Vec2D translation);
     Point2D getPosition();
     Color getColor();
     double getRotation();
     Point2D getRotationCenter();
+
     Vec2D getTranslation();
 
     //TODO add Memento

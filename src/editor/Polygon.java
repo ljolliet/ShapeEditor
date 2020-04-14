@@ -2,6 +2,7 @@ package editor;
 
 import editor.utils.Color;
 import editor.utils.Point2D;
+import editor.utils.SelectionShape;
 import ui.ApplicationI;
 import ui.Rendering;
 
@@ -63,6 +64,14 @@ public class Polygon extends SimpleShape {
                             / (points[j].y - points[i].y) + points[i].x))
                 result = !result;
         return result;
+    }
+
+    @Override
+    public boolean contained(SelectionShape s) {
+        for(Point2D p : getPoints())
+            if(!s.contains(p))
+                return false;
+        return true;
     }
 
     public void setSideLength(double sideLength) {

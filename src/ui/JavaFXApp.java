@@ -168,6 +168,7 @@ public class JavaFXApp extends Application implements ApplicationI {
                     Shape newShape = editor.getShapeDragged().clone();
                     newShape.setPosition(new Point2D(event.getX(), event.getY()));
                     editor.addShapeInScene((ShapeObservable) newShape);
+                    editor.setShapeDragged(null);
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
                 }
@@ -178,6 +179,7 @@ public class JavaFXApp extends Application implements ApplicationI {
         /* scene to scene drag and drop */
 
         this.root.setOnMousePressed(event -> {
+            System.out.println("mouse pressed");
             if (event.getButton() == MouseButton.PRIMARY) {
                 boolean inShape = false;
                 //click on an existing shape
@@ -191,7 +193,7 @@ public class JavaFXApp extends Application implements ApplicationI {
                 }
                 // selecte shapes
                 if(!inShape){
-                    editor.setSelectionStartPoint(new Point2D(event.getX(), event.getY()));
+                    editor.getSelectionShape().setSelectionStartPoint(new Point2D(event.getX(), event.getY()));
                 }
             }
             event.consume();
@@ -202,14 +204,20 @@ public class JavaFXApp extends Application implements ApplicationI {
                 editor.getShapeDragged().setPosition(new Point2D(mouseEvent.getX(),mouseEvent.getY()));
             }
             else{
-                editor.setSelectionEndPoint(new Point2D(mouseEvent.getX(), mouseEvent.getY()));
+                editor.getSelectionShape().setSelectionEndPoint(new Point2D(mouseEvent.getX(), mouseEvent.getY()));
                 rendering.drawSelectionFrame();
             }
         });
 
         this.root.setOnMouseReleased(mouseEvent -> {
-            editor.setShapeDragged(null);
+            System.out.println("mouse released");
             rendering.drawEditor();
+            for(Shape s : editor.getScene().getShapes())
+                if(s.contained(editor.getSelectionShape()))
+                {
+                    System.out.println(s + " selected");
+                }
+            editor.setShapeDragged(null);
         });
 
         //Contextual menu
