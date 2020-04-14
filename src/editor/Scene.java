@@ -6,9 +6,11 @@ import java.util.List;
 public class Scene {
 
     List<ShapeObservable> shapes;
+    List<ShapeObservable> selectedShapes;
 
     public Scene() {
         this.shapes = new ArrayList<>();
+        this.selectedShapes = new ArrayList<>();
     }
 
     public void addShape(ShapeObservable shape) {
@@ -19,8 +21,14 @@ public class Scene {
         shapes.remove(shape);
     }
 
-    public List<Shape> getShapes() {
-        // TODO clones shapes?
+    public void setSelectedShapes(ArrayList<ShapeObservable> shapes){
+        this.selectedShapes = shapes;
+    }
+    public List<ShapeObservable> getShapes() {
         return new ArrayList<>(shapes);
+    }
+
+    public List<ShapeObservable> getSelectedShapes() {
+        return new ArrayList<>(selectedShapes);
     }
 }

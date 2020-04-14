@@ -13,7 +13,7 @@ public class Editor {
     private ShapeObserverI observer;
 
     private Shape shapeDragged;
-    private SelectionShape selectionShape = new SelectionRectangle();
+    private final SelectionShape selectionShape = new SelectionRectangle();
 
     public Editor() {
         this.scene = new Scene();

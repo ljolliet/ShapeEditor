@@ -112,7 +112,10 @@ public class JFxRendering implements Rendering {
     private javafx.scene.shape.Rectangle createRectangle(Rectangle r, double width, double height) {
         javafx.scene.shape.Rectangle rectangle = new javafx.scene.shape.Rectangle(width, height);
         // Color
-        rectangle.setFill(Color.rgb(r.getColor().r, r.getColor().g, r.getColor().b));
+        Color color = Color.rgb(r.getColor().r, r.getColor().g, r.getColor().b);
+        rectangle.setFill(color);
+        if(editor.getScene().getSelectedShapes().contains(r))
+            rectangle.setStroke(color.darker());
         // Rotation
         Rotate rotate = new Rotate(r.getRotation());
         rotate.setPivotX(r.getX() + r.getRotationCenter().x);
@@ -130,7 +133,10 @@ public class JFxRendering implements Rendering {
 
         javafx.scene.shape.Polygon polygon = new javafx.scene.shape.Polygon(points);
         // Color
-        polygon.setFill(Color.rgb(p.getColor().r, p.getColor().g, p.getColor().b));
+        Color color = Color.rgb(p.getColor().r, p.getColor().g, p.getColor().b);
+        polygon.setFill(color);
+        if(editor.getScene().getSelectedShapes().contains(p))
+            polygon.setStroke(color.darker());
         // Rotation
         Rotate rotate = new Rotate(p.getRotation());
         rotate.setPivotX(p.getX() + p.getRotationCenter().x);

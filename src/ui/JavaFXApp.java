@@ -212,12 +212,16 @@ public class JavaFXApp extends Application implements ApplicationI {
         this.root.setOnMouseReleased(mouseEvent -> {
             System.out.println("mouse released");
             rendering.drawEditor();
-            for(Shape s : editor.getScene().getShapes())
+            ArrayList<ShapeObservable> selectedShapes = new ArrayList<>();
+            for(ShapeObservable s : editor.getScene().getShapes())
                 if(s.contained(editor.getSelectionShape()))
                 {
+                    selectedShapes.add(s);
                     System.out.println(s + " selected");
                 }
+            editor.getScene().setSelectedShapes(selectedShapes);
             editor.setShapeDragged(null);
+            rendering.drawEditor();
         });
 
         //Contextual menu
