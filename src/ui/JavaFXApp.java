@@ -7,6 +7,7 @@ import editor.utils.Point2D;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -186,6 +187,7 @@ public class JavaFXApp extends Application implements ApplicationI {
                 for (Shape s : editor.getScene().getShapes()) {
                     if (s.contains(new Point2D(event.getX(), event.getY()))) {
                         System.out.println("found: " + s);
+                        root.setCursor(Cursor.CLOSED_HAND);
                         editor.setShapeDragged(s);
                         inShape = true;
                         break;
@@ -220,6 +222,8 @@ public class JavaFXApp extends Application implements ApplicationI {
                     System.out.println(s + " selected");
                 }
             editor.getScene().setSelectedShapes(selectedShapes);
+
+            root.setCursor(Cursor.DEFAULT);
             editor.setShapeDragged(null);
             rendering.drawEditor();
         });
