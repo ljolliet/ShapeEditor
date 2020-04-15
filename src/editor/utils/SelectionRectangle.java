@@ -2,8 +2,8 @@ package editor.utils;
 
 public class SelectionRectangle implements SelectionShape {
 
-    private Point2D selectionStartPoint;
-    private Point2D selectionEndPoint;
+    private Point2D selectionStartPoint = new Point2D(0.,0.);
+    private Point2D selectionEndPoint = new Point2D(0.,0.);
 
     @Override
     public Point2D getPosition() {

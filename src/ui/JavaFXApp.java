@@ -215,12 +215,13 @@ public class JavaFXApp extends Application implements ApplicationI {
             System.out.println("mouse released");
             rendering.drawEditor();
             ArrayList<ShapeObservable> selectedShapes = new ArrayList<>();
-            for(ShapeObservable s : editor.getScene().getShapes())
-                if(s.contained(editor.getSelectionShape()))
-                {
-                    selectedShapes.add(s);
-                    System.out.println(s + " selected");
-                }
+            if(editor.getSelectionShape() != null)
+                for(ShapeObservable s : editor.getScene().getShapes())
+                    if(s.contained(editor.getSelectionShape()))
+                    {
+                        selectedShapes.add(s);
+                        System.out.println(s + " selected");
+                    }
             editor.getScene().setSelectedShapes(selectedShapes);
 
             root.setCursor(Cursor.DEFAULT);
