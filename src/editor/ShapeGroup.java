@@ -11,7 +11,11 @@ import java.util.*;
 
 public class ShapeGroup extends ShapeObservable {
 
-    private Set<Shape> shapes = new HashSet<>();
+    private Set<Shape> shapes;
+
+    public ShapeGroup(){
+        shapes = new HashSet<>();
+    }
 
     @Override
     public void addShape(Shape s) {
@@ -29,13 +33,20 @@ public class ShapeGroup extends ShapeObservable {
     }
 
     @Override
+    public void setChild(Set<Shape> shapes) {
+        this.shapes = shapes;
+    }
+
+    @Override
     public void collapse() {
         //TODO how to collapse a group ?
     }
 
     @Override
     public Shape clone() throws CloneNotSupportedException {
-        return (Shape) super.clone();
+        Shape c = super.clone();
+        c.setChild(new HashSet<>(this.getChild()));
+        return c;
     }
 
     @Override

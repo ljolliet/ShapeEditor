@@ -27,6 +27,11 @@ public abstract class SimpleShape extends ShapeObservable {
     }
 
     @Override
+    public void setChild(Set<Shape> shapes) {
+        //TODO throw exception
+    }
+
+    @Override
     public void addShape(Shape s) {
         throw new ShapeException("Cannot add a shape to a SimpleShape");
     }
