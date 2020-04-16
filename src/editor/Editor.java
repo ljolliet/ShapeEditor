@@ -6,8 +6,8 @@ import editor.utils.SelectionShape;
 import ui.Rendering;
 
 public class Editor {
-
     private final Scene scene;
+
     private final Toolbar toolbar;
     private Rendering rendering;
     private ShapeObserverI observer;
@@ -29,6 +29,12 @@ public class Editor {
         this.scene.addShape(shape);
         shape.addObserver(this.observer);
 
+        if (this.rendering != null)
+            this.rendering.drawEditor();
+    }
+
+    public void removeShapeToScene(ShapeObservable s) {
+        this.scene.removeShape(s);
         if (this.rendering != null)
             this.rendering.drawEditor();
     }
@@ -59,4 +65,5 @@ public class Editor {
     public SelectionShape getSelectionShape() {
         return this.selectionShape;
     }
+
 }

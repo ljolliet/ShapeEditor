@@ -2,6 +2,7 @@ package ui;
 
 import editor.Editor;
 import editor.Shape;
+import editor.ShapeGroup;
 import editor.ShapeObservable;
 import editor.utils.Point2D;
 import javafx.application.Application;
@@ -180,8 +181,8 @@ public class JavaFXApp extends Application implements ApplicationI {
         /* scene to scene drag and drop */
 
         this.root.setOnMousePressed(event -> {
-            System.out.println("mouse pressed");
             if (event.getButton() == MouseButton.PRIMARY) {
+                System.out.println("mouse pressed");
                 boolean inShape = false;
                 //click on an existing shape
                 for (Shape s : editor.getScene().getShapes()) {
@@ -202,49 +203,64 @@ public class JavaFXApp extends Application implements ApplicationI {
         });
 
         this.root.setOnMouseDragged(mouseEvent -> {
-            if(editor.getShapeDragged() != null) {
-                editor.getShapeDragged().setPosition(new Point2D(mouseEvent.getX(),mouseEvent.getY()));
-            }
-            else{
-                editor.getSelectionShape().setSelectionEndPoint(new Point2D(mouseEvent.getX(), mouseEvent.getY()));
-                rendering.drawSelectionFrame();
+            if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+                if (editor.getShapeDragged() != null) {
+                    editor.getShapeDragged().setPosition(new Point2D(mouseEvent.getX(), mouseEvent.getY()));
+                } else {
+                    editor.getSelectionShape().setSelectionEndPoint(new Point2D(mouseEvent.getX(), mouseEvent.getY()));
+                    rendering.drawSelectionFrame();
+                }
             }
         });
 
         this.root.setOnMouseReleased(mouseEvent -> {
-            System.out.println("mouse released");
-            rendering.drawEditor();
-            ArrayList<ShapeObservable> selectedShapes = new ArrayList<>();
-            if(editor.getSelectionShape() != null)
-                for(ShapeObservable s : editor.getScene().getShapes())
-                    if(s.contained(editor.getSelectionShape()))
-                    {
-                        selectedShapes.add(s);
-                        System.out.println(s + " selected");
-                    }
-            editor.getScene().setSelectedShapes(selectedShapes);
+            if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+                System.out.println("mouse released");
+                rendering.drawEditor();
+                ArrayList<ShapeObservable> selectedShapes = new ArrayList<>();
+                if (editor.getSelectionShape() != null)
+                    for (ShapeObservable s : editor.getScene().getShapes())
+                        if (s.contained(editor.getSelectionShape())) {
+                            selectedShapes.add(s);
+                            System.out.println(s + " selected");
+                        }
+                editor.getScene().setSelectedShapes(selectedShapes);
 
-            root.setCursor(Cursor.DEFAULT);
-            editor.setShapeDragged(null);
-            rendering.drawEditor();
+                root.setCursor(Cursor.DEFAULT);
+                editor.setShapeDragged(null);
+                rendering.drawEditor();
+            }
+            mouseEvent.consume();
         });
 
         //Contextual menu
         ContextMenu contextMenu = new ContextMenu();
         MenuItem edit_shape = new MenuItem("Edit");
         edit_shape.setOnAction(e -> System.out.println("Edit Shape"));
-        MenuItem Delete = new MenuItem("Delete");
-        Delete.setOnAction(e -> System.out.println("Delate Shape"));
-        contextMenu.getItems().addAll(edit_shape, Delete);
+        MenuItem groupShape = new MenuItem("Group");
+        groupShape.setOnAction(e -> {
+            ShapeObservable group = new ShapeGroup();
+            for(ShapeObservable s : editor.getScene().getSelectedShapes()){
+                group.addShape(s);
+                editor.removeShapeToScene(s);
+            }
+            editor.addShapeInScene(group);
+        });
+        contextMenu.getItems().addAll(edit_shape, groupShape);
 
         this.root.setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.SECONDARY) {
-                for(Shape s : editor.getScene().getShapes()){
-                    if(s.contains(new Point2D(e.getX(), e.getY()))) {
-                        System.out.println("right click on shape");
-                        contextMenu.show(this.root, e.getScreenX(), e.getScreenY());
-                    }
+                if(editor.getScene().getSelectedShapes().size() != 0){
+                    System.out.println("right click on selection");
+                    contextMenu.show(this.root, e.getScreenX(), e.getScreenY());
                 }
+                else
+                    for(Shape s : editor.getScene().getShapes()){
+                        if(s.contains(new Point2D(e.getX(), e.getY()))) {
+                            System.out.println("right click on shape");
+                            contextMenu.show(this.root, e.getScreenX(), e.getScreenY());
+                        }
+                    }
             } else {
                 contextMenu.hide();
             }
