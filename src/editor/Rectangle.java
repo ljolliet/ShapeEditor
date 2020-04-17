@@ -70,4 +70,8 @@ public class Rectangle extends SimpleShape {
     public int getBorderRadius() {
         return borderRadius;
     }
+
+    public void setWidth(double width) {
+        this.width = width;
+    }
 }

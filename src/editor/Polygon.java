@@ -1,6 +1,5 @@
 package editor;
 
-import editor.edition.EditionDialog;
 import editor.edition.PolygonEditionDialog;
 import editor.utils.Color;
 import editor.utils.Point2D;

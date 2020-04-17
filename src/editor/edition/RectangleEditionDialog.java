@@ -3,7 +3,7 @@ package editor.edition;
 import editor.Rectangle;
 import ui.Rendering;
 
-public class RectangleEditionDialog extends EditionDialog {
+public class RectangleEditionDialog extends ShapeEditionDialog {
 
     public RectangleEditionDialog(Rectangle rectangle) {
         super(rectangle);
@@ -16,5 +16,9 @@ public class RectangleEditionDialog extends EditionDialog {
 
     public Rectangle getTarget() {
         return (Rectangle)super.getTarget();
+    }
+
+    public void setWidth(Double value) {
+        this.getTarget().setWidth(value);
     }
 }

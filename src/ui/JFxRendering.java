@@ -7,10 +7,7 @@ import editor.utils.SelectionRectangle;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
@@ -116,8 +113,7 @@ public class JFxRendering implements Rendering {
     @Override
     public void drawRectangleEditionDialog(RectangleEditionDialog recED) {
         ContextMenu contextMenu = new ContextMenu();
-        MenuItem edit_shape = new MenuItem("Edit");
-        edit_shape.setOnAction(e -> System.out.println("Edit Shape"));
+
         MenuItem groupShape = new MenuItem("Group");
         groupShape.setOnAction(e -> {   //TODO change code location
             ShapeObservable group = new ShapeGroup();
@@ -127,20 +123,33 @@ public class JFxRendering implements Rendering {
             }
             editor.addShapeInScene(group);
         });
-        final ColorPicker colorssPicker = new ColorPicker();
-        colorssPicker.setStyle("-fx-background-color: white;");
-
-        final MenuItem otherItem = new MenuItem(null, new Label("Other item"));
-
-        final MenuItem resizeItem = new MenuItem(null,colorssPicker);
-        resizeItem.setOnAction((EventHandler<ActionEvent>) event -> {
-            Color cJfx = colorssPicker.getValue();
-            editor.utils.Color c = new editor.utils.Color(255,55,55);
-            recED.getTarget().setColor(c);
+        // color
+        final editor.utils.Color originalColor = recED.getTarget().getColor();
+        final ColorPicker colorPicker = new ColorPicker(Color.rgb(originalColor.r, originalColor.g, originalColor.b ));
+        final MenuItem colorItem = new MenuItem("Color",colorPicker);
+        colorItem.setOnAction(event -> {
+            editor.utils.Color c = colorFromJFxColor(colorPicker.getValue());
+            recED.setColor(c);
         });
-        contextMenu.getItems().addAll(edit_shape, groupShape, resizeItem);
+
+        //width
+        final Spinner<Double> spinner = new Spinner<>();
+        final double initialValue = recED.getTarget().getWidth();
+        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(1., 70., initialValue, 0.1)); //TODO remove Magic Value
+        spinner.valueProperty().addListener((obs, oldValue, newValue) ->
+                recED.setWidth(newValue));
+        final MenuItem widthItem = new MenuItem("Width",spinner);
+
+        contextMenu.getItems().addAll(groupShape, colorItem, widthItem);
         contextMenu.show(this.root, recED.getPosition().x, recED.getPosition().y);
     }
+
+    private editor.utils.Color colorFromJFxColor(Color value) {
+        return new editor.utils.Color((int)value.getRed()*255,
+                (int)value.getGreen()*255,
+                (int)value.getBlue()*255);
+    }
+
 
     private javafx.scene.shape.Rectangle createRectangle(Rectangle r, double width, double height) {
         javafx.scene.shape.Rectangle rectangle = new javafx.scene.shape.Rectangle(width, height);

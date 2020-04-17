@@ -1,10 +1,9 @@
 package editor.edition;
 
 import editor.Polygon;
-import editor.Rectangle;
 import ui.Rendering;
 
-public class PolygonEditionDialog extends EditionDialog {
+public class PolygonEditionDialog extends ShapeEditionDialog {
 
     public PolygonEditionDialog(Polygon polygon) {
         super(polygon);
