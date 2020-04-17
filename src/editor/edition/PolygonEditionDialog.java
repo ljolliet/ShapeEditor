@@ -11,8 +11,10 @@ public class PolygonEditionDialog extends ShapeEditionDialog {
 
     @Override
     public void draw(Rendering rendering) {
-        rendering.drawEditionDialog(this);
+        rendering.setEditionDialog(this);
+        rendering.showEditionDialog(this.getPosition());
     }
+
     public Polygon getTarget() {
         return (Polygon)super.getTarget();
     }

@@ -6,6 +6,7 @@ import editor.ShapeGroup;
 import editor.edition.PolygonEditionDialog;
 import editor.edition.RectangleEditionDialog;
 import editor.edition.ShapeEditionDialog;
+import editor.utils.Point2D;
 
 public interface Rendering {
 
@@ -18,9 +19,10 @@ public interface Rendering {
     void drawInToolbar(Rectangle rectangle);
     void drawInToolbar(Polygon polygon);
 
-    void drawEditionDialog(ShapeEditionDialog polED);
-    void drawEditionDialog(ShapeGroup polED);
-    void drawEditionDialog(RectangleEditionDialog recED);
-    void drawEditionDialog(PolygonEditionDialog polED);
+    void setEditionDialog(ShapeEditionDialog polED);
+    void setEditionDialog(ShapeGroup polED);
+    void setEditionDialog(RectangleEditionDialog recED);
+    void setEditionDialog(PolygonEditionDialog polED);
+    void showEditionDialog(Point2D position);
     void hideEditionDialog();
 }

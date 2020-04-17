@@ -115,33 +115,37 @@ public class JFxRendering implements Rendering {
     }
 
     @Override
-    public void drawEditionDialog(ShapeEditionDialog polED) {
-
-    }
-
-    @Override
-    public void drawEditionDialog(ShapeGroup polED) {
-
-    }
-
-    @Override
-    public void drawEditionDialog(RectangleEditionDialog recED) {
+    public void setEditionDialog(ShapeEditionDialog shapeED) {
         contextMenu.getItems().clear();
-        addPositionToDialog(recED);
+        addPositionToDialog(shapeED);
+        addColorToDialog(shapeED);
+        addRotationToDialog(shapeED);
+
+
+    }
+
+    @Override
+    public void setEditionDialog(ShapeGroup polED) {
+
+    }
+
+    @Override
+    public void setEditionDialog(RectangleEditionDialog recED) {
+        setEditionDialog((ShapeEditionDialog)recED);
         addWidthToDialog(recED);
         addHeightToDialog(recED);
-        addRotationToDialog(recED);
         addBorderRadiusToDialog(recED);
-        addColorToDialog(recED);
-        contextMenu.show(this.root, recED.getPosition().x, recED.getPosition().y);
     }
 
 
     @Override
-    public void drawEditionDialog(PolygonEditionDialog polED) {
-        contextMenu.getItems().clear();
-        addColorToDialog(polED);
-        contextMenu.show(this.root, polED.getPosition().x, polED.getPosition().y);
+    public void setEditionDialog(PolygonEditionDialog polED) {
+        setEditionDialog((ShapeEditionDialog)polED);
+    }
+
+    @Override
+    public void showEditionDialog(Point2D position) {
+        contextMenu.show(this.root, position.x, position.y);
     }
 
     @Override
