@@ -11,7 +11,7 @@ public class RectangleEditionDialog extends ShapeEditionDialog {
 
     @Override
     public void draw(Rendering rendering) {
-        rendering.drawRectangleEditionDialog(this);
+        rendering.drawPolygonEditionDialog(this);
     }
 
     public Rectangle getTarget() {
@@ -20,5 +20,9 @@ public class RectangleEditionDialog extends ShapeEditionDialog {
 
     public void setWidth(Double value) {
         this.getTarget().setWidth(value);
+    }
+
+    public void setHeight(Double value){
+        this.getTarget().setHeight(value);
     }
 }

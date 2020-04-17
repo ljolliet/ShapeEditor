@@ -181,6 +181,7 @@ public class JavaFXApp extends Application implements ApplicationI {
         /* scene to scene drag and drop */
 
         this.root.setOnMousePressed(event -> {
+            rendering.hideEditionDialog();
             if (event.getButton() == MouseButton.PRIMARY) {
                 System.out.println("mouse pressed");
                 boolean inShape = false;
@@ -234,6 +235,7 @@ public class JavaFXApp extends Application implements ApplicationI {
         });
 
         this.root.setOnMouseClicked(e -> {
+            rendering.hideEditionDialog();
             if (e.getButton() == MouseButton.SECONDARY) {
                 if(editor.getScene().getSelectedShapes().size() != 0){
                     System.out.println("right click on selection");

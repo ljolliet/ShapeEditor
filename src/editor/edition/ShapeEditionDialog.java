@@ -28,6 +28,4 @@ public abstract class ShapeEditionDialog implements  EditionDialogI{
     public Shape getTarget(){
         return this.target;
     }
-
-
 }

@@ -10,6 +10,8 @@ import ui.Rendering;
 import java.util.Set;
 
 public interface Shape extends Cloneable {
+    double MIN_SIZE = 1.;
+
     void addShape(Shape s);
     void removeShape(Shape s);
     Set<Shape> getChild();

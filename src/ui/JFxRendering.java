@@ -1,10 +1,11 @@
 package ui;
 
 import editor.*;
+import editor.edition.PolygonEditionDialog;
 import editor.edition.RectangleEditionDialog;
+import editor.edition.ShapeEditionDialog;
 import editor.utils.Point2D;
 import editor.utils.SelectionRectangle;
-import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
@@ -113,30 +114,62 @@ public class JFxRendering implements Rendering {
     }
 
     @Override
-    public void drawRectangleEditionDialog(RectangleEditionDialog recED) {
-        contextMenu = new ContextMenu();
+    public void hideEditionDialog(){
+        contextMenu.hide();
+    }
+    @Override
+    public void drawPolygonEditionDialog(RectangleEditionDialog recED) {
+        contextMenu.getItems().clear();
 
-        // color
-        final editor.utils.Color originalColor = recED.getTarget().getColor();
+        addColorToDialog(recED);
+        addWidthToDialog(recED);
+        addHeightToDialog(recED);
+
+        contextMenu.show(this.root, recED.getPosition().x, recED.getPosition().y);
+    }
+
+    @Override
+    public void drawPolygonEditionDialog(PolygonEditionDialog polED) {
+        contextMenu.getItems().clear();
+
+        addColorToDialog(polED);
+
+        contextMenu.show(this.root, polED.getPosition().x, polED.getPosition().y);
+    }
+
+    private void addColorToDialog(ShapeEditionDialog shapeED) {
+        final editor.utils.Color originalColor = shapeED.getTarget().getColor();
         final ColorPicker colorPicker = new ColorPicker(Color.rgb(originalColor.r, originalColor.g, originalColor.b ));
-        final MenuItem colorItem = new MenuItem("Color",colorPicker);
-        colorItem.setOnAction(event -> {
+        final MenuItem item = new MenuItem("Color",colorPicker);
+        item.setOnAction(event -> {
             editor.utils.Color c = colorFromJFxColor(colorPicker.getValue());
-            recED.setColor(c);
+            shapeED.setColor(c);
         });
+        contextMenu.getItems().add(item);
+    }
 
-        //width
+    private void addWidthToDialog(RectangleEditionDialog recED) {
         final Spinner<Double> spinner = new Spinner<>();
         spinner.setEditable(true);
         final double initialValue = recED.getTarget().getWidth();
         final double maxValue = ApplicationI.SCENE_WIDTH - recED.getTarget().getPosition().x;
-        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(1., maxValue, initialValue)); //TODO remove Magic Value
+        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(Shape.MIN_SIZE, maxValue, initialValue));
         spinner.valueProperty().addListener((obs, oldValue, newValue) ->
                 recED.setWidth(newValue));
-        final MenuItem widthItem = new MenuItem("Width",spinner);
+        final MenuItem item = new MenuItem("Width",spinner);
+        contextMenu.getItems().add(item);
+    }
 
-        contextMenu.getItems().addAll( colorItem, widthItem);
-        contextMenu.show(this.root, recED.getPosition().x, recED.getPosition().y);
+    private void addHeightToDialog(RectangleEditionDialog recED) {
+        final Spinner<Double> spinner = new Spinner<>();
+        spinner.setEditable(true);
+        final double initialValue = recED.getTarget().getHeight();
+        final double maxValue = ApplicationI.SCENE_HEIGHT - recED.getTarget().getPosition().y;
+        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(Shape.MIN_SIZE, maxValue, initialValue));
+        spinner.valueProperty().addListener((obs, oldValue, newValue) ->
+                recED.setHeight(newValue));
+        final MenuItem item = new MenuItem("Height",spinner);
+        contextMenu.getItems().add(item);
     }
 
     private editor.utils.Color colorFromJFxColor(Color value) {
