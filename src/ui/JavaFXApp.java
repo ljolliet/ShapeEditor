@@ -2,7 +2,6 @@ package ui;
 
 import editor.Editor;
 import editor.Shape;
-import editor.ShapeGroup;
 import editor.ShapeObservable;
 import editor.edition.EditionDialogI;
 import editor.utils.Point2D;
@@ -14,7 +13,6 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -169,7 +167,7 @@ public class JavaFXApp extends Application implements ApplicationI {
                 try {
                     Shape newShape = editor.getShapeDragged().clone();
                     newShape.setPosition(new Point2D(event.getX(), event.getY()));
-                    editor.addShapeInScene((ShapeObservable) newShape);
+                    editor.addShapeToScene((ShapeObservable) newShape);
                     editor.setShapeDragged(null);
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();

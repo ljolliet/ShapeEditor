@@ -25,7 +25,7 @@ public class Editor {
         this.observer = new ShapeObserver(rendering);
     }
 
-    public void addShapeInScene(ShapeObservable shape) {
+    public void addShapeToScene(ShapeObservable shape) {
         this.scene.addShape(shape);
         shape.addObserver(this.observer);
 
@@ -33,14 +33,22 @@ public class Editor {
             this.rendering.drawEditor();
     }
 
-    public void removeShapeToScene(ShapeObservable s) {
+    public void removeShapeFromScene(ShapeObservable s) {
         this.scene.removeShape(s);
+
         if (this.rendering != null)
             this.rendering.drawEditor();
     }
 
-    public void addShapeInToolbar(Shape shape) {
+    public void addShapeToToolbar(Shape shape) {
         this.toolbar.addShape(shape);
+
+        if (this.rendering != null)
+            this.rendering.drawEditor();
+    }
+
+    public void removeShapeFromToolbar(Shape s) {
+        this.toolbar.removeShape(s);
 
         if (this.rendering != null)
             this.rendering.drawEditor();

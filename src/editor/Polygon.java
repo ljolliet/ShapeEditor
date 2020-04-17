@@ -69,14 +69,6 @@ public class Polygon extends SimpleShape {
         return result;
     }
 
-    @Override
-    public boolean contained(SelectionShape s) {
-        for(Point2D p : getPoints())
-            if(!s.contains(p))
-                return false;
-        return true;
-    }
-
     public void setSideLength(double sideLength) {
         this.sideLength = sideLength;
         computeRadius();
