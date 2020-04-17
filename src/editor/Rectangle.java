@@ -73,5 +73,16 @@ public class Rectangle extends SimpleShape {
 
     public void setWidth(double width) {
         this.width = width;
+        notifyObservers();
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
+        notifyObservers();
+    }
+
+    public void setBorderRadius(int borderRadius) {
+        this.borderRadius = borderRadius;
+        notifyObservers();
     }
 }

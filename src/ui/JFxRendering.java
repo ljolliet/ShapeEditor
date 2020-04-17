@@ -4,8 +4,7 @@ import editor.*;
 import editor.edition.RectangleEditionDialog;
 import editor.utils.Point2D;
 import editor.utils.SelectionRectangle;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
@@ -18,11 +17,14 @@ public class JFxRendering implements Rendering {
     private Editor editor;
     private VBox toolbarBox;
     private Group root;
+    private ContextMenu contextMenu;
 
     JFxRendering(Editor editor, VBox toolbarBox, Group root) {
         this.editor = editor;
         this.toolbarBox = toolbarBox;
         this.root = root;
+        this.contextMenu = new ContextMenu();
+
     }
 
     private void init() {
@@ -112,17 +114,8 @@ public class JFxRendering implements Rendering {
 
     @Override
     public void drawRectangleEditionDialog(RectangleEditionDialog recED) {
-        ContextMenu contextMenu = new ContextMenu();
+        contextMenu = new ContextMenu();
 
-        MenuItem groupShape = new MenuItem("Group");
-        groupShape.setOnAction(e -> {   //TODO change code location
-            ShapeObservable group = new ShapeGroup();
-            for(ShapeObservable s : editor.getScene().getSelectedShapes()){
-                group.addShape(s);
-                editor.removeShapeToScene(s);
-            }
-            editor.addShapeInScene(group);
-        });
         // color
         final editor.utils.Color originalColor = recED.getTarget().getColor();
         final ColorPicker colorPicker = new ColorPicker(Color.rgb(originalColor.r, originalColor.g, originalColor.b ));
@@ -134,13 +127,15 @@ public class JFxRendering implements Rendering {
 
         //width
         final Spinner<Double> spinner = new Spinner<>();
+        spinner.setEditable(true);
         final double initialValue = recED.getTarget().getWidth();
-        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(1., 70., initialValue, 0.1)); //TODO remove Magic Value
+        final double maxValue = ApplicationI.SCENE_WIDTH - recED.getTarget().getPosition().x;
+        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(1., maxValue, initialValue)); //TODO remove Magic Value
         spinner.valueProperty().addListener((obs, oldValue, newValue) ->
                 recED.setWidth(newValue));
         final MenuItem widthItem = new MenuItem("Width",spinner);
 
-        contextMenu.getItems().addAll(groupShape, colorItem, widthItem);
+        contextMenu.getItems().addAll( colorItem, widthItem);
         contextMenu.show(this.root, recED.getPosition().x, recED.getPosition().y);
     }
 

@@ -14,6 +14,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -248,6 +249,16 @@ public class JavaFXApp extends Application implements ApplicationI {
                     }
             }
         });
+//          TODO : to group
+//        MenuItem groupShape = new MenuItem("Group");
+//        groupShape.setOnAction(e -> {
+//            ShapeObservable group = new ShapeGroup();
+//            for(ShapeObservable s : editor.getScene().getSelectedShapes()){
+//                group.addShape(s);
+//                editor.removeShapeToScene(s);
+//            }
+//            editor.addShapeInScene(group);
+//        });
 
         // Set rendering
         this.editor = new Editor();
