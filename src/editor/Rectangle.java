@@ -1,9 +1,10 @@
 package editor;
 
+import editor.edition.RectangleEditionDialog;
 import editor.utils.Color;
 import editor.utils.Point2D;
-import editor.utils.SelectionShape;
 import ui.ApplicationI;
+import editor.edition.EditionDialogI;
 import ui.Rendering;
 
 public class Rectangle extends SimpleShape {
@@ -51,6 +52,11 @@ public class Rectangle extends SimpleShape {
         double y = Math.max(height/2, Math.min(ApplicationI.SCENE_HEIGHT - height/2, pos.y));
 
         super.setPosition(new Point2D(x - width/2, y - height/2));
+    }
+
+    @Override
+    public EditionDialogI createEditionDialog() {
+        return new RectangleEditionDialog(this);
     }
 
     public double getWidth() {

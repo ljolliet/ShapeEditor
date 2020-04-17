@@ -4,6 +4,7 @@ import editor.Editor;
 import editor.Shape;
 import editor.ShapeGroup;
 import editor.ShapeObservable;
+import editor.edition.EditionDialogI;
 import editor.utils.Point2D;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -13,8 +14,6 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -233,36 +232,20 @@ public class JavaFXApp extends Application implements ApplicationI {
             mouseEvent.consume();
         });
 
-        //Contextual menu
-        ContextMenu contextMenu = new ContextMenu();
-        MenuItem edit_shape = new MenuItem("Edit");
-        edit_shape.setOnAction(e -> System.out.println("Edit Shape"));
-        MenuItem groupShape = new MenuItem("Group");
-        groupShape.setOnAction(e -> {
-            ShapeObservable group = new ShapeGroup();
-            for(ShapeObservable s : editor.getScene().getSelectedShapes()){
-                group.addShape(s);
-                editor.removeShapeToScene(s);
-            }
-            editor.addShapeInScene(group);
-        });
-        contextMenu.getItems().addAll(edit_shape, groupShape);
-
         this.root.setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.SECONDARY) {
                 if(editor.getScene().getSelectedShapes().size() != 0){
                     System.out.println("right click on selection");
-                    contextMenu.show(this.root, e.getScreenX(), e.getScreenY());
                 }
                 else
                     for(Shape s : editor.getScene().getShapes()){
                         if(s.contains(new Point2D(e.getX(), e.getY()))) {
                             System.out.println("right click on shape");
-                            contextMenu.show(this.root, e.getScreenX(), e.getScreenY());
+                            EditionDialogI ed = s.createEditionDialog();
+                            ed.setPosition(new Point2D(e.getScreenX(), e.getScreenY()));
+                            ed.draw(rendering);
                         }
                     }
-            } else {
-                contextMenu.hide();
             }
         });
 

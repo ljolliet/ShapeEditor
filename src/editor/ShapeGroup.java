@@ -5,6 +5,7 @@ import editor.utils.Point2D;
 import editor.utils.SelectionShape;
 import editor.utils.Vec2D;
 import ui.ApplicationI;
+import editor.edition.EditionDialogI;
 import ui.Rendering;
 
 import java.util.*;
@@ -165,5 +166,10 @@ public class ShapeGroup extends ShapeObservable {
     @Override
     public Vec2D getTranslation() {
         return null;
+    }
+
+    @Override
+    public EditionDialogI createEditionDialog() {
+        return null; //TODO Group
     }
 }

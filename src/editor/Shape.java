@@ -4,6 +4,7 @@ import editor.utils.Color;
 import editor.utils.Point2D;
 import editor.utils.SelectionShape;
 import editor.utils.Vec2D;
+import editor.edition.EditionDialogI;
 import ui.Rendering;
 
 import java.util.Set;
@@ -35,6 +36,8 @@ public interface Shape extends Cloneable {
     Point2D getRotationCenter();
 
     Vec2D getTranslation();
+
+    EditionDialogI createEditionDialog();
 
     //TODO add Memento
 }

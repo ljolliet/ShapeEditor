@@ -2,6 +2,7 @@ package ui;
 
 import editor.Polygon;
 import editor.Rectangle;
+import editor.edition.RectangleEditionDialog;
 
 public interface Rendering {
 
@@ -13,4 +14,6 @@ public interface Rendering {
 
     void drawInToolbar(Rectangle rectangle);
     void drawInToolbar(Polygon polygon);
+
+    void drawRectangleEditionDialog(RectangleEditionDialog recED);
 }

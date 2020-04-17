@@ -1,16 +1,20 @@
 package ui;
 
-import editor.Editor;
-import editor.Polygon;
-import editor.Rectangle;
-import editor.Shape;
+import editor.*;
+import editor.edition.RectangleEditionDialog;
 import editor.utils.Point2D;
 import editor.utils.SelectionRectangle;
-import editor.utils.SelectionShape;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
+
 
 public class JFxRendering implements Rendering {
 
@@ -107,6 +111,35 @@ public class JFxRendering implements Rendering {
         polygon.setRotate(p.getRotation());
 
         toolbarBox.getChildren().add(polygon);
+    }
+
+    @Override
+    public void drawRectangleEditionDialog(RectangleEditionDialog recED) {
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem edit_shape = new MenuItem("Edit");
+        edit_shape.setOnAction(e -> System.out.println("Edit Shape"));
+        MenuItem groupShape = new MenuItem("Group");
+        groupShape.setOnAction(e -> {   //TODO change code location
+            ShapeObservable group = new ShapeGroup();
+            for(ShapeObservable s : editor.getScene().getSelectedShapes()){
+                group.addShape(s);
+                editor.removeShapeToScene(s);
+            }
+            editor.addShapeInScene(group);
+        });
+        final ColorPicker colorssPicker = new ColorPicker();
+        colorssPicker.setStyle("-fx-background-color: white;");
+
+        final MenuItem otherItem = new MenuItem(null, new Label("Other item"));
+
+        final MenuItem resizeItem = new MenuItem(null,colorssPicker);
+        resizeItem.setOnAction((EventHandler<ActionEvent>) event -> {
+            Color cJfx = colorssPicker.getValue();
+            editor.utils.Color c = new editor.utils.Color(255,55,55);
+            recED.getTarget().setColor(c);
+        });
+        contextMenu.getItems().addAll(edit_shape, groupShape, resizeItem);
+        contextMenu.show(this.root, recED.getPosition().x, recED.getPosition().y);
     }
 
     private javafx.scene.shape.Rectangle createRectangle(Rectangle r, double width, double height) {

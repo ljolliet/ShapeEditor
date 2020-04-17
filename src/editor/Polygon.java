@@ -1,9 +1,12 @@
 package editor;
 
+import editor.edition.EditionDialog;
+import editor.edition.PolygonEditionDialog;
 import editor.utils.Color;
 import editor.utils.Point2D;
 import editor.utils.SelectionShape;
 import ui.ApplicationI;
+import editor.edition.EditionDialogI;
 import ui.Rendering;
 
 public class Polygon extends SimpleShape {
@@ -86,6 +89,11 @@ public class Polygon extends SimpleShape {
         double y = Math.max(radius, Math.min(ApplicationI.SCENE_HEIGHT - radius, pos.y));
 
         super.setPosition(new Point2D(x, y));
+    }
+
+    @Override
+    public EditionDialogI createEditionDialog() {
+        return new PolygonEditionDialog(this);
     }
 
     public int getNbSides() {
