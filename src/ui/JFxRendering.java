@@ -8,6 +8,7 @@ import editor.utils.Point2D;
 import editor.utils.SelectionRectangle;
 import javafx.scene.Group;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
@@ -114,39 +115,43 @@ public class JFxRendering implements Rendering {
     }
 
     @Override
-    public void hideEditionDialog(){
-        contextMenu.hide();
-    }
-    @Override
-    public void drawPolygonEditionDialog(RectangleEditionDialog recED) {
-        contextMenu.getItems().clear();
+    public void drawEditionDialog(ShapeEditionDialog polED) {
 
-        addColorToDialog(recED);
+    }
+
+    @Override
+    public void drawEditionDialog(ShapeGroup polED) {
+
+    }
+
+    @Override
+    public void drawEditionDialog(RectangleEditionDialog recED) {
+        contextMenu.getItems().clear();
+        addPositionToDialog(recED);
         addWidthToDialog(recED);
         addHeightToDialog(recED);
-
+        addRotationToDialog(recED);
+        addBorderRadiusToDialog(recED);
+        addColorToDialog(recED);
         contextMenu.show(this.root, recED.getPosition().x, recED.getPosition().y);
     }
 
+
     @Override
-    public void drawPolygonEditionDialog(PolygonEditionDialog polED) {
+    public void drawEditionDialog(PolygonEditionDialog polED) {
         contextMenu.getItems().clear();
-
         addColorToDialog(polED);
-
         contextMenu.show(this.root, polED.getPosition().x, polED.getPosition().y);
     }
 
-    private void addColorToDialog(ShapeEditionDialog shapeED) {
-        final editor.utils.Color originalColor = shapeED.getTarget().getColor();
-        final ColorPicker colorPicker = new ColorPicker(Color.rgb(originalColor.r, originalColor.g, originalColor.b ));
-        final MenuItem item = new MenuItem("Color",colorPicker);
-        item.setOnAction(event -> {
-            editor.utils.Color c = colorFromJFxColor(colorPicker.getValue());
-            shapeED.setColor(c);
-        });
-        contextMenu.getItems().add(item);
+    @Override
+    public void hideEditionDialog(){
+        contextMenu.hide();
     }
+
+
+
+    /*      Rectangle       */
 
     private void addWidthToDialog(RectangleEditionDialog recED) {
         final Spinner<Double> spinner = new Spinner<>();
@@ -172,12 +177,72 @@ public class JFxRendering implements Rendering {
         contextMenu.getItems().add(item);
     }
 
+    private void addBorderRadiusToDialog(RectangleEditionDialog recED) {
+        final Spinner<Integer> spinner = new Spinner<>();
+        spinner.setEditable(true);
+        final int initialValue = recED.getTarget().getBorderRadius();
+        spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(Shape.MIN_RADIUS, Shape.MAX_RADIUS, initialValue));
+        spinner.valueProperty().addListener((obs, oldValue, newValue) ->
+                recED.setBorderRadius(newValue));
+        final MenuItem item = new MenuItem("Border Radius",spinner);
+        contextMenu.getItems().add(item);
+    }
+
+    /*      Shape       */
+
+    private void addPositionToDialog(ShapeEditionDialog shapeED) {
+        final Spinner<Double> spinnerX = new Spinner<>();
+        spinnerX.setMaxWidth(75);
+        spinnerX.setEditable(true);
+        final double initialValueX = shapeED.getTarget().getPosition().x;
+        final double maxValueX = ApplicationI.SCENE_WIDTH;//TODO - shapeED.getTarget().getWidth();
+        spinnerX.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0., maxValueX, initialValueX));
+        spinnerX.valueProperty().addListener((obs, oldValue, newValue) ->
+                shapeED.setPositionX(newValue));
+
+        final Spinner<Double> spinnerY = new Spinner<>();
+        spinnerY.setMaxWidth(75);
+        spinnerY.setEditable(true);
+        final double initialValueY = shapeED.getTarget().getPosition().y;
+        final double maxValueY = ApplicationI.SCENE_WIDTH; //TODO  - shapeED.getTarget().getWidth();
+        spinnerY.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0., maxValueY, initialValueY));
+        spinnerY.valueProperty().addListener((obs, oldValue, newValue) ->
+                shapeED.setPositionY(newValue));
+
+        HBox h = new HBox();
+        h.setSpacing(10.);
+        h.getChildren().addAll(spinnerX, spinnerY);
+        final MenuItem item = new MenuItem("Position",h);
+        contextMenu.getItems().add(item);
+    }
+
+    private void addRotationToDialog(ShapeEditionDialog shapeED) {
+        final Spinner<Double> spinner = new Spinner<>();
+        spinner.setEditable(true);
+        final double initialValue = shapeED.getTarget().getRotation();
+        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(Shape.MIN_ROTATION, Shape.MAX_ROTATION, initialValue));
+        spinner.valueProperty().addListener((obs, oldValue, newValue) ->
+                shapeED.setRotation(newValue));
+        final MenuItem item = new MenuItem("Rotation",spinner);
+        contextMenu.getItems().add(item);
+    }
+
+    private void addColorToDialog(ShapeEditionDialog shapeED) {
+        final editor.utils.Color originalColor = shapeED.getTarget().getColor();
+        final ColorPicker colorPicker = new ColorPicker(Color.rgb(originalColor.r, originalColor.g, originalColor.b ));
+        final MenuItem item = new MenuItem("Color",colorPicker);
+        item.setOnAction(event -> {
+            editor.utils.Color c = colorFromJFxColor(colorPicker.getValue());
+            shapeED.setColor(c);
+        });
+        contextMenu.getItems().add(item);
+    }
+
     private editor.utils.Color colorFromJFxColor(Color value) {
         return new editor.utils.Color((int)value.getRed()*255,
                 (int)value.getGreen()*255,
                 (int)value.getBlue()*255);
     }
-
 
     private javafx.scene.shape.Rectangle createRectangle(Rectangle r, double width, double height) {
         javafx.scene.shape.Rectangle rectangle = new javafx.scene.shape.Rectangle(width, height);

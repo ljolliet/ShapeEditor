@@ -2,8 +2,10 @@ package ui;
 
 import editor.Polygon;
 import editor.Rectangle;
+import editor.ShapeGroup;
 import editor.edition.PolygonEditionDialog;
 import editor.edition.RectangleEditionDialog;
+import editor.edition.ShapeEditionDialog;
 
 public interface Rendering {
 
@@ -16,9 +18,9 @@ public interface Rendering {
     void drawInToolbar(Rectangle rectangle);
     void drawInToolbar(Polygon polygon);
 
+    void drawEditionDialog(ShapeEditionDialog polED);
+    void drawEditionDialog(ShapeGroup polED);
+    void drawEditionDialog(RectangleEditionDialog recED);
+    void drawEditionDialog(PolygonEditionDialog polED);
     void hideEditionDialog();
-
-    void drawPolygonEditionDialog(RectangleEditionDialog recED);
-
-    void drawPolygonEditionDialog(PolygonEditionDialog polED);
 }

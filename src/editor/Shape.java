@@ -11,6 +11,10 @@ import java.util.Set;
 
 public interface Shape extends Cloneable {
     double MIN_SIZE = 1.;
+    double MAX_ROTATION = 360.;
+    double MIN_ROTATION = 0.;
+    int MAX_RADIUS = 50;
+    int MIN_RADIUS = 0;
 
     void addShape(Shape s);
     void removeShape(Shape s);

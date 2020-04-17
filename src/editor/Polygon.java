@@ -1,11 +1,10 @@
 package editor;
 
+import editor.edition.EditionDialogI;
 import editor.edition.PolygonEditionDialog;
 import editor.utils.Color;
 import editor.utils.Point2D;
-import editor.utils.SelectionShape;
 import ui.ApplicationI;
-import editor.edition.EditionDialogI;
 import ui.Rendering;
 
 public class Polygon extends SimpleShape {

@@ -11,18 +11,22 @@ public class RectangleEditionDialog extends ShapeEditionDialog {
 
     @Override
     public void draw(Rendering rendering) {
-        rendering.drawPolygonEditionDialog(this);
+        rendering.drawEditionDialog(this);
     }
 
     public Rectangle getTarget() {
         return (Rectangle)super.getTarget();
     }
 
-    public void setWidth(Double value) {
+    public void setWidth(double value) {
         this.getTarget().setWidth(value);
     }
 
-    public void setHeight(Double value){
+    public void setHeight(double value){
         this.getTarget().setHeight(value);
+    }
+
+    public void setBorderRadius(int value) {
+        this.getTarget().setBorderRadius(value);
     }
 }
