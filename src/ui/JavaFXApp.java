@@ -154,6 +154,13 @@ public class JavaFXApp extends Application implements ApplicationI {
             event.consume();
         });
 
+        //drop in trash
+        borderPane.setOnMouseReleased(mouseEvent -> {
+            if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+                editor.removeShapeFromToolbar(editor.getShapeDragged());
+            }
+        });
+
         toolbarBox.setOnMouseDragged(event -> {
             //TODO display shape
             event.consume();
