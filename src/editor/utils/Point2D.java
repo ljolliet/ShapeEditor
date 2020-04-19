@@ -1,8 +1,9 @@
 package editor.utils;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Point2D {
+public class Point2D implements Serializable {
     public final double x;
     public final double y;
 

@@ -1,6 +1,8 @@
 package editor.utils;
 
-public class Vec2D {
+import java.io.Serializable;
+
+public class Vec2D implements Serializable {
     public final double width;
     public final double height;
 

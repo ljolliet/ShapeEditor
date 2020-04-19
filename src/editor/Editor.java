@@ -6,6 +6,7 @@ import ui.Rendering;
 
 import java.io.*;
 import java.util.Base64;
+import java.util.List;
 
 public class Editor implements Originator{
     private static Editor instance;
@@ -83,7 +84,7 @@ public class Editor implements Originator{
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ObjectOutputStream oos = new ObjectOutputStream( baos );
-            oos.writeObject(this.scene);
+            oos.writeObject(this.scene.getShapes());
             oos.close();
             state =  Base64.getEncoder().encodeToString(baos.toByteArray());
         } catch (IOException e) {
@@ -100,7 +101,7 @@ public class Editor implements Originator{
         try {
             byte[] data = Base64.getDecoder().decode(m.getState());
             ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
-            this.scene = (Scene) ois.readObject();
+            this.scene.setShapes((List<ShapeObservable>) ois.readObject());
             ois.close();
         } catch (ClassNotFoundException e) {
             System.out.print("ClassNotFoundException occurred.");

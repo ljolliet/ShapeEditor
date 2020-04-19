@@ -1,6 +1,8 @@
 package editor.utils;
 
-public class Color {
+import java.io.Serializable;
+
+public class Color implements Serializable {
     public final int r;
     public final int g;
     public final int b;

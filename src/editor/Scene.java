@@ -32,4 +32,8 @@ public class Scene implements Serializable {
     public List<ShapeObservable> getSelectedShapes() {
         return new ArrayList<>(selectedShapes);
     }
+
+    public void setShapes(List<ShapeObservable> shapes) {
+        this.shapes = shapes;
+    }
 }
