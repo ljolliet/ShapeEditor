@@ -3,7 +3,7 @@ package editor;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class ShapeObservable implements Shape {
+public abstract class ShapeObservable implements Shape{
     private Set<ShapeObserverI> observers = new HashSet<>();
 
     public void addObserver(ShapeObserverI so) {
@@ -17,7 +17,7 @@ public abstract class ShapeObservable implements Shape {
     public void notifyObservers() {
         Set<ShapeObserverI> copy = new HashSet<>(this.observers);
         for (ShapeObserverI u: copy)
-            u.update(this);
+            u.update();
     }
 
     @Override

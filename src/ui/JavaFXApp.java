@@ -98,6 +98,9 @@ public class JavaFXApp extends Application implements ApplicationI {
             }
         });
 
+        undoIm.setOnMouseClicked(mouseEvent -> editor.undo());
+        redoIm.setOnMouseClicked(mouseEvent -> editor.redo());
+
         // Editor layout
         HBox editorLayout = new HBox();
         //editorLayout.setPrefHeight(WINDOW_HEIGHT - OPTION_HEIGHT);

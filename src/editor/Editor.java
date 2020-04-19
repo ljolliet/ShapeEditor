@@ -1,16 +1,15 @@
 package editor;
 
-import editor.utils.Point2D;
 import editor.utils.SelectionRectangle;
 import editor.utils.SelectionShape;
 import ui.Rendering;
 
-public class Editor {
+public class Editor implements Originator{
     private final Scene scene;
-
     private final Toolbar toolbar;
     private Rendering rendering;
     private ShapeObserverI observer;
+    private Caretaker history;
 
     private Shape shapeDragged;
     private final SelectionShape selectionShape = new SelectionRectangle();
@@ -18,11 +17,12 @@ public class Editor {
     public Editor() {
         this.scene = new Scene();
         this.toolbar = new Toolbar();
+        this.history = new Caretaker();
     }
 
     public void setRendering(Rendering r) {
         this.rendering = r;
-        this.observer = new ShapeObserver(rendering);
+        this.observer = new ShapeObserver(rendering, this);
     }
 
     public void addShapeToScene(ShapeObservable shape) {
@@ -74,4 +74,30 @@ public class Editor {
         return this.selectionShape;
     }
 
+    @Override
+    public Memento createMemento() {
+        Memento m = new EditorMemento(this);
+        history.push(m);
+        return m;
+    }
+
+    @Override
+    public String backup() {
+        return "backup : " + this.scene.getShapes().size() + " shapes"; //TODO : real backup
+    }
+
+    @Override
+    public void restore(String m) {
+        System.out.println(backup());
+    }
+
+    public void undo() {
+        if(this.history.undo())
+            this.rendering.drawEditor();
+    }
+
+    public void redo() {
+        if(this.history.redo())
+            this.rendering.drawEditor();
+    }
 }
