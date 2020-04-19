@@ -27,7 +27,6 @@ import java.util.*;
 
 public class JavaFXApp extends Application implements ApplicationI {
 
-    private Editor editor;
     private Rendering rendering;
 
     private Group root;
@@ -37,6 +36,8 @@ public class JavaFXApp extends Application implements ApplicationI {
     public void start(Stage primaryStage) {
         primaryStage.setTitle(WINDOW_TITLE);
         primaryStage.setResizable(false);
+
+        Editor editor = Editor.getInstance();
 
 /*
         Stage
@@ -271,8 +272,7 @@ public class JavaFXApp extends Application implements ApplicationI {
 //        });
 
         // Set rendering
-        this.editor = new Editor();
-        rendering = new JFxRendering(this.editor, toolbarBox, root);
+        rendering = new JFxRendering(toolbarBox, root);
         editor.setRendering(rendering);
 
         // Draw editor

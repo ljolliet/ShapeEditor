@@ -16,13 +16,11 @@ import javafx.scene.transform.Rotate;
 
 public class JFxRendering implements Rendering {
 
-    private Editor editor;
     private VBox toolbarBox;
     private Group root;
     private ContextMenu contextMenu;
 
-    JFxRendering(Editor editor, VBox toolbarBox, Group root) {
-        this.editor = editor;
+    JFxRendering(VBox toolbarBox, Group root) {
         this.toolbarBox = toolbarBox;
         this.root = root;
         this.contextMenu = new ContextMenu();
@@ -37,6 +35,7 @@ public class JFxRendering implements Rendering {
 
     @Override
     public void drawEditor() {
+        Editor editor = Editor.getInstance();
         // Clear shapes
         this.init();
 
@@ -51,6 +50,7 @@ public class JFxRendering implements Rendering {
 
     @Override
     public void drawSelectionFrame(){
+        Editor editor = Editor.getInstance();
         drawEditor();
         SelectionRectangle s = (SelectionRectangle)editor.getSelectionShape();
 
@@ -249,6 +249,7 @@ public class JFxRendering implements Rendering {
     }
 
     private javafx.scene.shape.Rectangle createRectangle(Rectangle r, double width, double height) {
+        Editor editor = Editor.getInstance();
         javafx.scene.shape.Rectangle rectangle = new javafx.scene.shape.Rectangle(width, height);
         // Color
         Color color = Color.rgb(r.getColor().r, r.getColor().g, r.getColor().b);
@@ -268,6 +269,7 @@ public class JFxRendering implements Rendering {
     }
 
     private javafx.scene.shape.Polygon createPolygon(Polygon p, double radius) {
+        Editor editor = Editor.getInstance();
         double[] points = getPolygonPoints(p.getPoints(radius), p.getNbSides());
 
         javafx.scene.shape.Polygon polygon = new javafx.scene.shape.Polygon(points);

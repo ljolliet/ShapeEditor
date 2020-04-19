@@ -2,16 +2,14 @@ package editor;
 
 public class EditorMemento implements Memento {
     private final String state;
-    private final Editor editor;
 
-    public EditorMemento(Editor editor, String state) {
-        this.editor = editor;
+    public EditorMemento(String state) {
         this.state = state;
     }
 
     @Override
     public void restore() {
-        this.editor.restoreFromMemento(this);
+        Editor.getInstance().restoreFromMemento(this);
     }
 
     @Override

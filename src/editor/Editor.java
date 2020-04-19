@@ -4,13 +4,11 @@ import editor.utils.SelectionRectangle;
 import editor.utils.SelectionShape;
 import ui.Rendering;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.util.Base64;
 
-public class Editor implements Originator, Serializable{
+public class Editor implements Originator{
+    private static Editor instance;
     private Scene scene;
     private final Toolbar toolbar;
     private Rendering rendering;
@@ -19,7 +17,7 @@ public class Editor implements Originator, Serializable{
     private Shape shapeDragged;
     private final SelectionShape selectionShape = new SelectionRectangle();
 
-    public Editor() {
+    private Editor() {
         this.scene = new Scene();
         this.toolbar = new Toolbar();
         this.history = new Caretaker();
@@ -27,7 +25,7 @@ public class Editor implements Originator, Serializable{
 
     public void setRendering(Rendering r) {
         this.rendering = r;
-        this.observer = new ShapeObserver(rendering, this);
+        this.observer = new ShapeObserver();
     }
 
     public void addShapeToScene(ShapeObservable shape) {
@@ -82,18 +80,17 @@ public class Editor implements Originator, Serializable{
     @Override
     public Memento saveToMemento(){
         String state = "";
-//        try {
-//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//            ObjectOutputStream oos = new ObjectOutputStream( baos );
-//            List<ShapeObservable> shapes = this.scene.getShapes();
-//            oos.writeObject(shapes);
-//            oos.close();
-//            state =  Base64.getEncoder().encodeToString(baos.toByteArray());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream( baos );
+            oos.writeObject(this.scene);
+            oos.close();
+            state =  Base64.getEncoder().encodeToString(baos.toByteArray());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         System.out.println(state);
-        Memento m = new EditorMemento(this, state);
+        Memento m = new EditorMemento(state);
         history.push(m);
         return m;
     }
@@ -121,5 +118,13 @@ public class Editor implements Originator, Serializable{
     public void redo() {
         if(this.history.redo())
             this.rendering.drawEditor();
+    }
+
+    public static Editor getInstance() {
+        return instance != null ? instance : (instance = new Editor());
+    }
+
+    public Rendering getRendering() {
+        return this.rendering;
     }
 }
