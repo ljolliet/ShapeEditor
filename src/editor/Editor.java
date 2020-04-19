@@ -4,13 +4,18 @@ import editor.utils.SelectionRectangle;
 import editor.utils.SelectionShape;
 import ui.Rendering;
 
-public class Editor implements Originator{
-    private final Scene scene;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
+import java.util.Base64;
+
+public class Editor implements Originator, Serializable{
+    private Scene scene;
     private final Toolbar toolbar;
     private Rendering rendering;
     private ShapeObserverI observer;
     private Caretaker history;
-
     private Shape shapeDragged;
     private final SelectionShape selectionShape = new SelectionRectangle();
 
@@ -75,21 +80,38 @@ public class Editor implements Originator{
     }
 
     @Override
-    public Memento createMemento() {
-        Memento m = new EditorMemento(this);
+    public Memento saveToMemento(){
+        String state = "";
+//        try {
+//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//            ObjectOutputStream oos = new ObjectOutputStream( baos );
+//            List<ShapeObservable> shapes = this.scene.getShapes();
+//            oos.writeObject(shapes);
+//            oos.close();
+//            state =  Base64.getEncoder().encodeToString(baos.toByteArray());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        System.out.println(state);
+        Memento m = new EditorMemento(this, state);
         history.push(m);
         return m;
     }
 
     @Override
-    public String backup() {
-        return "backup : " + this.scene.getShapes().size() + " shapes"; //TODO : real backup
+    public void restoreFromMemento(Memento m) {
+        try {
+            byte[] data = Base64.getDecoder().decode(m.getState());
+            ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
+            this.scene = (Scene) ois.readObject();
+            ois.close();
+        } catch (ClassNotFoundException e) {
+            System.out.print("ClassNotFoundException occurred.");
+        } catch (IOException e) {
+            System.out.print("IOException occurred.");
+        }
     }
 
-    @Override
-    public void restore(String m) {
-        System.out.println(backup());
-    }
 
     public void undo() {
         if(this.history.undo())

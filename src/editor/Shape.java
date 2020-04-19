@@ -7,9 +7,10 @@ import editor.utils.Vec2D;
 import editor.edition.EditionDialogI;
 import ui.Rendering;
 
+import java.io.Serializable;
 import java.util.Set;
 
-public interface Shape extends Cloneable {
+public interface Shape extends Cloneable, Serializable {
     double MIN_SIZE = 1.;
     double MAX_ROTATION = 360.;
     double MIN_ROTATION = 0.;

@@ -1,9 +1,10 @@
 package editor;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Scene {
+public class Scene implements Serializable {
 
     List<ShapeObservable> shapes;
     List<ShapeObservable> selectedShapes;

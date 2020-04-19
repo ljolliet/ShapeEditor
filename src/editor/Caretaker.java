@@ -1,9 +1,10 @@
 package editor;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Caretaker {
+public class Caretaker implements Serializable {
 
     private String state;
     private List<Memento> mementoHistory;

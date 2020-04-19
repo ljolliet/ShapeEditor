@@ -2,7 +2,9 @@ package editor;
 
 import ui.Rendering;
 
-public class ShapeObserver implements ShapeObserverI {
+import java.io.Serializable;
+
+public class ShapeObserver implements ShapeObserverI, Serializable {    //TODO remove serializable
 
     Rendering rendering;
     Editor editor;  //TODO Editor Singleton ?
@@ -15,6 +17,6 @@ public class ShapeObserver implements ShapeObserverI {
     @Override
     public void update() {
         this.rendering.drawEditor();
-        this.editor.createMemento();
+        this.editor.saveToMemento();
     }
 }

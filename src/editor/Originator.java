@@ -1,7 +1,8 @@
 package editor;
 
+import java.io.IOException;
+
 public interface Originator {
-    Memento createMemento();
-    String backup();
-    void restore(String m);
+    Memento saveToMemento() throws IOException;
+    void restoreFromMemento(Memento m);
 }
