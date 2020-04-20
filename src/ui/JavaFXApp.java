@@ -172,9 +172,13 @@ public class JavaFXApp extends Application implements ApplicationI {
 
         // Event on stack pane
         stackPane.setOnMouseDragged(event -> {
-            System.out.println("x = " + event.getX() + " ; y = " + event.getY());
+            //System.out.println("x = " + event.getX() + " ; y = " + event.getY());
             rec.setX(event.getX());
             rec.setY(event.getY());
+        });
+
+        stackPane.setOnMouseClicked(event -> {
+            System.out.println("coucou");
         });
 
 //          TODO : to group
@@ -216,20 +220,19 @@ public class JavaFXApp extends Application implements ApplicationI {
                     i++;
                 }
             }
-
-            event.consume();
         });
         // Empty
-        /*toolbarBox.setOnMouseDragged(event -> {
+        toolbarBox.setOnMouseDragged(event -> {
             //TODO display shape
-            event.consume();
-        });*/
+        });
         // Empty
-        /*toolbarBox.setOnMouseDragReleased(event -> {
+        toolbarBox.setOnMouseDragReleased(event -> {
             System.out.println("[TOOLBAR] Drag released");
+        });
 
-            event.consume();
-        });*/
+        borderPane.setOnMouseDragReleased(event -> {
+            System.out.println("[BORDERPANE] Drag released");
+        });
 
         borderPane.setOnMouseReleased(mouseEvent -> {
             System.out.println("[BORDERPANE] Mouse released");
@@ -247,12 +250,10 @@ public class JavaFXApp extends Application implements ApplicationI {
 
     private void setSceneEvents() {
         // Empty
-        /*root.setOnDragDetected(event -> {
+        root.setOnDragDetected(event -> {
             root.startFullDrag();
             System.out.println("[ROOT] Drag detected");
-
-            event.consume();
-        });*/
+        });
 
         root.setOnMouseDragged(event -> {
             // Detect left click
@@ -285,8 +286,6 @@ public class JavaFXApp extends Application implements ApplicationI {
                     rendering.drawSelectionFrame();
                 }
             }
-
-            event.consume();
         });
 
         root.setOnMouseDragReleased(event -> {
@@ -303,8 +302,6 @@ public class JavaFXApp extends Application implements ApplicationI {
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
                 }
-
-            event.consume();
         });
 
         root.setOnMousePressed(event -> {
@@ -329,8 +326,6 @@ public class JavaFXApp extends Application implements ApplicationI {
                 if (!inShape)
                     editor.getSelectionShape().setSelectionStartPoint(new Point2D(event.getX(), event.getY()));
             }
-
-            event.consume();
         });
 
         root.setOnMouseReleased(event -> {
@@ -361,8 +356,6 @@ public class JavaFXApp extends Application implements ApplicationI {
                 editor.setShapeDragged(null);
                 rendering.drawEditor();
             }
-
-            event.consume();
         });
 
         root.setOnMouseClicked(e -> {
