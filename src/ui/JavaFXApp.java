@@ -1,8 +1,8 @@
 package ui;
 
 import editor.Editor;
+import editor.ShapeI;
 import editor.Shape;
-import editor.ShapeObservable;
 import editor.edition.EditionDialogI;
 import editor.utils.Point2D;
 import javafx.application.Application;
@@ -226,7 +226,7 @@ public class JavaFXApp extends Application implements ApplicationI {
                 // Search for shape selected
                 for (Node node : toolbarBox.getChildren()) {
                     if (event.getPickResult().getIntersectedNode() == node) { // Found
-                        Shape s = editor.getToolbar().getShapes().get(i);
+                        ShapeI s = editor.getToolbar().getShapes().get(i);
 
                         // Create shadow shape with dragged shape
                         shadowShape = (javafx.scene.shape.Shape) rendering.getShadowShape(s);
@@ -259,13 +259,13 @@ public class JavaFXApp extends Application implements ApplicationI {
                     // If release over trash --> delete selected shape
                     if (intersectedNode == this.trashImage) {
                         editor.removeShapeFromToolbar(editor.getShapeDragged());
-                        editor.removeShapeFromScene((ShapeObservable) editor.getShapeDragged());
+                        editor.removeShapeFromScene((Shape) editor.getShapeDragged());
                     }
                     // If release over toolbar --> add shape to toolbar
                     else if (intersectedNode == this.toolbarBox) {
                         try {
                             // Clone the shape and paste it to the toolbar
-                            Shape newShape = editor.getShapeDragged().clone();
+                            ShapeI newShape = editor.getShapeDragged().clone();
                             editor.addShapeToToolbar(newShape);
                         } catch (CloneNotSupportedException e) {
                             e.printStackTrace();
@@ -315,9 +315,9 @@ public class JavaFXApp extends Application implements ApplicationI {
                 if (fromToolbar) {
                     try {
                         // Clone the shape and paste it to the scene
-                        Shape newShape = editor.getShapeDragged().clone();
+                        ShapeI newShape = editor.getShapeDragged().clone();
                         newShape.setPosition(new Point2D(event.getX(), event.getY()));
-                        editor.addShapeToScene((ShapeObservable) newShape);
+                        editor.addShapeToScene((Shape) newShape);
                     } catch (CloneNotSupportedException e) {
                         e.printStackTrace();
                     }
@@ -341,7 +341,7 @@ public class JavaFXApp extends Application implements ApplicationI {
 
                 boolean inShape = false;
                 // Look if the mouse is on an existing shape
-                for (Shape s : editor.getScene().getShapes()) {
+                for (ShapeI s : editor.getScene().getShapes()) {
                     if (s.contains(new Point2D(event.getX(), event.getY()))) { // Found
                         // Create shadow shape with dragged shape
                         shadowShape = (javafx.scene.shape.Shape) rendering.getShadowShape(s);
@@ -369,10 +369,10 @@ public class JavaFXApp extends Application implements ApplicationI {
 
                 // If it is a select action
                 if (editor.getSelectionShape() != null) {
-                    ArrayList<ShapeObservable> selectedShapes = new ArrayList<>();
+                    ArrayList<Shape> selectedShapes = new ArrayList<>();
 
                     // Add all selected shapes in array
-                    for (ShapeObservable s : editor.getScene().getShapes())
+                    for (Shape s : editor.getScene().getShapes())
                         if (s.contained(editor.getSelectionShape())) {
                             selectedShapes.add(s);
                             System.out.println(s + " selected");
@@ -403,7 +403,7 @@ public class JavaFXApp extends Application implements ApplicationI {
                 // Click on a single shape
                 else {
                     // Look for the clicked shape
-                    for (Shape s : editor.getScene().getShapes()) {
+                    for (ShapeI s : editor.getScene().getShapes()) {
                         if (s.contains(new Point2D(e.getX(), e.getY()))) { // Found
                             System.out.println("right click on shape");
                             // Create edition dialog

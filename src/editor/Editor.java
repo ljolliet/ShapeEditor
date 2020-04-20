@@ -12,7 +12,7 @@ import java.io.*;
 import java.util.Base64;
 import java.util.List;
 
-public class Editor implements Originator {
+public class Editor extends Observable implements Originator {
     private static final int SIZE_HISTORY = 50;
     private static Editor instance;
     private final Scene scene;
@@ -20,8 +20,8 @@ public class Editor implements Originator {
     private final Caretaker history;
     private final SelectionShape selectionShape;
     private Rendering rendering;
-    private ShapeObserverI observer;
-    private Shape shapeDragged;
+    private Observer observer;
+    private ShapeI shapeDragged;
 
     private Editor() {
         this.scene = new Scene();
@@ -29,6 +29,8 @@ public class Editor implements Originator {
         this.history = new Caretaker(SIZE_HISTORY);
         this.selectionShape = new SelectionRectangle();
         this.observer = new ShapeObserver();
+        this.addObserver(observer);
+        this.saveToMemento();
     }
 
     public static Editor getInstance() {
@@ -40,33 +42,37 @@ public class Editor implements Originator {
         this.rendering = r;
     }
 
-    public void addShapeToScene(ShapeObservable shape) {
+    public void addShapeToScene(Shape shape) {
         this.scene.addShape(shape);
         shape.addObserver(this.observer);
 
         if (this.rendering != null)
             this.rendering.drawEditor();
+        notifyObservers();
     }
 
-    public void removeShapeFromScene(ShapeObservable s) {
+    public void removeShapeFromScene(Shape s) {
         this.scene.removeShape(s);
 
         if (this.rendering != null)
             this.rendering.drawEditor();
+        notifyObservers();
     }
 
-    public void addShapeToToolbar(Shape shape) {
+    public void addShapeToToolbar(ShapeI shape) {
         this.toolbar.addShape(shape);
 
         if (this.rendering != null)
             this.rendering.drawEditor();
+        notifyObservers();
     }
 
-    public void removeShapeFromToolbar(Shape s) {
+    public void removeShapeFromToolbar(ShapeI s) {
         this.toolbar.removeShape(s);
 
         if (this.rendering != null)
             this.rendering.drawEditor();
+        notifyObservers();
     }
 
     @Override
@@ -93,7 +99,7 @@ public class Editor implements Originator {
             EditorMemento em = (EditorMemento)m;
             byte[] data = Base64.getDecoder().decode(em.getState());
             ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
-            this.scene.setShapes((List<ShapeObservable>) ois.readObject());
+            this.scene.setShapes((List<Shape>) ois.readObject());
             ois.close();
         } catch (ClassNotFoundException e) {
             System.out.print("ClassNotFoundException occurred.");
@@ -133,11 +139,11 @@ public class Editor implements Originator {
         return this.rendering;
     }
 
-    public Shape getShapeDragged() {
+    public ShapeI getShapeDragged() {
         return shapeDragged;
     }
 
-    public void setShapeDragged(Shape shapeDragged) {
+    public void setShapeDragged(ShapeI shapeDragged) {
         this.shapeDragged = shapeDragged;
     }
 }

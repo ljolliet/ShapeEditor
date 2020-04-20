@@ -6,34 +6,34 @@ import java.util.List;
 
 public class Scene implements Serializable {
 
-    List<ShapeObservable> shapes;
-    List<ShapeObservable> selectedShapes;
+    List<Shape> shapes;
+    List<Shape> selectedShapes;
 
     public Scene() {
         this.shapes = new ArrayList<>();
         this.selectedShapes = new ArrayList<>();
     }
 
-    public void addShape(ShapeObservable shape) {
+    public void addShape(Shape shape) {
         shapes.add(shape);
     }
 
-    public void removeShape(ShapeObservable shape) {
+    public void removeShape(Shape shape) {
         shapes.remove(shape);
     }
 
-    public void setSelectedShapes(ArrayList<ShapeObservable> shapes){
+    public void setSelectedShapes(ArrayList<Shape> shapes){
         this.selectedShapes = shapes;
     }
-    public List<ShapeObservable> getShapes() {
+    public List<Shape> getShapes() {
         return new ArrayList<>(shapes);
     }
 
-    public List<ShapeObservable> getSelectedShapes() {
+    public List<Shape> getSelectedShapes() {
         return new ArrayList<>(selectedShapes);
     }
 
-    public void setShapes(List<ShapeObservable> shapes) {
+    public void setShapes(List<Shape> shapes) {
         this.shapes = shapes;
     }
 }

@@ -10,31 +10,31 @@ import ui.Rendering;
 
 import java.util.*;
 
-public class ShapeGroup extends ShapeObservable {
+public class ShapeGroup extends Shape{
 
-    private Set<Shape> shapes;
+    private Set<ShapeI> shapes;
 
     public ShapeGroup(){
         shapes = new HashSet<>();
     }
 
     @Override
-    public void addShape(Shape s) {
+    public void addShape(ShapeI s) {
         shapes.add(s);
     }
 
     @Override
-    public void removeShape(Shape s) {
+    public void removeShape(ShapeI s) {
         shapes.remove(s);
     }
 
     @Override
-    public Set<Shape> getChild() {
+    public Set<ShapeI> getChild() {
         return new HashSet<>(shapes);
     }
 
     @Override
-    public void setChild(Set<Shape> shapes) {
+    public void setChild(Set<ShapeI> shapes) {
         this.shapes = shapes;
     }
 
@@ -44,21 +44,21 @@ public class ShapeGroup extends ShapeObservable {
     }
 
     @Override
-    public Shape clone() throws CloneNotSupportedException {
-        Shape c = super.clone();
+    public ShapeI clone() throws CloneNotSupportedException {
+        ShapeI c = (ShapeI)super.clone();
         c.setChild(new HashSet<>(this.getChild()));
         return c;
     }
 
     @Override
     public void drawInScene(Rendering rendering) {
-        for(Shape s : shapes)
+        for(ShapeI s : shapes)
             s.drawInScene(rendering);
     }
 
     @Override
     public void drawInToolbar(Rendering rendering) {
-        for(Shape s : shapes)
+        for(ShapeI s : shapes)
             s.drawInToolbar(rendering);
     }
 
@@ -67,7 +67,7 @@ public class ShapeGroup extends ShapeObservable {
      */
     @Override
     public boolean contains(Point2D position) {
-        for(Shape child : shapes)
+        for(ShapeI child : shapes)
             if(child.contains(position))
                 return true;
         return false;
@@ -82,7 +82,7 @@ public class ShapeGroup extends ShapeObservable {
     public Point2D[] getPoints() {
         List<Point2D> points = new ArrayList<>();
 
-        for (Shape s: shapes)
+        for (ShapeI s: shapes)
             points.addAll(Arrays.asList(s.getPoints()));
 
         return (Point2D[]) points.toArray();
@@ -95,7 +95,7 @@ public class ShapeGroup extends ShapeObservable {
         double deltaX = newPos.x - position.x;
         double deltaY = newPos.y - position.y;
 
-        for (Shape s: shapes)
+        for (ShapeI s: shapes)
             s.setPosition(new Point2D(
                     s.getPosition().x + deltaX,
                     s.getPosition().y + deltaY
@@ -104,25 +104,25 @@ public class ShapeGroup extends ShapeObservable {
 
     @Override
     public void setColor(Color color) {
-        for (Shape s: shapes)
+        for (ShapeI s: shapes)
             s.setColor(color);
     }
 
     @Override
     public void setRotation(double angle) {
-        for (Shape s: shapes)
+        for (ShapeI s: shapes)
             s.setRotation(angle);
     }
 
     @Override
     public void setRotationCenter(Point2D pos) {
-        for (Shape s: shapes)
+        for (ShapeI s: shapes)
             s.setRotationCenter(pos);
     }
 
     @Override
     public void setTranslation(Vec2D translation) {
-        for (Shape s: shapes)
+        for (ShapeI s: shapes)
             s.setTranslation(translation);
     }
 
@@ -132,7 +132,7 @@ public class ShapeGroup extends ShapeObservable {
                 maxX = ApplicationI.SCENE_WIDTH,
                 maxY = ApplicationI.SCENE_HEIGHT;
 
-        for (Shape s: shapes) {
+        for (ShapeI s: shapes) {
             for (Point2D point: s.getPoints()) {
                 minX = Math.min(minX, point.x);
                 minY = Math.min(minY, point.y);

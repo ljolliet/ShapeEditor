@@ -40,11 +40,11 @@ public class JFxRendering implements Rendering {
         this.init();
 
         // Draw scene
-        for (Shape s: editor.getScene().getShapes())
+        for (ShapeI s: editor.getScene().getShapes())
             s.drawInScene(this);
 
         // Draw toolbar
-        for (Shape s: editor.getToolbar().getShapes())
+        for (ShapeI s: editor.getToolbar().getShapes())
             s.drawInToolbar(this);
     }
 
@@ -115,7 +115,7 @@ public class JFxRendering implements Rendering {
     }
 
     @Override
-    public Object getShadowShape(Shape shape) {
+    public Object getShadowShape(ShapeI shape) {
         if (shape instanceof Rectangle)
             return getShadowShape((Rectangle) shape);
         if (shape instanceof Polygon)
@@ -174,7 +174,7 @@ public class JFxRendering implements Rendering {
         spinner.setEditable(true);
         final double initialValue = recED.getTarget().getWidth();
         final double maxValue = ApplicationI.SCENE_WIDTH - recED.getTarget().getPosition().x;
-        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(Shape.MIN_SIZE, maxValue, initialValue));
+        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(ShapeI.MIN_SIZE, maxValue, initialValue));
         spinner.valueProperty().addListener((obs, oldValue, newValue) ->
                 recED.setWidth(newValue));
         final MenuItem item = new MenuItem("Width",spinner);
@@ -186,7 +186,7 @@ public class JFxRendering implements Rendering {
         spinner.setEditable(true);
         final double initialValue = recED.getTarget().getHeight();
         final double maxValue = ApplicationI.SCENE_HEIGHT - recED.getTarget().getPosition().y;
-        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(Shape.MIN_SIZE, maxValue, initialValue));
+        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(ShapeI.MIN_SIZE, maxValue, initialValue));
         spinner.valueProperty().addListener((obs, oldValue, newValue) ->
                 recED.setHeight(newValue));
         final MenuItem item = new MenuItem("Height",spinner);
@@ -197,7 +197,7 @@ public class JFxRendering implements Rendering {
         final Spinner<Integer> spinner = new Spinner<>();
         spinner.setEditable(true);
         final int initialValue = recED.getTarget().getBorderRadius();
-        spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(Shape.MIN_RADIUS, Shape.MAX_RADIUS, initialValue));
+        spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(ShapeI.MIN_RADIUS, ShapeI.MAX_RADIUS, initialValue));
         spinner.valueProperty().addListener((obs, oldValue, newValue) ->
                 recED.setBorderRadius(newValue));
         final MenuItem item = new MenuItem("Border Radius",spinner);
@@ -238,7 +238,7 @@ public class JFxRendering implements Rendering {
         final Spinner<Double> spinner = new Spinner<>();
         spinner.setEditable(true);
         final double initialValue = shapeED.getTarget().getRotation();
-        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(Shape.MIN_ROTATION, Shape.MAX_ROTATION, initialValue));
+        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(ShapeI.MIN_ROTATION, ShapeI.MAX_ROTATION, initialValue));
         spinner.valueProperty().addListener((obs, oldValue, newValue) ->
                 shapeED.setRotation(newValue));
         final MenuItem item = new MenuItem("Rotation",spinner);

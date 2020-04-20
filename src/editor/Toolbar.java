@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Toolbar {
 
-    List<Shape> shapes;
+    List<ShapeI> shapes;
 
     public Toolbar() {
         this.shapes = new ArrayList<>();
@@ -18,15 +18,15 @@ public class Toolbar {
         addShape(new Polygon(6, 50,  new Point2D(0,0), new Color(255,55,55), new Point2D(0,0), 90));
     }
 
-    public void addShape(Shape shape) {
+    public void addShape(ShapeI shape) {
         shapes.add(shape);
     }
 
-    public void removeShape(Shape shape) {
+    public void removeShape(ShapeI shape) {
         shapes.remove(shape);
     }
 
-    public List<Shape> getShapes() {
+    public List<ShapeI> getShapes() {
         return shapes;
     }
 }

@@ -1,5 +1,5 @@
 package editor;
 
-public interface ShapeObserverI {
+public interface Observer {
     void update();
 }

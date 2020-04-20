@@ -1,32 +1,21 @@
-import editor.Polygon;
-import editor.Rectangle;
-import editor.Shape;
+import editor.ShapeFactory;
 import editor.ShapeGroup;
+import editor.ShapeI;
 import org.junit.Test;
-import editor.utils.Color;
-import editor.utils.Point2D;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotEquals;
 
 public class ShapeTests {
 
-    public Polygon createPolygon(){
-        return new Polygon(5, 2., new Point2D(0.,0.), new Color(255,255,255), new Point2D(0.,0.), 0.);
-    }
-
-    public Rectangle createRectangle(){
-        return new Rectangle(5., 10., 0,  new Point2D(0.,0.), new Color(255,255,255), new Point2D(0.,0.), 0.);
-    }
-
     @Test
     public void cloneTest() throws CloneNotSupportedException {
-        Shape s1 = createPolygon();
-        Shape s2 = createRectangle();
-        Shape group = new ShapeGroup();
+        ShapeI s1 = ShapeFactory.makePolygone(5);
+        ShapeI s2 = ShapeFactory.makeRectangle();
+        ShapeI group = new ShapeGroup();
         group.addShape(s1);
         group.addShape(s2);
-        Shape groupClone = group.clone();
-        groupClone.addShape(createPolygon());
+        ShapeI groupClone = group.clone();
+        groupClone.addShape(ShapeFactory.makePolygone(5));
         assertNotEquals(s1, s1.clone());
         assertNotEquals(group, groupClone);
         assertNotEquals(group.getChild(), groupClone.getChild());

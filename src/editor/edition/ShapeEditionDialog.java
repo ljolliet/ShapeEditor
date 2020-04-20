@@ -1,14 +1,14 @@
 package editor.edition;
 
-import editor.Shape;
+import editor.ShapeI;
 import editor.utils.Color;
 import editor.utils.Point2D;
 
 public abstract class ShapeEditionDialog implements  EditionDialogI{
     private Point2D position;
-    private final Shape target;
+    private final ShapeI target;
 
-    public ShapeEditionDialog(Shape shape) {
+    public ShapeEditionDialog(ShapeI shape) {
         this.target = shape;
     }
 
@@ -23,7 +23,7 @@ public abstract class ShapeEditionDialog implements  EditionDialogI{
     }
 
     @Override
-    public Shape getTarget(){
+    public ShapeI getTarget(){
         return this.target;
     }
 

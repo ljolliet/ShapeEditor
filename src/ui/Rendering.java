@@ -2,7 +2,7 @@ package ui;
 
 import editor.Polygon;
 import editor.Rectangle;
-import editor.Shape;
+import editor.ShapeI;
 import editor.ShapeGroup;
 import editor.edition.PolygonEditionDialog;
 import editor.edition.RectangleEditionDialog;
@@ -20,7 +20,7 @@ public interface Rendering {
     void drawInToolbar(Rectangle rectangle);
     void drawInToolbar(Polygon polygon);
 
-    Object getShadowShape(Shape shape);
+    Object getShadowShape(ShapeI shape);
 
     void setEditionDialog(ShapeEditionDialog polED);
     void setEditionDialog(ShapeGroup polED);

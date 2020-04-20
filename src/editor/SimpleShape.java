@@ -1,11 +1,10 @@
 package editor;
 
 import editor.utils.*;
-import ui.ApplicationI;
 
 import java.util.Set;
 
-public abstract class SimpleShape extends ShapeObservable {
+public abstract class SimpleShape extends Shape {
     private Point2D position;
 
     private Color color;
@@ -22,22 +21,22 @@ public abstract class SimpleShape extends ShapeObservable {
     }
 
     @Override
-    public Set<Shape> getChild() {
+    public Set<ShapeI> getChild() {
         return null;
     }
 
     @Override
-    public void setChild(Set<Shape> shapes) {
+    public void setChild(Set<ShapeI> shapes) {
         //TODO throw exception
     }
 
     @Override
-    public void addShape(Shape s) {
+    public void addShape(ShapeI s) {
         throw new ShapeException("Cannot add a shape to a SimpleShape");
     }
 
     @Override
-    public void removeShape(Shape s) {
+    public void removeShape(ShapeI s) {
         throw new ShapeException("Cannot remove a shape to a SimpleShape");
     }
 
@@ -47,8 +46,8 @@ public abstract class SimpleShape extends ShapeObservable {
     }
 
     @Override
-    public Shape clone() throws CloneNotSupportedException {
-        return super.clone();
+    public ShapeI clone() throws CloneNotSupportedException {
+        return (ShapeI)super.clone();
     }
 
     @Override
