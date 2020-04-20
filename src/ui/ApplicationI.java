@@ -11,7 +11,7 @@ public interface ApplicationI {
     int TRASH_HEIGHT = 40;
 
     int OPTION_HEIGHT = 50;
-    int OPTION_SPACING = 10;
+    int OPTION_SPACING = 5;
 
     int SCENE_HEIGHT = 600;
     int SCENE_WIDTH = 700;

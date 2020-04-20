@@ -1,6 +1,6 @@
 package editor.save;
 
-public class TestMemento  implements Memento{
+public class TestMemento implements Memento{
     private final String state;
 
     public TestMemento(String state) {

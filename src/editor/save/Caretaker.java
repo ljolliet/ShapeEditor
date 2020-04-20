@@ -6,9 +6,8 @@ import java.util.List;
 public class Caretaker{
 
     private final int sizeLimit;
-    private String state;
     private List<Memento> mementoHistory;
-    private int currentMementoIndex = 0;
+    private int currentMementoIndex = -1;
 
     public Caretaker (int sizeLimit){
         this.mementoHistory = new ArrayList<>();
@@ -26,7 +25,7 @@ public class Caretaker{
     }
 
     public boolean undo(){
-        if(currentMementoIndex == 0) {
+        if(currentMementoIndex <= 0) {
             return false;
         }
         Memento m = mementoHistory.get(--currentMementoIndex);
@@ -44,7 +43,7 @@ public class Caretaker{
     }
 
     public Memento getCurrentMemento() {
-        return mementoHistory.get(currentMementoIndex);
+        return currentMementoIndex >= 0 ? mementoHistory.get(currentMementoIndex) : null;
     }
 
     public int getHistorySize() {
