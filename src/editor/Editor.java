@@ -81,7 +81,7 @@ public class Editor extends Observable implements Originator {
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ObjectOutputStream oos = new ObjectOutputStream( baos );
-            oos.writeObject(this.scene.getShapes());
+            oos.writeObject(new List[]{this.scene.getShapes(), this.toolbar.getShapes()});
             oos.close();
             state =  Base64.getEncoder().encodeToString(baos.toByteArray());
         } catch (IOException e) {
@@ -99,7 +99,9 @@ public class Editor extends Observable implements Originator {
             EditorMemento em = (EditorMemento)m;
             byte[] data = Base64.getDecoder().decode(em.getState());
             ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
-            this.scene.setShapes((List<Shape>) ois.readObject());
+            List list[] = (List[]) ois.readObject();
+            this.scene.setShapes(list[0]);
+            this.toolbar.setShapes(list[1]);
             ois.close();
         } catch (ClassNotFoundException e) {
             System.out.print("ClassNotFoundException occurred.");

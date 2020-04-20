@@ -29,4 +29,8 @@ public class Toolbar {
     public List<ShapeI> getShapes() {
         return shapes;
     }
+
+    public void setShapes(List<ShapeI> shapes) {
+        this.shapes = shapes;
+    }
 }
