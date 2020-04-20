@@ -13,6 +13,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -20,14 +21,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class JavaFXApp extends Application implements ApplicationI {
 
@@ -86,7 +85,7 @@ public class JavaFXApp extends Application implements ApplicationI {
         //optionLayout.setPrefWidth(WINDOW_WIDTH);
         optionLayout.setSpacing(OPTION_SPACING);
         optionLayout.setPadding(new Insets(OPTION_SPACING));
-        optionLayout.setStyle("-fx-background-color: darkred");
+        optionLayout.setStyle("-fx-background-color: firebrick");
         windowLayout.getChildren().add(optionLayout);
 
         //TODO refacto
@@ -96,17 +95,24 @@ public class JavaFXApp extends Application implements ApplicationI {
         ImageView undoIm = new ImageView( new Image(getClass().getClassLoader().getResource("undo.png").toString()));
         ImageView redoIm = new ImageView( new Image(getClass().getClassLoader().getResource("redo.png").toString()));
         ImageView[] optionsIm = new ImageView[] {saveIm, openIm, undoIm, redoIm};
-        List<ImageView> options = new ArrayList<>(Arrays.asList(optionsIm));
-        for(ImageView iv : options){
+        for(ImageView iv : new ArrayList<>(Arrays.asList(optionsIm))){
             iv.setPreserveRatio(true);
             iv.setFitHeight(scale);
-            optionLayout.getChildren().add(iv);
+        }
+        Button saveBtn = new Button("", saveIm);
+        Button openBtn = new Button("", openIm);
+        Button undoBtn = new Button("", undoIm);
+        Button redoBtn = new Button("", redoIm);
+        Button[] optionsBtn = new Button[] {saveBtn, openBtn, undoBtn, redoBtn};
+        for(Button b : new ArrayList<>(Arrays.asList(optionsBtn))) {
+            b.setStyle("-fx-background-color: darkred");
+            optionLayout.getChildren().add(b);
         }
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("Text Files", "*.txt")); //TODO set extension once decided
-        openIm.setOnMouseClicked(mouseEvent -> {
+        openBtn.setOnMouseClicked(mouseEvent -> {
             File file = fileChooser.showOpenDialog(primaryStage);
             if (file != null) {
                 System.out.println("open file : " + file.getName());
@@ -114,7 +120,7 @@ public class JavaFXApp extends Application implements ApplicationI {
             }
         });
 
-        saveIm.setOnMouseClicked(mouseEvent -> {
+        saveBtn.setOnMouseClicked(mouseEvent -> {
             if (mouseEvent.getButton() == MouseButton.PRIMARY) {
                 File file = fileChooser.showSaveDialog(primaryStage);
                 if (file != null) {
@@ -124,8 +130,8 @@ public class JavaFXApp extends Application implements ApplicationI {
             }
         });
 
-        undoIm.setOnMouseClicked(mouseEvent -> editor.undo());
-        redoIm.setOnMouseClicked(mouseEvent -> editor.redo());
+        undoBtn.setOnMouseClicked(mouseEvent -> editor.undo());
+        redoBtn.setOnMouseClicked(mouseEvent -> editor.redo());
 
         // Editor layout
         HBox editorLayout = new HBox();
@@ -151,6 +157,7 @@ public class JavaFXApp extends Application implements ApplicationI {
         this.trashImage = new ImageView(new Image(getClass().getClassLoader().getResource("trash.png").toString()));
         trashImage.setPreserveRatio(true);
         trashImage.setFitHeight(TRASH_HEIGHT);
+
         borderPane.setBottom(trashImage);
         BorderPane.setAlignment(trashImage, Pos.CENTER);
         BorderPane.setMargin(trashImage, new Insets(TOOLBAR_SPACING));
