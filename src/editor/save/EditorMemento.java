@@ -1,4 +1,6 @@
-package editor;
+package editor.save;
+
+import editor.Editor;
 
 public class EditorMemento implements Memento {
     private final String state;
@@ -12,7 +14,6 @@ public class EditorMemento implements Memento {
         Editor.getInstance().restoreFromMemento(this);
     }
 
-    @Override
     public String getState() {
         return state;
     }

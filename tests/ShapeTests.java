@@ -29,7 +29,7 @@ public class ShapeTests {
         groupClone.addShape(createPolygon());
         assertNotEquals(s1, s1.clone());
         assertNotEquals(group, groupClone);
-        assertNotEquals(group.getChild(), groupClone.getChild()); //TODO : child are the same and should not be
+        assertNotEquals(group.getChild(), groupClone.getChild());
     }
 
 }

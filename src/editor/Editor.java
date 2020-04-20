@@ -1,5 +1,9 @@
 package editor;
 
+import editor.save.Caretaker;
+import editor.save.EditorMemento;
+import editor.save.Memento;
+import editor.save.Originator;
 import editor.utils.SelectionRectangle;
 import editor.utils.SelectionShape;
 import ui.Rendering;
@@ -8,25 +12,32 @@ import java.io.*;
 import java.util.Base64;
 import java.util.List;
 
-public class Editor implements Originator{
+public class Editor implements Originator {
+    private static final int SIZE_HISTORY = 50;
     private static Editor instance;
-    private Scene scene;
+    private final Scene scene;
     private final Toolbar toolbar;
+    private final Caretaker history;
+    private final SelectionShape selectionShape;
     private Rendering rendering;
     private ShapeObserverI observer;
-    private Caretaker history;
     private Shape shapeDragged;
-    private final SelectionShape selectionShape = new SelectionRectangle();
 
     private Editor() {
         this.scene = new Scene();
         this.toolbar = new Toolbar();
-        this.history = new Caretaker();
+        this.history = new Caretaker(SIZE_HISTORY);
+        this.selectionShape = new SelectionRectangle();
+        this.observer = new ShapeObserver();
     }
+
+    public static Editor getInstance() {
+        return instance != null ? instance : (instance = new Editor());
+    }
+
 
     public void setRendering(Rendering r) {
         this.rendering = r;
-        this.observer = new ShapeObserver();
     }
 
     public void addShapeToScene(ShapeObservable shape) {
@@ -58,26 +69,6 @@ public class Editor implements Originator{
             this.rendering.drawEditor();
     }
 
-    public Scene getScene() {
-        return scene;
-    }
-
-    public Toolbar getToolbar() {
-        return toolbar;
-    }
-
-    public Shape getShapeDragged() {
-        return shapeDragged;
-    }
-
-    public void setShapeDragged(Shape shapeDragged) {
-        this.shapeDragged = shapeDragged;
-    }
-
-    public SelectionShape getSelectionShape() {
-        return this.selectionShape;
-    }
-
     @Override
     public Memento saveToMemento(){
         String state = "";
@@ -90,7 +81,7 @@ public class Editor implements Originator{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(state);
+
         Memento m = new EditorMemento(state);
         history.push(m);
         return m;
@@ -99,7 +90,8 @@ public class Editor implements Originator{
     @Override
     public void restoreFromMemento(Memento m) {
         try {
-            byte[] data = Base64.getDecoder().decode(m.getState());
+            EditorMemento em = (EditorMemento)m;
+            byte[] data = Base64.getDecoder().decode(em.getState());
             ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
             this.scene.setShapes((List<ShapeObservable>) ois.readObject());
             ois.close();
@@ -121,11 +113,31 @@ public class Editor implements Originator{
             this.rendering.drawEditor();
     }
 
-    public static Editor getInstance() {
-        return instance != null ? instance : (instance = new Editor());
+    public Scene getScene() {
+        return scene;
+    }
+
+    public Toolbar getToolbar() {
+        return toolbar;
+    }
+
+    public Caretaker getHistory() {
+        return this.history;
+    }
+
+    public SelectionShape getSelectionShape() {
+        return this.selectionShape;
     }
 
     public Rendering getRendering() {
         return this.rendering;
+    }
+
+    public Shape getShapeDragged() {
+        return shapeDragged;
+    }
+
+    public void setShapeDragged(Shape shapeDragged) {
+        this.shapeDragged = shapeDragged;
     }
 }
