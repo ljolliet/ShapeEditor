@@ -115,6 +115,16 @@ public class JFxRendering implements Rendering {
     }
 
     @Override
+    public Object getShadowShape(Shape shape) {
+        if (shape instanceof Rectangle)
+            return getShadowShape((Rectangle) shape);
+        if (shape instanceof Polygon)
+            return getShadowShape((Polygon) shape);
+
+        return null;
+    }
+
+    @Override
     public void setEditionDialog(ShapeEditionDialog shapeED) {
         contextMenu.getItems().clear();
         addPositionToDialog(shapeED);
@@ -155,7 +165,9 @@ public class JFxRendering implements Rendering {
 
 
 
-    /*      Rectangle       */
+    ///////////////////////////
+    //       Rectangle       //
+    ///////////////////////////
 
     private void addWidthToDialog(RectangleEditionDialog recED) {
         final Spinner<Double> spinner = new Spinner<>();
@@ -192,7 +204,9 @@ public class JFxRendering implements Rendering {
         contextMenu.getItems().add(item);
     }
 
-    /*      Shape       */
+    ///////////////////////////
+    //         Shape         //
+    ///////////////////////////
 
     private void addPositionToDialog(ShapeEditionDialog shapeED) {
         final Spinner<Double> spinnerX = new Spinner<>();
@@ -248,19 +262,53 @@ public class JFxRendering implements Rendering {
                 (int)value.getBlue()*255);
     }
 
+    ///////////////////////////
+    //     Create shapes     //
+    ///////////////////////////
+
+    private Object getShadowShape(Rectangle r) {
+        javafx.scene.shape.Rectangle rectangle = createRectangle(r, r.getWidth(), r.getHeight());
+        // For shadow shape, special rotation
+        rectangle.getTransforms().clear();
+        rectangle.setRotate(r.getRotation());
+        // Set border radius
+        rectangle.setArcWidth(r.getBorderRadius());
+        rectangle.setArcHeight(r.getBorderRadius());
+
+        return rectangle;
+    }
+
+    private Object getShadowShape(Polygon p) {
+        p = new Polygon(p.getNbSides(), p.getSideLength(), new Point2D(0, 0),
+                p.getColor(), p.getRotationCenter(), p.getRotation());
+
+        javafx.scene.shape.Polygon polygon = createPolygon(p, p.getRadius());
+        // For shadow shape, special rotation
+        polygon.getTransforms().clear();
+        polygon.setRotate(p.getRotation());
+
+        return polygon;
+    }
+
     private javafx.scene.shape.Rectangle createRectangle(Rectangle r, double width, double height) {
         Editor editor = Editor.getInstance();
+
         javafx.scene.shape.Rectangle rectangle = new javafx.scene.shape.Rectangle(width, height);
+
         // Color
         Color color = Color.rgb(r.getColor().r, r.getColor().g, r.getColor().b);
         rectangle.setFill(color);
-        if(editor.getScene().getSelectedShapes().contains(r))
+
+        // Add stroke if selected
+        if (editor.getScene().getSelectedShapes().contains(r))
             rectangle.setStroke(color.darker());
+
         // Rotation
         Rotate rotate = new Rotate(r.getRotation());
         rotate.setPivotX(r.getX() + r.getRotationCenter().x);
         rotate.setPivotY(r.getY() + r.getRotationCenter().y);
         rectangle.getTransforms().add(rotate);
+
         // Radius
         rectangle.setArcHeight(r.getBorderRadius());
         rectangle.setArcWidth(r.getBorderRadius());
@@ -270,14 +318,19 @@ public class JFxRendering implements Rendering {
 
     private javafx.scene.shape.Polygon createPolygon(Polygon p, double radius) {
         Editor editor = Editor.getInstance();
+
         double[] points = getPolygonPoints(p.getPoints(radius), p.getNbSides());
 
         javafx.scene.shape.Polygon polygon = new javafx.scene.shape.Polygon(points);
+
         // Color
         Color color = Color.rgb(p.getColor().r, p.getColor().g, p.getColor().b);
         polygon.setFill(color);
-        if(editor.getScene().getSelectedShapes().contains(p))
+
+        // Add stroke if selected
+        if (editor.getScene().getSelectedShapes().contains(p))
             polygon.setStroke(color.darker());
+
         // Rotation
         Rotate rotate = new Rotate(p.getRotation());
         rotate.setPivotX(p.getX() + p.getRotationCenter().x);

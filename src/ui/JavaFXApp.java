@@ -42,7 +42,7 @@ public class JavaFXApp extends Application implements ApplicationI {
     private boolean fromToolbar = false;
 
     // Temporary
-    private Rectangle rec;
+    private javafx.scene.shape.Shape shadowShape;
     private Group grp;
 
     @Override
@@ -75,7 +75,7 @@ public class JavaFXApp extends Application implements ApplicationI {
 
         // Temporary
         // Shadow shape when drag & drop
-        rec = new Rectangle(100,100);
+        shadowShape = new Rectangle(100,100);
         // Create a group to move the shadow shape inside
         grp = new Group(new Canvas(WINDOW_WIDTH, WINDOW_HEIGHT));
         // The group is completely transparent to mouse events
@@ -176,12 +176,8 @@ public class JavaFXApp extends Application implements ApplicationI {
         // Event on stack pane
         stackPane.setOnMouseDragged(event -> {
             //System.out.println("x = " + event.getX() + " ; y = " + event.getY());
-            rec.setX(event.getX());
-            rec.setY(event.getY());
-        });
-
-        stackPane.setOnMouseClicked(event -> {
-            System.out.println("coucou");
+            shadowShape.setTranslateX(event.getX());
+            shadowShape.setTranslateY(event.getY());
         });
 
 //          TODO : to group
@@ -275,23 +271,10 @@ public class JavaFXApp extends Application implements ApplicationI {
 
                 // If there is a shape to drag
                 if (editor.getShapeDragged() != null) {
-
-                    // If mouse is outside the scene
-                    if (!grp.getChildren().contains(rec) && (event.getX() < 0 || event.getY() < 0)) {
-                        // Create shadow shape for dropping in toolbar
-                        grp.getChildren().add(rec);
+                    // Display shadow shape
+                    if (!grp.getChildren().contains(shadowShape)) {
+                        grp.getChildren().add(shadowShape);
                         grp.toFront();
-                    }
-                    // Inside the scene
-                    else if (event.getX() > 0 && event.getY() > 0) {
-                        // Update shape position
-                        editor.getShapeDragged().setPosition(new Point2D(event.getX(), event.getY()));
-
-                        // Hide shadow shape
-                        if (grp.getChildren().contains(rec)) {
-                            grp.getChildren().remove(rec);
-                            grp.toBack();
-                        }
                     }
                 }
                 // Else, it is a select action
@@ -306,15 +289,22 @@ public class JavaFXApp extends Application implements ApplicationI {
             System.out.println("[ROOT] Drag released");
 
             // If there is a shape dragged
-            if (editor.getShapeDragged() != null && fromToolbar) {
-                try {
-                    // Clone the shape and paste it to the scene
-                    Shape newShape = editor.getShapeDragged().clone();
-                    newShape.setPosition(new Point2D(event.getX(), event.getY()));
-                    editor.addShapeToScene((ShapeObservable) newShape);
-                    System.out.println(newShape);
-                } catch (CloneNotSupportedException e) {
-                    e.printStackTrace();
+            if (editor.getShapeDragged() != null) {
+                // If from toolbar --> clone the shape
+                if (fromToolbar) {
+                    try {
+                        // Clone the shape and paste it to the scene
+                        Shape newShape = editor.getShapeDragged().clone();
+                        newShape.setPosition(new Point2D(event.getX(), event.getY()));
+                        editor.addShapeToScene((ShapeObservable) newShape);
+                        System.out.println(newShape);
+                    } catch (CloneNotSupportedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                // Else --> update position
+                else {
+                    editor.getShapeDragged().setPosition(new Point2D(event.getX(), event.getY()));
                 }
 
                 editor.setShapeDragged(null);
@@ -333,6 +323,9 @@ public class JavaFXApp extends Application implements ApplicationI {
                 // Look if the mouse is on an existing shape
                 for (Shape s : editor.getScene().getShapes()) {
                     if (s.contains(new Point2D(event.getX(), event.getY()))) { // Found
+                        // Create shadow shape with dragged shape
+                        shadowShape = (javafx.scene.shape.Shape) rendering.getShadowShape(s);
+
                         root.setCursor(Cursor.CLOSED_HAND);
                         editor.setShapeDragged(s);
                         inShape = true;
@@ -351,7 +344,7 @@ public class JavaFXApp extends Application implements ApplicationI {
             // Detect left click
             if (event.getButton() == MouseButton.PRIMARY) {
                 // Hide shadow shape
-                grp.getChildren().remove(rec);
+                grp.getChildren().remove(shadowShape);
                 grp.toBack();
 
                 // If it is a select action
