@@ -48,10 +48,10 @@ public class Rectangle extends SimpleShape {
 
     @Override
     public void setPosition(Point2D pos) {
-        double x = Math.max(width/2, Math.min(ApplicationI.SCENE_WIDTH - width/2, pos.x));
-        double y = Math.max(height/2, Math.min(ApplicationI.SCENE_HEIGHT - height/2, pos.y));
+        double x = Math.max(0, Math.min(ApplicationI.SCENE_WIDTH - width, pos.x));
+        double y = Math.max(0, Math.min(ApplicationI.SCENE_HEIGHT - height, pos.y));
 
-        super.setPosition(new Point2D(x - width/2, y - height/2));
+        super.setPosition(new Point2D(x, y));
     }
 
     @Override
