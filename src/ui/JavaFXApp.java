@@ -39,6 +39,8 @@ public class JavaFXApp extends Application implements ApplicationI {
     private BorderPane borderPane;
     private ImageView trashImage;
 
+    private boolean fromToolbar = false;
+
     // Temporary
     private Rectangle rec;
     private Group grp;
@@ -137,7 +139,7 @@ public class JavaFXApp extends Application implements ApplicationI {
 
         //Toolbar root
         this.borderPane = new BorderPane();
-        //borderPane.setPrefHeight(WINDOW_HEIGHT);
+        borderPane.setMaxHeight(WINDOW_HEIGHT - OPTION_HEIGHT);
         borderPane.setPrefWidth(TOOLBAR_WIDTH);
         borderPane.setStyle("-fx-background-color: lightgray");
         // Toolbar
@@ -145,7 +147,8 @@ public class JavaFXApp extends Application implements ApplicationI {
         toolbarBox.setPadding(new Insets(TOOLBAR_SPACING));
         toolbarBox.setAlignment(Pos.BASELINE_CENTER);
         toolbarBox.setSpacing(TOOLBAR_SPACING);
-        borderPane.setTop(toolbarBox);
+        //toolbarBox.setPrefHeight(WINDOW_HEIGHT);
+        borderPane.setCenter(toolbarBox);
 
         //trash
         //TODO refacto
@@ -207,6 +210,7 @@ public class JavaFXApp extends Application implements ApplicationI {
             System.out.println("[TOOLBAR] Drag detected");
             // Start drag event
             toolbarBox.startFullDrag();
+            fromToolbar = true;
 
             // Detect left click
             if (event.getButton() == MouseButton.PRIMARY) {
@@ -221,38 +225,48 @@ public class JavaFXApp extends Application implements ApplicationI {
                 }
             }
         });
+
         // Empty
         toolbarBox.setOnMouseDragged(event -> {
             //TODO display shape
         });
-        // Empty
-        toolbarBox.setOnMouseDragReleased(event -> {
-            System.out.println("[TOOLBAR] Drag released");
-        });
 
         borderPane.setOnMouseDragReleased(event -> {
             System.out.println("[BORDERPANE] Drag released");
-        });
-
-        borderPane.setOnMouseReleased(mouseEvent -> {
-            System.out.println("[BORDERPANE] Mouse released");
 
             // Detect left click
-            if (mouseEvent.getButton() == MouseButton.PRIMARY) {
-                // If release over trash --> deleted selected shape
-                if (mouseEvent.getPickResult().getIntersectedNode() == this.trashImage) {
-                    editor.removeShapeFromToolbar(editor.getShapeDragged());
-                    editor.removeShapeFromScene((ShapeObservable) editor.getShapeDragged());
+            if (event.getButton() == MouseButton.PRIMARY) {
+                if (editor.getShapeDragged() != null) {
+                    Node intersectedNode = event.getPickResult().getIntersectedNode();
+
+                    // If release over trash --> delete selected shape
+                    if (intersectedNode == this.trashImage) {
+                        editor.removeShapeFromToolbar(editor.getShapeDragged());
+                        editor.removeShapeFromScene((ShapeObservable) editor.getShapeDragged());
+                    }
+                    // If release over toolbar --> add shape to toolbar
+                    else if (intersectedNode == this.toolbarBox) {
+                        try {
+                            // Clone the shape and paste it to the toolbar
+                            Shape newShape = editor.getShapeDragged().clone();
+                            editor.addShapeToToolbar(newShape);
+                            System.out.println(newShape);
+                        } catch (CloneNotSupportedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    editor.setShapeDragged(null);
                 }
             }
         });
     }
 
     private void setSceneEvents() {
-        // Empty
         root.setOnDragDetected(event -> {
-            root.startFullDrag();
             System.out.println("[ROOT] Drag detected");
+            root.startFullDrag();
+            fromToolbar = false;
         });
 
         root.setOnMouseDragged(event -> {
@@ -292,16 +306,19 @@ public class JavaFXApp extends Application implements ApplicationI {
             System.out.println("[ROOT] Drag released");
 
             // If there is a shape dragged
-            if (editor.getShapeDragged() != null)
+            if (editor.getShapeDragged() != null && fromToolbar) {
                 try {
                     // Clone the shape and paste it to the scene
                     Shape newShape = editor.getShapeDragged().clone();
                     newShape.setPosition(new Point2D(event.getX(), event.getY()));
                     editor.addShapeToScene((ShapeObservable) newShape);
-                    editor.setShapeDragged(null);
+                    System.out.println(newShape);
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
                 }
+
+                editor.setShapeDragged(null);
+            }
         });
 
         root.setOnMousePressed(event -> {
