@@ -3,6 +3,8 @@ package ui;
 import editor.Editor;
 import editor.ShapeI;
 import editor.Shape;
+import editor.ShapeGroup;
+import editor.ShapeObservable;
 import editor.edition.EditionDialogI;
 import editor.utils.Point2D;
 import javafx.application.Application;
@@ -30,8 +32,8 @@ import java.util.Arrays;
 
 public class JavaFXApp extends Application implements ApplicationI {
 
-    private Rendering rendering;
     private Editor editor;
+    private Rendering rendering;
 
     private Group root;
     private VBox toolbarBox;

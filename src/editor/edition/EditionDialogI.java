@@ -9,4 +9,5 @@ public interface EditionDialogI {
     void setPosition(Point2D position);
     Point2D getPosition();
     ShapeI getTarget();
+    void applyEdition();
 }

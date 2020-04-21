@@ -71,6 +71,13 @@ public class Polygon extends SimpleShape {
     public void setSideLength(double sideLength) {
         this.sideLength = sideLength;
         computeRadius();
+        notifyObservers();
+    }
+
+    public void setNbSides(int nbsides){
+        this.nbSides = nbsides;
+        computeRadius();
+        notifyObservers();
     }
 
     @Override

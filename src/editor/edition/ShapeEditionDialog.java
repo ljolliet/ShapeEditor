@@ -6,10 +6,18 @@ import editor.utils.Point2D;
 
 public abstract class ShapeEditionDialog implements  EditionDialogI{
     private Point2D position;
+    public double posX;
+    public double posY;
+    public Color color;
+    public double rotation;
     private final ShapeI target;
 
     public ShapeEditionDialog(ShapeI shape) {
         this.target = shape;
+        this.posX = shape.getPosition().x;
+        this.posY = shape.getPosition().y;
+        this.color = shape.getColor();
+        this.rotation = shape.getRotation();
     }
 
     @Override

@@ -2,7 +2,6 @@ package ui;
 
 import editor.Polygon;
 import editor.Rectangle;
-import editor.ShapeI;
 import editor.ShapeGroup;
 import editor.edition.PolygonEditionDialog;
 import editor.edition.RectangleEditionDialog;
@@ -22,10 +21,12 @@ public interface Rendering {
 
     Object getShadowShape(ShapeI shape);
 
-    void setEditionDialog(ShapeEditionDialog polED);
-    void setEditionDialog(ShapeGroup polED);
-    void setEditionDialog(RectangleEditionDialog recED);
-    void setEditionDialog(PolygonEditionDialog polED);
+    void setEditionGridPane(ShapeEditionDialog shapeED);
+    void setEditionGridPane(ShapeGroup polED);
+    void setEditionGridPane(PolygonEditionDialog polED);
+    void setEditionGridPane(RectangleEditionDialog recED);
     void showEditionDialog(Point2D position);
     void hideEditionDialog();
+    void setRectangleGridPane(RectangleEditionDialog recED);
+    void setPolygonGridPane(PolygonEditionDialog polED);
 }
