@@ -214,7 +214,6 @@ public class JFxRendering implements Rendering {
         editGridPane.add(buttonCancel, 4, 6);
     }
 
-    /*   rectangle grid pane   */
     @Override
     public void setRectangleGridPane(RectangleEditionDialog recED){
         editGridPane.getChildren().clear();
@@ -241,7 +240,9 @@ public class JFxRendering implements Rendering {
         editStage.showAndWait();
     }
 
-    /*    Shapes    */
+    ///////////////////////////
+    //         Shape         //
+    ///////////////////////////
     private void addColorToGridPane(ShapeEditionDialog shapeED) {
         final editor.utils.Color originalColor = shapeED.getTarget().getColor();
         final ColorPicker colorPicker = new ColorPicker(Color.rgb(originalColor.r, originalColor.g, originalColor.b));
@@ -337,11 +338,8 @@ public class JFxRendering implements Rendering {
     }
 
     ///////////////////////////
-    //         Shape         //
+    //        Polygon        //
     ///////////////////////////
-
-
-
 
     private void addSideLenghtGridPane(PolygonEditionDialog polED) {
         final Spinner<Double> spinner = new Spinner<>();

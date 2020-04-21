@@ -3,6 +3,7 @@ package ui;
 import editor.Polygon;
 import editor.Rectangle;
 import editor.ShapeGroup;
+import editor.ShapeI;
 import editor.edition.PolygonEditionDialog;
 import editor.edition.RectangleEditionDialog;
 import editor.edition.ShapeEditionDialog;

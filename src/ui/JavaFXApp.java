@@ -3,8 +3,6 @@ package ui;
 import editor.Editor;
 import editor.ShapeI;
 import editor.Shape;
-import editor.ShapeGroup;
-import editor.ShapeObservable;
 import editor.edition.EditionDialogI;
 import editor.utils.Point2D;
 import javafx.application.Application;
