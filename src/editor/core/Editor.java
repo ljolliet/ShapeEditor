@@ -50,33 +50,21 @@ public class Editor extends Observable implements Originator {
     public void addShapeToScene(Shape shape) {
         this.scene.addShape(shape);
         shape.addObserver(this.observer);
-
-        if (this.rendering != null)
-            this.rendering.drawEditor();
         notifyObservers();
     }
 
     public void removeShapeFromScene(Shape s) {
         this.scene.removeShape(s);
-
-        if (this.rendering != null)
-            this.rendering.drawEditor();
         notifyObservers();
     }
 
     public void addShapeToToolbar(ShapeI shape) {
         this.toolbar.addShape(shape);
-
-        if (this.rendering != null)
-            this.rendering.drawEditor();
         notifyObservers();
     }
 
     public void removeShapeFromToolbar(ShapeI s) {
         this.toolbar.removeShape(s);
-
-        if (this.rendering != null)
-            this.rendering.drawEditor();
         notifyObservers();
     }
 
@@ -152,5 +140,13 @@ public class Editor extends Observable implements Originator {
 
     public void setShapeDragged(ShapeI shapeDragged) {
         this.shapeDragged = shapeDragged;
+    }
+
+    public boolean toolbarContains(ShapeI shape) {
+        return this.toolbar.contains(shape);
+    }
+
+    public boolean sceneContains(ShapeI shape) {
+        return this.scene.contains(shape);
     }
 }

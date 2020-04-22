@@ -36,4 +36,8 @@ public class Toolbar {
     public void setShapes(List<ShapeI> shapes) {
         this.shapes = shapes;
     }
+
+    public boolean contains(ShapeI shape) {
+        return this.shapes.contains(shape);
+    }
 }

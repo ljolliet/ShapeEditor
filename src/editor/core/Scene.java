@@ -1,6 +1,7 @@
 package editor.core;
 
 import editor.shapes.Shape;
+import editor.shapes.ShapeI;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -37,5 +38,9 @@ public class Scene implements Serializable {
 
     public void setShapes(List<Shape> shapes) {
         this.shapes = shapes;
+    }
+
+    public boolean contains(ShapeI shape) {
+        return this.shapes.contains(shape);
     }
 }

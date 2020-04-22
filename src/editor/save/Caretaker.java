@@ -6,7 +6,7 @@ import java.util.List;
 public class Caretaker{
 
     private final int sizeLimit;
-    private List<Memento> mementoHistory;
+    private final List<Memento> mementoHistory;
     private int currentMementoIndex = -1;
 
     public Caretaker (int sizeLimit){
@@ -18,7 +18,7 @@ public class Caretaker{
         if(mementoHistory.size() == sizeLimit)
             mementoHistory.remove(mementoHistory.get(0));
         else if(currentMementoIndex < mementoHistory.size() - 1)
-            for(int i = currentMementoIndex; i< mementoHistory.size(); i++)
+            for(int i = currentMementoIndex + 1; i< mementoHistory.size(); i++)
                 this.mementoHistory.remove(mementoHistory.get(i));
         this.mementoHistory.add(m);
         currentMementoIndex = mementoHistory.size() - 1;
@@ -48,5 +48,9 @@ public class Caretaker{
 
     public int getHistorySize() {
         return this.mementoHistory.size();
+    }
+
+    public boolean contains(Memento m) {
+        return mementoHistory.contains(m);
     }
 }

@@ -4,6 +4,7 @@ import editor.core.Editor;
 import editor.shapes.ShapeI;
 import editor.shapes.Shape;
 import editor.edition.EditionDialogI;
+import editor.utils.EditorManagementException;
 import editor.utils.Point2D;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -261,8 +262,12 @@ public class JavaFXApp extends Application implements ApplicationI {
 
                     // If release over trash --> delete selected shape
                     if (intersectedNode == this.trashImage) {
-                        editor.removeShapeFromToolbar(editor.getShapeDragged());
-                        editor.removeShapeFromScene((Shape) editor.getShapeDragged());
+                        if(editor.toolbarContains(editor.getShapeDragged()))
+                            editor.removeShapeFromToolbar(editor.getShapeDragged());
+                        else if(editor.sceneContains(editor.getShapeDragged()) )
+                            editor.removeShapeFromScene((Shape) editor.getShapeDragged());
+                        else
+                            throw new EditorManagementException("Trying to delete an unknown shape");
                     }
                     // If release over toolbar --> add shape to toolbar
                     else if (intersectedNode == this.toolbarBox) {
@@ -328,7 +333,7 @@ public class JavaFXApp extends Application implements ApplicationI {
                 // Else --> update position
                 else {
                     editor.getShapeDragged().setPosition(new Point2D(event.getX() + shadowShapeThreshold.x,
-                                                                    event.getY() + shadowShapeThreshold.y));
+                            event.getY() + shadowShapeThreshold.y));
                 }
 
                 editor.setShapeDragged(null);
@@ -350,7 +355,7 @@ public class JavaFXApp extends Application implements ApplicationI {
                         // Create shadow shape with dragged shape
                         shadowShape = (javafx.scene.shape.Shape) rendering.getShadowShape(s);
                         shadowShapeThreshold = new Point2D(s.getPosition().x - event.getX(),
-                                                            s.getPosition().y - event.getY());
+                                s.getPosition().y - event.getY());
 
                         shadowGroup.setCursor(Cursor.CLOSED_HAND);
                         editor.setShapeDragged(s);
