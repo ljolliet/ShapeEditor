@@ -1,4 +1,6 @@
-package editor;
+package editor.observer;
+
+import editor.core.Editor;
 
 import java.io.Serializable;
 

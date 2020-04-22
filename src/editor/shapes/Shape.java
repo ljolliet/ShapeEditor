@@ -1,4 +1,6 @@
-package editor;
+package editor.shapes;
+
+import editor.observer.Observable;
 
 public abstract class Shape extends Observable implements ShapeI {
 

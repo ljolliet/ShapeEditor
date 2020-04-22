@@ -1,7 +1,6 @@
 package editor.edition;
 
-import editor.Polygon;
-import editor.utils.Color;
+import editor.shapes.Polygon;
 import editor.utils.Point2D;
 import ui.Rendering;
 

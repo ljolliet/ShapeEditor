@@ -1,4 +1,4 @@
-package editor;
+package editor.shapes;
 
 import editor.edition.EditionDialogI;
 import editor.utils.Color;

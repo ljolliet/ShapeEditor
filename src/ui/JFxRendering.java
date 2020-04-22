@@ -1,6 +1,7 @@
 package ui;
 
-import editor.*;
+import editor.core.Editor;
+import editor.shapes.*;
 import editor.edition.PolygonEditionDialog;
 import editor.edition.RectangleEditionDialog;
 import editor.edition.ShapeEditionDialog;
@@ -16,8 +17,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
-
-import javax.swing.*;
 
 
 public class JFxRendering implements Rendering {

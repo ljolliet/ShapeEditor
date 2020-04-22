@@ -1,5 +1,10 @@
-package editor;
+package editor.core;
 
+import editor.shapes.Shape;
+import editor.shapes.ShapeI;
+import editor.observer.Observable;
+import editor.observer.Observer;
+import editor.observer.ShapeObserver;
 import editor.save.Caretaker;
 import editor.save.EditorMemento;
 import editor.save.Memento;

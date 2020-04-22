@@ -1,4 +1,4 @@
-package editor;
+package editor.shapes;
 
 import editor.utils.*;
 

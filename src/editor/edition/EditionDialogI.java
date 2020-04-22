@@ -1,6 +1,6 @@
 package editor.edition;
 
-import editor.ShapeI;
+import editor.shapes.ShapeI;
 import editor.utils.Point2D;
 import ui.Rendering;
 

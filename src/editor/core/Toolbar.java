@@ -1,5 +1,8 @@
-package editor;
+package editor.core;
 
+import editor.shapes.Polygon;
+import editor.shapes.Rectangle;
+import editor.shapes.ShapeI;
 import editor.utils.Color;
 import editor.utils.Point2D;
 

@@ -1,4 +1,4 @@
-package editor;
+package editor.shapes;
 
 import editor.utils.Color;
 import editor.utils.Point2D;
