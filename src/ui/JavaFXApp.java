@@ -42,6 +42,7 @@ public class JavaFXApp extends Application implements ApplicationI {
 
     private javafx.scene.shape.Shape shadowShape;
     private Group shadowGroup;
+    private Point2D shadowShapeThreshold = new Point2D(0,0);
 
     @Override
     public void start(Stage primaryStage) {
@@ -180,8 +181,8 @@ public class JavaFXApp extends Application implements ApplicationI {
         stackPane.setOnMouseDragged(event -> {
             // Move shadow shape to mouse coords
             if (shadowShape != null) {
-                shadowShape.setTranslateX(event.getX());
-                shadowShape.setTranslateY(event.getY());
+                shadowShape.setTranslateX(event.getX() + shadowShapeThreshold.x);
+                shadowShape.setTranslateY(event.getY() + shadowShapeThreshold.y);
             }
         });
 
@@ -190,6 +191,8 @@ public class JavaFXApp extends Application implements ApplicationI {
             shadowGroup.getChildren().removeIf(node -> node instanceof javafx.scene.shape.Shape);
             // Bring editor to foreground
             shadowGroup.toBack();
+
+            shadowShapeThreshold = new Point2D(0, 0);
         });
 
 //          TODO : to group
@@ -324,7 +327,8 @@ public class JavaFXApp extends Application implements ApplicationI {
                 }
                 // Else --> update position
                 else {
-                    editor.getShapeDragged().setPosition(new Point2D(event.getX(), event.getY()));
+                    editor.getShapeDragged().setPosition(new Point2D(event.getX() + shadowShapeThreshold.x,
+                                                                    event.getY() + shadowShapeThreshold.y));
                 }
 
                 editor.setShapeDragged(null);
@@ -345,6 +349,8 @@ public class JavaFXApp extends Application implements ApplicationI {
                     if (s.contains(new Point2D(event.getX(), event.getY()))) { // Found
                         // Create shadow shape with dragged shape
                         shadowShape = (javafx.scene.shape.Shape) rendering.getShadowShape(s);
+                        shadowShapeThreshold = new Point2D(s.getPosition().x - event.getX(),
+                                                            s.getPosition().y - event.getY());
 
                         shadowGroup.setCursor(Cursor.CLOSED_HAND);
                         editor.setShapeDragged(s);
