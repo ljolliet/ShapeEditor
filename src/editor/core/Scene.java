@@ -1,4 +1,6 @@
-package editor;
+package editor.core;
+
+import editor.shapes.Shape;
 
 import java.io.Serializable;
 import java.util.ArrayList;

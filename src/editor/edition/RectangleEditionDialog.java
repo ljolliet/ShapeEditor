@@ -1,7 +1,6 @@
 package editor.edition;
 
-import editor.Rectangle;
-import editor.utils.Color;
+import editor.shapes.Rectangle;
 import editor.utils.Point2D;
 import ui.Rendering;
 

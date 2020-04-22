@@ -1,6 +1,6 @@
 package editor.save;
 
-import editor.Editor;
+import editor.core.Editor;
 
 public class EditorMemento implements Memento {
     private final String state;

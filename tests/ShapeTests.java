@@ -1,6 +1,6 @@
-import editor.ShapeFactory;
-import editor.ShapeGroup;
-import editor.ShapeI;
+import editor.shapes.ShapeFactory;
+import editor.shapes.ShapeGroup;
+import editor.shapes.ShapeI;
 import org.junit.Test;
 
 import static org.junit.Assert.assertNotEquals;

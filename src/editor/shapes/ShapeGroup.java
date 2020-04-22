@@ -1,4 +1,4 @@
-package editor;
+package editor.shapes;
 
 import editor.utils.Color;
 import editor.utils.Point2D;
@@ -10,7 +10,7 @@ import ui.Rendering;
 
 import java.util.*;
 
-public class ShapeGroup extends Shape{
+public class ShapeGroup extends Shape {
 
     private Set<ShapeI> shapes;
 
