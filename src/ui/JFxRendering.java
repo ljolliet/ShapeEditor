@@ -76,23 +76,13 @@ public class JFxRendering implements Rendering {
 
     @Override
     public void drawInScene(Rectangle r) {
-        javafx.scene.shape.Rectangle rectangle = createRectangle(r, r.getWidth(), r.getHeight());
-        // Set coords
-        rectangle.setX(r.getX());
-        rectangle.setY(r.getY());
-        // Set Translation
-        rectangle.setTranslateX(r.getTranslation().width);
-        rectangle.setTranslateY(r.getTranslation().height);
-
+        javafx.scene.shape.Rectangle rectangle = createSceneRectangle(r);
         root.getChildren().add(rectangle);
     }
 
     @Override
     public void drawInScene(Polygon p) {
-        javafx.scene.shape.Polygon polygon = createPolygon(p, p.getRadius());
-        // Set Translation
-        polygon.setTranslateX(p.getTranslation().width);
-        polygon.setTranslateY(p.getTranslation().height);
+        javafx.scene.shape.Polygon polygon = createScenePolygon(p);
 
         root.getChildren().add(polygon);
     }
@@ -102,13 +92,7 @@ public class JFxRendering implements Rendering {
         double max = Math.max(r.getHeight(), r.getWidth());
         double ratio = (ApplicationI.TOOLBAR_WIDTH / 2d) / max;
 
-        javafx.scene.shape.Rectangle rectangle = createRectangle(r, r.getWidth() * ratio, r.getHeight() * ratio);
-        // For toolbar, special rotation
-        rectangle.getTransforms().clear();
-        rectangle.setRotate(r.getRotation());
-        // Set border radius
-        rectangle.setArcWidth(r.getBorderRadius() * ratio);
-        rectangle.setArcHeight(r.getBorderRadius() * ratio);
+        javafx.scene.shape.Rectangle rectangle = createToolbarRectangle(r, ratio);
 
         toolbarBox.getChildren().add(rectangle);
     }
@@ -117,12 +101,17 @@ public class JFxRendering implements Rendering {
     public void drawInToolbar(Polygon p) {
         double radius = ApplicationI.TOOLBAR_WIDTH / 4d;
 
-        javafx.scene.shape.Polygon polygon = createPolygon(p, radius);
-        // For toolbar, special rotation
-        polygon.getTransforms().clear();
-        polygon.setRotate(p.getRotation());
+        javafx.scene.shape.Polygon polygon = createToolbarPolygon(p, radius);
 
         toolbarBox.getChildren().add(polygon);
+    }
+
+    @Override
+    public void drawInToolbar(ShapeGroup group) {
+        double max = Math.max(group.getHeight(), group.getWidth());
+        double ratio = (ApplicationI.TOOLBAR_WIDTH / 2d) / max;
+
+        // TODO
     }
 
     @Override
@@ -131,6 +120,8 @@ public class JFxRendering implements Rendering {
             return getShadowShape((Rectangle) shape);
         if (shape instanceof Polygon)
             return getShadowShape((Polygon) shape);
+//        if (shape instanceof ShapeGroup)
+//            return getShadowShape(shape.getChildren().iterator().next());
 
         return null;
     }
@@ -375,14 +366,9 @@ public class JFxRendering implements Rendering {
     ///////////////////////////
 
     private Object getShadowShape(Rectangle r) {
-        javafx.scene.shape.Rectangle rectangle = createRectangle(r, r.getWidth(), r.getHeight());
-        // For shadow shape, special rotation
-        rectangle.getTransforms().clear();
-        rectangle.setRotate(r.getRotation());
-        // Set border radius
-        rectangle.setArcWidth(r.getBorderRadius());
-        rectangle.setArcHeight(r.getBorderRadius());
-
+        javafx.scene.shape.Rectangle rectangle = createSceneRectangle(r);
+        rectangle.setX(0);
+        rectangle.setY(0);
         return rectangle;
     }
 
@@ -390,18 +376,13 @@ public class JFxRendering implements Rendering {
         p = new Polygon(p.getNbSides(), p.getSideLength(), new Point2D(0, 0),
                 p.getColor(), p.getRotationCenter(), p.getRotation());
 
-        javafx.scene.shape.Polygon polygon = createPolygon(p, p.getRadius());
-        // For shadow shape, special rotation
-        polygon.getTransforms().clear();
-        polygon.setRotate(p.getRotation());
-
-        return polygon;
+        return createScenePolygon(p);
     }
 
-    private javafx.scene.shape.Rectangle createRectangle(Rectangle r, double width, double height) {
+    private javafx.scene.shape.Rectangle createSceneRectangle(Rectangle r) {
         Editor editor = Editor.getInstance();
 
-        javafx.scene.shape.Rectangle rectangle = new javafx.scene.shape.Rectangle(width, height);
+        javafx.scene.shape.Rectangle rectangle = new javafx.scene.shape.Rectangle(r.getWidth(), r.getHeight());
 
         // Color
         Color color = Color.rgb(r.getColor().r, r.getColor().g, r.getColor().b);
@@ -421,14 +402,21 @@ public class JFxRendering implements Rendering {
         rectangle.setArcHeight(r.getBorderRadius());
         rectangle.setArcWidth(r.getBorderRadius());
 
+        // Set coords
+        rectangle.setX(r.getX());
+        rectangle.setY(r.getY());
+
+        // Set Translation
+        rectangle.setTranslateX(r.getTranslation().width);
+        rectangle.setTranslateY(r.getTranslation().height);
+
         return rectangle;
     }
 
-    private javafx.scene.shape.Polygon createPolygon(Polygon p, double radius) {
+    private javafx.scene.shape.Polygon createScenePolygon(Polygon p) {
         Editor editor = Editor.getInstance();
 
-        double[] points = getPolygonPoints(p.getPoints(radius), p.getNbSides());
-
+        double[] points = getPolygonPoints(p.getPoints(), p.getNbSides());
         javafx.scene.shape.Polygon polygon = new javafx.scene.shape.Polygon(points);
 
         // Color
@@ -444,6 +432,44 @@ public class JFxRendering implements Rendering {
         rotate.setPivotX(p.getX() + p.getRotationCenter().x);
         rotate.setPivotY(p.getY() + p.getRotationCenter().y);
         polygon.getTransforms().add(rotate);
+
+        // Translation
+        polygon.setTranslateX(p.getTranslation().width);
+        polygon.setTranslateY(p.getTranslation().height);
+
+        return polygon;
+    }
+
+    private javafx.scene.shape.Rectangle createToolbarRectangle(Rectangle r, double ratio) {
+        javafx.scene.shape.Rectangle rectangle =
+                new javafx.scene.shape.Rectangle(r.getWidth() * ratio, r.getHeight() * ratio);
+
+        // Color
+        Color color = Color.rgb(r.getColor().r, r.getColor().g, r.getColor().b);
+        rectangle.setFill(color);
+
+        // Rotation
+        rectangle.getTransforms().clear();
+        rectangle.setRotate(r.getRotation());
+
+        // Border radius
+        rectangle.setArcWidth(r.getBorderRadius() * ratio);
+        rectangle.setArcHeight(r.getBorderRadius() * ratio);
+
+        return rectangle;
+    }
+
+    private javafx.scene.shape.Polygon createToolbarPolygon(Polygon p, double radius) {
+        double[] points = getPolygonPoints(p.getPoints(radius), p.getNbSides());
+        javafx.scene.shape.Polygon polygon = new javafx.scene.shape.Polygon(points);
+
+        // Color
+        Color color = Color.rgb(p.getColor().r, p.getColor().g, p.getColor().b);
+        polygon.setFill(color);
+
+        // Rotation
+        polygon.getTransforms().clear();
+        polygon.setRotate(p.getRotation());
 
         return polygon;
     }

@@ -18,7 +18,7 @@ public class ShapeTests {
         groupClone.addShape(ShapeFactory.makePolygone(5));
         assertNotEquals(s1, s1.clone());
         assertNotEquals(group, groupClone);
-        assertNotEquals(group.getChild(), groupClone.getChild());
+        assertNotEquals(group.getChildren(), groupClone.getChildren());
     }
 
 }

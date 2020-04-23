@@ -19,7 +19,7 @@ public interface ShapeI extends Cloneable, Serializable {
 
     void addShape(ShapeI s);
     void removeShape(ShapeI s);
-    Set<ShapeI> getChild();
+    Set<ShapeI> getChildren();
     void setChild(Set<ShapeI> shapes);
     void collapse(); // to collapse a group
 

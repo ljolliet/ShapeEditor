@@ -29,7 +29,7 @@ public class ShapeGroup extends Shape {
     }
 
     @Override
-    public Set<ShapeI> getChild() {
+    public Set<ShapeI> getChildren() {
         return new HashSet<>(shapes);
     }
 
@@ -46,7 +46,7 @@ public class ShapeGroup extends Shape {
     @Override
     public ShapeI clone() throws CloneNotSupportedException {
         ShapeI c = (ShapeI)super.clone();
-        c.setChild(new HashSet<>(this.getChild()));
+        c.setChild(new HashSet<>(this.getChildren()));
         return c;
     }
 
@@ -58,8 +58,7 @@ public class ShapeGroup extends Shape {
 
     @Override
     public void drawInToolbar(Rendering rendering) {
-        for(ShapeI s : shapes)
-            s.drawInToolbar(rendering);
+        rendering.drawInToolbar(this);
     }
 
     /**
@@ -142,6 +141,34 @@ public class ShapeGroup extends Shape {
         }
 
         return new Point2D((minX + maxX) / 2, (minY + maxY) / 2);
+    }
+
+    public double getWidth() {
+        double minX = 0;
+        double maxX = ApplicationI.SCENE_WIDTH;
+
+        for (ShapeI s: shapes) {
+            for (Point2D point : s.getPoints()) {
+                minX = Math.min(minX, point.x);
+                maxX = Math.min(maxX, point.x);
+            }
+        }
+
+        return maxX - minX;
+    }
+
+    public double getHeight() {
+        double minY = 0;
+        double maxY = ApplicationI.SCENE_HEIGHT;
+
+        for (ShapeI s: shapes) {
+            for (Point2D point : s.getPoints()) {
+                minY = Math.min(minY, point.y);
+                maxY = Math.min(maxY, point.y);
+            }
+        }
+
+        return maxY - minY;
     }
 
     /*

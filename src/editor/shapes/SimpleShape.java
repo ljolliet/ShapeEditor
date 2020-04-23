@@ -21,7 +21,7 @@ public abstract class SimpleShape extends Shape {
     }
 
     @Override
-    public Set<ShapeI> getChild() {
+    public Set<ShapeI> getChildren() {
         return null;
     }
 

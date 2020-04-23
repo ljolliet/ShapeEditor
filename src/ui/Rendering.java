@@ -19,6 +19,7 @@ public interface Rendering {
 
     void drawInToolbar(Rectangle rectangle);
     void drawInToolbar(Polygon polygon);
+    void drawInToolbar(ShapeGroup group);
 
     Object getShadowShape(ShapeI shape);
 

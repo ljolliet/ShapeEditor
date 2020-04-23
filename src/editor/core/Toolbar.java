@@ -1,8 +1,6 @@
 package editor.core;
 
-import editor.shapes.Polygon;
-import editor.shapes.Rectangle;
-import editor.shapes.ShapeI;
+import editor.shapes.*;
 import editor.utils.Color;
 import editor.utils.Point2D;
 
@@ -16,7 +14,13 @@ public class Toolbar {
     public Toolbar() {
         this.shapes = new ArrayList<>();
 
-        addShape(new Rectangle(100, 50, 20,  new Point2D(0,0), new Color(55,55,255), new Point2D(50,25), 0));
+        Shape group = new ShapeGroup();
+        Shape rec1 = new Rectangle(100, 50, 20,  new Point2D(0,0), new Color(55,55,255), new Point2D(50,25), 0);
+        Shape rec2 = new Rectangle(100, 50, 20,  new Point2D(0,0), new Color(55,255,55), new Point2D(50,25), 0);
+        group.addShape(rec1);
+        group.addShape(rec2);
+
+        //addShape(group);
         addShape(new Rectangle(100, 50, 0,  new Point2D(0,0), new Color(55,255,255), new Point2D(50,25), 0));
         addShape(new Polygon(6, 50,  new Point2D(0,0), new Color(255,55,55), new Point2D(0,0), 90));
     }
