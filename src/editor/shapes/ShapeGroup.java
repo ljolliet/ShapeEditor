@@ -39,11 +39,6 @@ public class ShapeGroup extends Shape {
     }
 
     @Override
-    public void collapse() {
-        //TODO how to collapse a group ?
-    }
-
-    @Override
     public ShapeI clone() throws CloneNotSupportedException {
         ShapeI c = (ShapeI)super.clone();
         c.setChild(new HashSet<>(this.getChildren()));

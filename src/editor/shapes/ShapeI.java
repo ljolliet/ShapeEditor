@@ -21,12 +21,11 @@ public interface ShapeI extends Cloneable, Serializable {
     void removeShape(ShapeI s);
     Set<ShapeI> getChildren();
     void setChild(Set<ShapeI> shapes);
-    void collapse(); // to collapse a group
 
     ShapeI clone() throws CloneNotSupportedException;
     void drawInScene(Rendering rendering);
-
     void drawInToolbar(Rendering rendering);
+
     boolean contains(Point2D position);
     boolean contained(SelectionShape s);
 
@@ -35,16 +34,14 @@ public interface ShapeI extends Cloneable, Serializable {
     void setColor(Color color);
     void setRotation(double angle);
     void setRotationCenter(Point2D pos);
-
     void setTranslation(Vec2D translation);
+
     Point2D getPosition();
     Color getColor();
     double getRotation();
     Point2D getRotationCenter();
-
     Vec2D getTranslation();
 
     EditionDialogI createEditionDialog();
 
-    //TODO add Memento
 }

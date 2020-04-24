@@ -27,7 +27,7 @@ public abstract class SimpleShape extends Shape {
 
     @Override
     public void setChild(Set<ShapeI> shapes) {
-        //TODO throw exception
+        throw new ShapeException("A simple shape has no children");
     }
 
     @Override
@@ -38,11 +38,6 @@ public abstract class SimpleShape extends Shape {
     @Override
     public void removeShape(ShapeI s) {
         throw new ShapeException("Cannot remove a shape to a SimpleShape");
-    }
-
-    @Override
-    public void collapse() {
-        throw new ShapeException("Cannot collapse a SimpleShape");
     }
 
     @Override

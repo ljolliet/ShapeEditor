@@ -1,10 +1,10 @@
 package ui;
 
 import editor.core.Editor;
-import editor.shapes.*;
 import editor.edition.PolygonEditionDialog;
 import editor.edition.RectangleEditionDialog;
 import editor.edition.ShapeEditionDialog;
+import editor.shapes.*;
 import editor.utils.Point2D;
 import editor.utils.SelectionRectangle;
 import javafx.geometry.Insets;
@@ -169,6 +169,20 @@ public class JFxRendering implements Rendering {
         contextMenu.getItems().add(edit);
     }
 
+    private void addGroupToDialog(ShapeEditionDialog shapeED){
+        contextMenu.getItems().clear();
+        MenuItem groupShape = new MenuItem("Group");
+        Editor editor = Editor.getInstance();
+        groupShape.setOnAction(e -> {
+            Shape group = new ShapeGroup();
+            for(Shape s : editor.getScene().getSelectedShapes()){
+                group.addShape(s);
+                editor.removeShapeFromScene(s);
+            }
+            editor.addShapeToScene(group);
+        });
+    }
+
     private void addEditToDialog(PolygonEditionDialog polED){
         contextMenu.getItems().clear();
         final MenuItem edit = new MenuItem("Edit");
@@ -250,7 +264,7 @@ public class JFxRendering implements Rendering {
         spinnerX.setMaxWidth(75);
         spinnerX.setEditable(true);
         final double initialValueX = shapeED.getTarget().getPosition().x;
-        final double maxValueX = ApplicationI.SCENE_WIDTH;//TODO - shapeED.getTarget().getWidth();
+        final double maxValueX = ApplicationI.SCENE_WIDTH;
         spinnerX.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0., maxValueX, initialValueX));
         spinnerX.valueProperty().addListener((obs, oldValue, newValue) ->
                 shapeED.posX = newValue);
@@ -259,7 +273,7 @@ public class JFxRendering implements Rendering {
         spinnerY.setMaxWidth(75);
         spinnerY.setEditable(true);
         final double initialValueY = shapeED.getTarget().getPosition().y;
-        final double maxValueY = ApplicationI.SCENE_WIDTH; //TODO  - shapeED.getTarget().getWidth();
+        final double maxValueY = ApplicationI.SCENE_WIDTH;
         spinnerY.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0., maxValueY, initialValueY));
         spinnerX.valueProperty().addListener((obs, oldValue, newValue) ->
                 shapeED.posY = newValue);
