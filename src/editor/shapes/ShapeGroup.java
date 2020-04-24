@@ -122,9 +122,9 @@ public class ShapeGroup extends Shape {
 
     @Override
     public Point2D getPosition() {
-        double minX = 0, minY = 0,
-                maxX = ApplicationI.SCENE_WIDTH,
-                maxY = ApplicationI.SCENE_HEIGHT;
+        double maxX = 0, maxY = 0,
+                minX = ApplicationI.SCENE_WIDTH,
+                minY = ApplicationI.SCENE_HEIGHT;
 
         for (ShapeI s: shapes) {
             for (Point2D point: s.getPoints()) {
@@ -139,8 +139,8 @@ public class ShapeGroup extends Shape {
     }
 
     public double getWidth() {
-        double minX = 0;
-        double maxX = ApplicationI.SCENE_WIDTH;
+        double maxX = 0;
+        double minX = ApplicationI.SCENE_WIDTH;
 
         for (ShapeI s: shapes) {
             for (Point2D point : s.getPoints()) {
@@ -153,8 +153,8 @@ public class ShapeGroup extends Shape {
     }
 
     public double getHeight() {
-        double minY = 0;
-        double maxY = ApplicationI.SCENE_HEIGHT;
+        double maxY = 0;
+        double minY = ApplicationI.SCENE_HEIGHT;
 
         for (ShapeI s: shapes) {
             for (Point2D point : s.getPoints()) {
