@@ -42,7 +42,7 @@ public abstract class SimpleShape extends Shape {
 
     @Override
     public ShapeI clone() throws CloneNotSupportedException {
-        return (ShapeI)super.clone();
+        return super.clone();
     }
 
     @Override

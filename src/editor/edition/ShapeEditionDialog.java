@@ -3,8 +3,9 @@ package editor.edition;
 import editor.shapes.ShapeI;
 import editor.utils.Color;
 import editor.utils.Point2D;
+import ui.Rendering;
 
-public abstract class ShapeEditionDialog implements  EditionDialogI{
+public class ShapeEditionDialog implements  EditionDialogI{
     private Point2D position;
     public double posX;
     public double posY;
@@ -21,6 +22,11 @@ public abstract class ShapeEditionDialog implements  EditionDialogI{
     }
 
     @Override
+    public void draw(Rendering rendering) {
+        //TODO
+    }
+
+    @Override
     public void setPosition(Point2D position) {
         this.position = position;
     }
@@ -33,6 +39,11 @@ public abstract class ShapeEditionDialog implements  EditionDialogI{
     @Override
     public ShapeI getTarget(){
         return this.target;
+    }
+
+    @Override
+    public void applyEdition() {
+        //TODO
     }
 
     public void setColor(Color c){

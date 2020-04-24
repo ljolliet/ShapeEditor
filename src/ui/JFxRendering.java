@@ -127,13 +127,13 @@ public class JFxRendering implements Rendering {
     }
 
     @Override
-    public void setEditionGridPane(ShapeEditionDialog shapeED) {
+    public void setEditionDialog(ShapeEditionDialog shapeED) {
         addColorToGridPane(shapeED);
         addPositionToGridPane(shapeED);
         addRotationToGridPane(shapeED);
     }
     @Override
-    public void setEditionGridPane(RectangleEditionDialog recED) {
+    public void setEditionDialog(RectangleEditionDialog recED) {
         addWidthToGridPane(recED);
         addHeightToGridPane(recED);
         addBorderRadiusGridPane(recED);
@@ -141,14 +141,14 @@ public class JFxRendering implements Rendering {
     }
 
     @Override
-    public void setEditionGridPane(PolygonEditionDialog polED) {
+    public void setEditionDialog(PolygonEditionDialog polED) {
         addSideLenghtGridPane(polED);
         addNbSideGridPane(polED);
         addEditToDialog(polED);
     }
 
     @Override
-    public void setEditionGridPane(ShapeGroup polED) {
+    public void setEditionDialog(ShapeGroup polED) {
 
     }
 
@@ -165,11 +165,11 @@ public class JFxRendering implements Rendering {
     private void addEditToDialog(RectangleEditionDialog recED){
         contextMenu.getItems().clear();
         final MenuItem edit = new MenuItem("Edit");
-        edit.setOnAction(event -> setRectangleGridPane(recED));
+        edit.setOnAction(event -> setRectangleDialog(recED));
         contextMenu.getItems().add(edit);
     }
 
-    private void addGroupToDialog(ShapeEditionDialog shapeED){
+    private void addGroupToDialog(){
         contextMenu.getItems().clear();
         MenuItem groupShape = new MenuItem("Group");
         Editor editor = Editor.getInstance();
@@ -181,12 +181,14 @@ public class JFxRendering implements Rendering {
             }
             editor.addShapeToScene(group);
         });
+        contextMenu.getItems().add(groupShape);
+
     }
 
     private void addEditToDialog(PolygonEditionDialog polED){
         contextMenu.getItems().clear();
         final MenuItem edit = new MenuItem("Edit");
-        edit.setOnAction(event -> setPolygonGridPane(polED));
+        edit.setOnAction(event -> setPolygonDialog(polED));
         contextMenu.getItems().add(edit);
     }
 
@@ -219,11 +221,11 @@ public class JFxRendering implements Rendering {
     }
 
     @Override
-    public void setRectangleGridPane(RectangleEditionDialog recED){
+    public void setRectangleDialog(RectangleEditionDialog recED){
         editGridPane.getChildren().clear();
         setGridPane(recED);
-        setEditionGridPane((ShapeEditionDialog)recED);
-        setEditionGridPane(recED);
+        setEditionDialog((ShapeEditionDialog)recED);
+        setEditionDialog(recED);
 
         //Show gridpane
         editStage.setTitle("Rectangle Edition");
@@ -232,16 +234,22 @@ public class JFxRendering implements Rendering {
     }
 
     @Override
-    public void setPolygonGridPane(PolygonEditionDialog polED){
+    public void setPolygonDialog(PolygonEditionDialog polED){
         editGridPane.getChildren().clear();
         setGridPane(polED);
-        setEditionGridPane((ShapeEditionDialog)polED);
-        setEditionGridPane(polED);
+        setEditionDialog((ShapeEditionDialog)polED);
+        setEditionDialog(polED);
 
         //Show gridpane
         editStage.setTitle("Polygon Edition");
         editStage.setScene(editScene);
         editStage.showAndWait();
+    }
+
+    @Override
+    public void showGroupDialog(Point2D position) {
+        addGroupToDialog();
+        this.showEditionDialog(position);
     }
 
     ///////////////////////////

@@ -1,9 +1,9 @@
 package ui;
 
 import editor.core.Editor;
-import editor.shapes.ShapeI;
-import editor.shapes.Shape;
 import editor.edition.EditionDialogI;
+import editor.shapes.Shape;
+import editor.shapes.ShapeI;
 import editor.utils.EditorManagementException;
 import editor.utils.Point2D;
 import javafx.application.Application;
@@ -196,17 +196,6 @@ public class JavaFXApp extends Application implements ApplicationI {
             shadowShapeThreshold = new Point2D(0, 0);
         });
 
-//          TODO : to group
-//        MenuItem groupShape = new MenuItem("Group");
-//        groupShape.setOnAction(e -> {
-//            ShapeObservable group = new ShapeGroup();
-//            for(ShapeObservable s : editor.getScene().getSelectedShapes()){
-//                group.addShape(s);
-//                editor.removeShapeToScene(s);
-//            }
-//            editor.addShapeInScene(group);
-//        });
-
         // Set rendering
         rendering = new JFxRendering(toolbarBox, root);
         editor.setRendering(rendering);
@@ -245,11 +234,6 @@ public class JavaFXApp extends Application implements ApplicationI {
                     i++;
                 }
             }
-        });
-
-        // Empty
-        toolbarBox.setOnMouseDragged(event -> {
-            //TODO display shape
         });
 
         borderPane.setOnMouseDragReleased(event -> {
@@ -393,6 +377,7 @@ public class JavaFXApp extends Application implements ApplicationI {
                     editor.getScene().setSelectedShapes(selectedShapes);
                 }
 
+
                 shadowGroup.setCursor(Cursor.DEFAULT);
                 editor.setShapeDragged(null);
                 rendering.drawEditor();
@@ -408,8 +393,8 @@ public class JavaFXApp extends Application implements ApplicationI {
             // Detect right click
             if (e.getButton() == MouseButton.SECONDARY) {
                 // Click on a selection
-                if (editor.getScene().getSelectedShapes().size() != 0) {
-                    System.out.println("right click on selection");
+                if (editor.getScene().getSelectedShapes().size() > 1) {
+                   // rendering.showGroupDialog(new Point2D(e.getScreenX(), e.getScreenY()));    //TODO Refacto
                 }
                 // Click on a single shape
                 else {

@@ -23,12 +23,16 @@ public interface Rendering {
 
     Object getShadowShape(ShapeI shape);
 
-    void setEditionGridPane(ShapeEditionDialog shapeED);
-    void setEditionGridPane(ShapeGroup polED);
-    void setEditionGridPane(PolygonEditionDialog polED);
-    void setEditionGridPane(RectangleEditionDialog recED);
+    void setEditionDialog(ShapeEditionDialog shapeED);
+    void setEditionDialog(ShapeGroup polED);
+    void setEditionDialog(PolygonEditionDialog polED);
+    void setEditionDialog(RectangleEditionDialog recED);
+
     void showEditionDialog(Point2D position);
     void hideEditionDialog();
-    void setRectangleGridPane(RectangleEditionDialog recED);
-    void setPolygonGridPane(PolygonEditionDialog polED);
+
+    void setRectangleDialog(RectangleEditionDialog recED);
+    void setPolygonDialog(PolygonEditionDialog polED);
+
+    void showGroupDialog(Point2D position);
 }

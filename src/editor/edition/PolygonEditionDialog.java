@@ -8,22 +8,16 @@ public class PolygonEditionDialog extends ShapeEditionDialog {
     public int nbSides;
     public double sideLength;
 
-
     public PolygonEditionDialog(Polygon polygon) {
         super(polygon);
         this.nbSides = polygon.getNbSides();
         this.sideLength = polygon.getSideLength();
-
     }
 
     @Override
     public void draw(Rendering rendering) {
-        rendering.setEditionGridPane(this);
+        rendering.setEditionDialog(this);
         rendering.showEditionDialog(this.getPosition());
-    }
-
-    public Polygon getTarget() {
-        return (Polygon)super.getTarget();
     }
 
     @Override
@@ -33,6 +27,10 @@ public class PolygonEditionDialog extends ShapeEditionDialog {
         this.setPosition(new Point2D(this.posX, this.posY));
         this.setColor(this.color);
         this.setRotation(this.rotation);
+    }
+
+    public Polygon getTarget() {
+        return (Polygon)super.getTarget();
     }
 
     public void setNbSides(int nbSides) {
