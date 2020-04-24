@@ -380,10 +380,10 @@ public class JFxRendering implements Rendering {
     ///////////////////////////
 
     private Object getShadowShape(Rectangle r) {
-        javafx.scene.shape.Rectangle rectangle = createSceneRectangle(r);
-        rectangle.setX(0);
-        rectangle.setY(0);
-        return rectangle;
+        r = new Rectangle(r.getWidth(), r.getHeight(), r.getBorderRadius(), new Point2D(0, 0),
+                        r.getColor(), r.getRotationCenter(), r.getRotation());
+
+         return createSceneRectangle(r);
     }
 
     private Object getShadowShape(Polygon p) {
