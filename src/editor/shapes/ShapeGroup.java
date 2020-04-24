@@ -130,8 +130,8 @@ public class ShapeGroup extends Shape {
             for (Point2D point: s.getPoints()) {
                 minX = Math.min(minX, point.x);
                 minY = Math.min(minY, point.y);
-                maxX = Math.min(maxX, point.x);
-                maxY = Math.min(maxY, point.y);
+                maxX = Math.max(maxX, point.x);
+                maxY = Math.max(maxY, point.y);
             }
         }
 
@@ -145,7 +145,7 @@ public class ShapeGroup extends Shape {
         for (ShapeI s: shapes) {
             for (Point2D point : s.getPoints()) {
                 minX = Math.min(minX, point.x);
-                maxX = Math.min(maxX, point.x);
+                maxX = Math.max(maxX, point.x);
             }
         }
 
@@ -159,7 +159,7 @@ public class ShapeGroup extends Shape {
         for (ShapeI s: shapes) {
             for (Point2D point : s.getPoints()) {
                 minY = Math.min(minY, point.y);
-                maxY = Math.min(maxY, point.y);
+                maxY = Math.max(maxY, point.y);
             }
         }
 
