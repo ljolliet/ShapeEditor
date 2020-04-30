@@ -10,10 +10,9 @@ import editor.utils.SelectionRectangle;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
@@ -21,27 +20,34 @@ import javafx.stage.Stage;
 
 public class JFxRendering implements Rendering {
 
-    private VBox toolbarBox;
+    private GridPane toolbarBox;
+    private int toolbarRowCount;
+    private RowConstraints rowConstraints;
     private Group root;
     private ContextMenu contextMenu;
     private Stage editStage;
     private GridPane editGridPane;
     private Scene editScene;
 
-    JFxRendering(VBox toolbarBox, Group root) {
+    JFxRendering(GridPane toolbarBox, Group root) {
         this.toolbarBox = toolbarBox;
+        this.toolbarRowCount = 0;
+        this.rowConstraints = new RowConstraints(ApplicationI.TOOLBAR_CELL_HEIGHT);
         this.root = root;
         this.contextMenu = new ContextMenu();
         this.editGridPane = new GridPane();
         this.editStage = new Stage();
         this.editScene = new Scene(editGridPane);
-
     }
 
     private void init() {
         // Remove all shapes of the scene and of the toolbar
-        root.getChildren().removeIf(child -> child instanceof javafx.scene.shape.Shape);
-        toolbarBox.getChildren().removeIf(child -> child instanceof javafx.scene.shape.Shape);
+        //root.getChildren().removeIf(child -> child instanceof javafx.scene.shape.Shape);
+        //toolbarBox.getChildren().removeIf(child -> child instanceof javafx.scene.shape.Shape);
+        root.getChildren().removeIf(child -> !(child instanceof Canvas));
+        toolbarBox.getChildren().clear();
+        toolbarBox.getRowConstraints().clear();
+        toolbarRowCount = 0;
     }
 
     @Override
@@ -90,28 +96,55 @@ public class JFxRendering implements Rendering {
     @Override
     public void drawInToolbar(Rectangle r) {
         double max = Math.max(r.getHeight(), r.getWidth());
-        double ratio = (ApplicationI.TOOLBAR_WIDTH / 2d) / max;
+        double ratio = ApplicationI.TOOLBAR_CELL_HEIGHT / max;
 
         javafx.scene.shape.Rectangle rectangle = createToolbarRectangle(r, ratio);
 
-        toolbarBox.getChildren().add(rectangle);
+        toolbarBox.getRowConstraints().add(toolbarRowCount, rowConstraints);
+        toolbarBox.addRow(toolbarRowCount++, rectangle);
     }
 
     @Override
     public void drawInToolbar(Polygon p) {
-        double radius = ApplicationI.TOOLBAR_WIDTH / 4d;
+        double radius = ApplicationI.TOOLBAR_CELL_HEIGHT / 2d;
 
         javafx.scene.shape.Polygon polygon = createToolbarPolygon(p, radius);
 
-        toolbarBox.getChildren().add(polygon);
+        toolbarBox.getRowConstraints().add(toolbarRowCount, rowConstraints);
+        toolbarBox.addRow(toolbarRowCount++, polygon);
     }
 
     @Override
     public void drawInToolbar(ShapeGroup group) {
         double max = Math.max(group.getHeight(), group.getWidth());
-        double ratio = (ApplicationI.TOOLBAR_WIDTH / 2d) / max;
+        double ratio = ApplicationI.TOOLBAR_CELL_HEIGHT / max;
 
-        // TODO
+        // Create a group to store all shapes?
+        Group pane = new Group();
+        pane.setStyle("-fx-background-color: darkgreen");
+
+        // TODO Manage group inside group
+        for (ShapeI shape: group.getChildren()) {
+            javafx.scene.shape.Shape JFxShape = null;
+
+            // Create shapes
+            if (shape instanceof Rectangle)
+                JFxShape = createToolbarRectangle((Rectangle) shape, ratio);
+            else if (shape instanceof Polygon)
+                JFxShape = createToolbarPolygon((Polygon) shape, ((Polygon) shape).getRadius() * ratio);
+
+            // If shape initialized --> add it to toolbar
+            if (JFxShape != null) {
+                // Create translation related to position
+                JFxShape.setTranslateX((shape.getPosition().x) * ratio);
+                JFxShape.setTranslateY((shape.getPosition().y) * ratio);
+                // Add to group
+                pane.getChildren().add(JFxShape);
+            }
+        }
+
+        toolbarBox.getRowConstraints().add(toolbarRowCount, rowConstraints);
+        toolbarBox.addRow(toolbarRowCount++, pane);
     }
 
     @Override
@@ -471,7 +504,6 @@ public class JFxRendering implements Rendering {
         rectangle.setFill(color);
 
         // Rotation
-        rectangle.getTransforms().clear();
         rectangle.setRotate(r.getRotation());
 
         // Border radius
@@ -490,7 +522,6 @@ public class JFxRendering implements Rendering {
         polygon.setFill(color);
 
         // Rotation
-        polygon.getTransforms().clear();
         polygon.setRotate(p.getRotation());
 
         return polygon;

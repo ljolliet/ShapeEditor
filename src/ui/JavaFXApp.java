@@ -18,10 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -34,8 +31,8 @@ public class JavaFXApp extends Application implements ApplicationI {
     private Editor editor;
     private Rendering rendering;
 
-    private Group root;
-    private VBox toolbarBox;
+    private Group root; // TODO Test with a Pane
+    private GridPane toolbarBox;
     private BorderPane borderPane;
     private ImageView trashImage;
 
@@ -147,11 +144,9 @@ public class JavaFXApp extends Application implements ApplicationI {
         borderPane.setPrefWidth(TOOLBAR_WIDTH);
         borderPane.setStyle("-fx-background-color: lightgray");
         // Toolbar
-        this.toolbarBox = new VBox();
+        this.toolbarBox = new GridPane();
         toolbarBox.setPadding(new Insets(TOOLBAR_SPACING));
         toolbarBox.setAlignment(Pos.BASELINE_CENTER);
-        toolbarBox.setSpacing(TOOLBAR_SPACING);
-        //toolbarBox.setPrefHeight(WINDOW_HEIGHT);
         borderPane.setCenter(toolbarBox);
 
         //trash
