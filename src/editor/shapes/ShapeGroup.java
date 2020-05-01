@@ -91,9 +91,15 @@ public class ShapeGroup extends Shape {
     public void setPosition(Point2D newPos) {
         Point2D position = getPosition();
 
-        double deltaX = newPos.x - position.x;
-        double deltaY = newPos.y - position.y;
+        // The group cannot be out of bounds
+        double x = Math.max(0, Math.min(ApplicationI.SCENE_WIDTH - getWidth(), newPos.x));
+        double y = Math.max(0, Math.min(ApplicationI.SCENE_HEIGHT - getHeight(), newPos.y));
 
+        // Compute delta
+        double deltaX = x - position.x;
+        double deltaY = y - position.y;
+
+        // Set new position for all children
         for (ShapeI s: shapes)
             s.setPosition(new Point2D(
                     s.getPosition().x + deltaX,
@@ -127,20 +133,17 @@ public class ShapeGroup extends Shape {
 
     @Override
     public Point2D getPosition() {
-        double maxX = 0, maxY = 0,
-                minX = ApplicationI.SCENE_WIDTH,
-                minY = ApplicationI.SCENE_HEIGHT;
+        double minX = ApplicationI.SCENE_WIDTH;
+        double minY = ApplicationI.SCENE_HEIGHT;
 
         for (ShapeI s: shapes) {
             for (Point2D point: s.getPoints()) {
                 minX = Math.min(minX, point.x);
                 minY = Math.min(minY, point.y);
-                maxX = Math.max(maxX, point.x);
-                maxY = Math.max(maxY, point.y);
             }
         }
 
-        return new Point2D((minX + maxX) / 2, (minY + maxY) / 2);
+        return new Point2D(minX, minY);
     }
 
     public double getWidth() {

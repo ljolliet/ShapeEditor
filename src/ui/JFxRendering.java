@@ -439,8 +439,8 @@ public class JFxRendering implements Rendering {
 
         for (ShapeI shape: g.getChildren()) {
             Group JFxGroup = (Group) getShadowShape(shape);
-            JFxGroup.setTranslateX(shape.getPosition().x);
-            JFxGroup.setTranslateY(shape.getPosition().y);
+            JFxGroup.setTranslateX(shape.getPosition().x - g.getPosition().x);
+            JFxGroup.setTranslateY(shape.getPosition().y - g.getPosition().y);
             grp.getChildren().add(JFxGroup);
         }
 
