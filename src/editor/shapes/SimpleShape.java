@@ -26,7 +26,7 @@ public abstract class SimpleShape extends Shape {
     }
 
     @Override
-    public void setChild(Set<ShapeI> shapes) {
+    public void setChildren(Set<ShapeI> shapes) {
         throw new ShapeException("A simple shape has no children");
     }
 

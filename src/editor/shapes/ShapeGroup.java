@@ -34,7 +34,7 @@ public class ShapeGroup extends Shape {
     }
 
     @Override
-    public void setChild(Set<ShapeI> shapes) {
+    public void setChildren(Set<ShapeI> shapes) {
         this.shapes = shapes;
     }
 
@@ -42,9 +42,11 @@ public class ShapeGroup extends Shape {
     public ShapeI clone() throws CloneNotSupportedException {
         ShapeI c = super.clone();
 
+        Set<ShapeI> set = new HashSet<>();
         for (ShapeI shape: this.getChildren())
-            c.addShape(shape.clone());
+            set.add(shape.clone());
 
+        c.setChildren(set);
         return c;
     }
 
