@@ -38,7 +38,7 @@ public class JavaFXApp extends Application implements ApplicationI {
 
     private boolean fromToolbar = false;
 
-    private javafx.scene.shape.Shape shadowShape;
+    private Group shadowShape;
     private Group shadowGroup;
     private Point2D shadowShapeThreshold = new Point2D(0,0);
 
@@ -184,7 +184,7 @@ public class JavaFXApp extends Application implements ApplicationI {
 
         stackPane.setOnMouseDragReleased(event -> {
             // Delete all shadow shapes
-            shadowGroup.getChildren().removeIf(node -> node instanceof javafx.scene.shape.Shape);
+            shadowGroup.getChildren().removeIf(node -> !(node instanceof Canvas));
             // Bring editor to foreground
             shadowGroup.toBack();
 
@@ -217,7 +217,7 @@ public class JavaFXApp extends Application implements ApplicationI {
                         ShapeI s = editor.getToolbar().getShapes().get(i);
 
                         // Create shadow shape with dragged shape
-                        shadowShape = (javafx.scene.shape.Shape) rendering.getShadowShape(s);
+                        shadowShape = (Group) rendering.getShadowShape(s);
                         // Display shadow shape
                         shadowGroup.getChildren().add(shadowShape);
                         shadowGroup.toFront();
@@ -332,7 +332,7 @@ public class JavaFXApp extends Application implements ApplicationI {
                 for (ShapeI s : editor.getScene().getShapes()) {
                     if (s.contains(new Point2D(event.getX(), event.getY()))) { // Found
                         // Create shadow shape with dragged shape
-                        shadowShape = (javafx.scene.shape.Shape) rendering.getShadowShape(s);
+                        shadowShape = (Group) rendering.getShadowShape(s);
                         shadowShapeThreshold = new Point2D(s.getPosition().x - event.getX(),
                                 s.getPosition().y - event.getY());
 

@@ -153,8 +153,8 @@ public class JFxRendering implements Rendering {
             return getShadowShape((Rectangle) shape);
         if (shape instanceof Polygon)
             return getShadowShape((Polygon) shape);
-//        if (shape instanceof ShapeGroup)
-//            return getShadowShape(shape.getChildren().iterator().next());
+        if (shape instanceof ShapeGroup)
+            return getShadowShape((ShapeGroup) shape);
 
         return null;
     }
@@ -424,14 +424,27 @@ public class JFxRendering implements Rendering {
         r = new Rectangle(r.getWidth(), r.getHeight(), r.getBorderRadius(), new Point2D(0, 0),
                         r.getColor(), r.getRotationCenter(), r.getRotation());
 
-         return createSceneRectangle(r);
+         return new Group(createSceneRectangle(r));
     }
 
     private Object getShadowShape(Polygon p) {
         p = new Polygon(p.getNbSides(), p.getSideLength(), new Point2D(0, 0),
                 p.getColor(), p.getRotationCenter(), p.getRotation());
 
-        return createScenePolygon(p);
+        return new Group(createScenePolygon(p));
+    }
+
+    private Object getShadowShape(ShapeGroup g) {
+        Group grp = new Group();
+
+        for (ShapeI shape: g.getChildren()) {
+            Group JFxGroup = (Group) getShadowShape(shape);
+            JFxGroup.setTranslateX(shape.getPosition().x);
+            JFxGroup.setTranslateY(shape.getPosition().y);
+            grp.getChildren().add(JFxGroup);
+        }
+
+        return grp;
     }
 
     private javafx.scene.shape.Rectangle createSceneRectangle(Rectangle r) {

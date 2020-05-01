@@ -40,8 +40,11 @@ public class ShapeGroup extends Shape {
 
     @Override
     public ShapeI clone() throws CloneNotSupportedException {
-        ShapeI c = (ShapeI)super.clone();
-        c.setChild(new HashSet<>(this.getChildren()));
+        ShapeI c = super.clone();
+
+        for (ShapeI shape: this.getChildren())
+            c.addShape(shape.clone());
+
         return c;
     }
 
