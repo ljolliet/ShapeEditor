@@ -2,6 +2,9 @@ package ui;
 
 import editor.core.Editor;
 import editor.edition.EditionDialogI;
+import editor.mediator.ConcreteMediator;
+import editor.mediator.Mediator;
+import editor.mediator.UndoButtonJFx;
 import editor.shapes.Shape;
 import editor.shapes.ShapeI;
 import editor.utils.EditorManagementException;
@@ -25,6 +28,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+
 
 public class JavaFXApp extends Application implements ApplicationI {
 
@@ -83,6 +87,7 @@ public class JavaFXApp extends Application implements ApplicationI {
         optionLayout.setPrefHeight(OPTION_HEIGHT);
         //optionLayout.setPrefWidth(WINDOW_WIDTH);
         optionLayout.setSpacing(OPTION_SPACING);
+        optionLayout.setSpacing(OPTION_SPACING);
         optionLayout.setPadding(new Insets(OPTION_SPACING));
         optionLayout.setStyle("-fx-background-color: firebrick");
         windowLayout.getChildren().add(optionLayout);
@@ -100,7 +105,11 @@ public class JavaFXApp extends Application implements ApplicationI {
         }
         Button saveBtn = new Button("", saveIm);
         Button openBtn = new Button("", openIm);
-        Button undoBtn = new Button("", undoIm);
+
+        Mediator mediator = new ConcreteMediator();
+        editor.mediator.UndoButtonJFx undoBtn = new UndoButtonJFx("", undoIm);
+        mediator.registerComponent(undoBtn);
+
         Button redoBtn = new Button("", redoIm);
         Button[] optionsBtn = new Button[] {saveBtn, openBtn, undoBtn, redoBtn};
         for(Button b : new ArrayList<>(Arrays.asList(optionsBtn))) {
@@ -129,7 +138,7 @@ public class JavaFXApp extends Application implements ApplicationI {
             }
         });
 
-        undoBtn.setOnMouseClicked(mouseEvent -> editor.undo());
+        //undoBtn.setOnMouseClicked(mouseEvent -> editor.undo());
         redoBtn.setOnMouseClicked(mouseEvent -> editor.redo());
 
         // Editor layout
