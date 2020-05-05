@@ -30,8 +30,8 @@ public class JavaFXApp extends Application implements ApplicationI {
     private Editor editor;
     private Rendering rendering;
 
-    private Group root; // TODO Test with a Pane
-    private GridPane toolbarBox;
+    private RootJFx root;
+    private ToolBarJFx toolbarBox;
     private BorderPane borderPane;
     private ImageView trashImage;
 
@@ -47,7 +47,8 @@ public class JavaFXApp extends Application implements ApplicationI {
         primaryStage.setResizable(false);
 
         this.editor = Editor.getInstance();
-
+        rendering = new JFxRendering();
+        editor.setRendering(rendering);
 /*
         Stage
         |  Scene
@@ -87,17 +88,16 @@ public class JavaFXApp extends Application implements ApplicationI {
         optionLayout.setStyle("-fx-background-color: firebrick");
         windowLayout.getChildren().add(optionLayout);
 
-        Mediator mediator = new ConcreteMediator();
 
         ButtonJFx saveBtn = new SaveButtonJFx();
         ButtonJFx openBtn = new OpenButtonJFx();
         ButtonJFx undoBtn = new UndoButtonJFx();
         ButtonJFx redoBtn = new RedoButtonJFx();
 
-        mediator.registerComponent(saveBtn);
-        mediator.registerComponent(openBtn);
-        mediator.registerComponent(undoBtn);
-        mediator.registerComponent(redoBtn);
+        rendering.registerComponent(saveBtn);
+        rendering.registerComponent(openBtn);
+        rendering.registerComponent(undoBtn);
+        rendering.registerComponent(redoBtn);
 
         ButtonJFx[] optionsBtn = new ButtonJFx[] {saveBtn, openBtn, undoBtn, redoBtn};
         for(ButtonJFx b : new ArrayList<>(Arrays.asList(optionsBtn)))
@@ -115,10 +115,11 @@ public class JavaFXApp extends Application implements ApplicationI {
         borderPane.setPrefWidth(TOOLBAR_WIDTH);
         borderPane.setStyle("-fx-background-color: lightgray");
         // Toolbar
-        this.toolbarBox = new GridPane();
+        this.toolbarBox = new ToolBarJFx();
         toolbarBox.setPadding(new Insets(TOOLBAR_SPACING));
         toolbarBox.setAlignment(Pos.BASELINE_CENTER);
         borderPane.setCenter(toolbarBox);
+        rendering.registerComponent(toolbarBox);
 
         //trash
         //TODO refacto
@@ -132,8 +133,9 @@ public class JavaFXApp extends Application implements ApplicationI {
         editorLayout.getChildren().add(borderPane);
 
         // Scene layout
-        this.root = new Group();
+        this.root = new RootJFx();
         editorLayout.getChildren().add(root);
+        rendering.registerComponent(root);
 
         Canvas canvas = new Canvas();
         canvas.setWidth(SCENE_WIDTH);
@@ -162,9 +164,7 @@ public class JavaFXApp extends Application implements ApplicationI {
             shadowShapeThreshold = new Point2D(0, 0);
         });
 
-        // Set rendering
-        rendering = new JFxRendering(toolbarBox, root);
-        editor.setRendering(rendering);
+
 
         // Draw editor
         rendering.drawEditor();

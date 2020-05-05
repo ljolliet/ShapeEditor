@@ -4,7 +4,10 @@ import javafx.scene.layout.GridPane;
 
 public class ToolBarJFx extends GridPane implements DragAndDropArea{
 
-    ToolBarJFx(){
+    private Mediator mediator;
+
+    public ToolBarJFx(){
+        super();
         this.setOnDragDetected(mouseEvent -> onClick());
     }
 
@@ -21,5 +24,15 @@ public class ToolBarJFx extends GridPane implements DragAndDropArea{
     @Override
     public void onDrop() {
 
+    }
+
+    @Override
+    public void setMediator(Mediator mediator) {
+        this.mediator = mediator;
+    }
+
+    @Override
+    public String getName() {
+        return "ToolBar";
     }
 }

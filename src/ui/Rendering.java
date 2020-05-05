@@ -1,5 +1,6 @@
 package ui;
 
+import editor.mediator.Mediator;
 import editor.shapes.Polygon;
 import editor.shapes.Rectangle;
 import editor.shapes.ShapeGroup;
@@ -9,7 +10,7 @@ import editor.edition.RectangleEditionDialog;
 import editor.edition.ShapeEditionDialog;
 import editor.utils.Point2D;
 
-public interface Rendering {
+public interface Rendering extends Mediator {
 
     void drawEditor();
     void drawSelectionFrame();

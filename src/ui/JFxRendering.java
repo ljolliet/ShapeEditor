@@ -4,6 +4,9 @@ import editor.core.Editor;
 import editor.edition.PolygonEditionDialog;
 import editor.edition.RectangleEditionDialog;
 import editor.edition.ShapeEditionDialog;
+import editor.mediator.Component;
+import editor.mediator.RootJFx;
+import editor.mediator.ToolBarJFx;
 import editor.shapes.*;
 import editor.utils.Point2D;
 import editor.utils.SelectionRectangle;
@@ -15,12 +18,13 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 
 public class JFxRendering implements Rendering {
 
-    private GridPane toolbarBox;
+    private ToolBarJFx toolbar;
     private int toolbarRowCount;
     private RowConstraints rowConstraints;
     private Group root;
@@ -29,11 +33,15 @@ public class JFxRendering implements Rendering {
     private GridPane editGridPane;
     private Scene editScene;
 
-    JFxRendering(GridPane toolbarBox, Group root) {
-        this.toolbarBox = toolbarBox;
+//    JFxRendering(GridPane toolbar, Group root) {
+//        this.toolbar = toolbar;
+//        this.root = root;
+//
+//    }
+
+    public JFxRendering() {
         this.toolbarRowCount = 0;
         this.rowConstraints = new RowConstraints(ApplicationI.TOOLBAR_CELL_HEIGHT);
-        this.root = root;
         this.contextMenu = new ContextMenu();
         this.editGridPane = new GridPane();
         this.editStage = new Stage();
@@ -43,10 +51,10 @@ public class JFxRendering implements Rendering {
     private void init() {
         // Remove all shapes of the scene and of the toolbar
         //root.getChildren().removeIf(child -> child instanceof javafx.scene.shape.Shape);
-        //toolbarBox.getChildren().removeIf(child -> child instanceof javafx.scene.shape.Shape);
+        //toolbar.getChildren().removeIf(child -> child instanceof javafx.scene.shape.Shape);
         root.getChildren().removeIf(child -> !(child instanceof Canvas));
-        toolbarBox.getChildren().clear();
-        toolbarBox.getRowConstraints().clear();
+        toolbar.getChildren().clear();
+        toolbar.getRowConstraints().clear();
         toolbarRowCount = 0;
     }
 
@@ -100,8 +108,8 @@ public class JFxRendering implements Rendering {
 
         javafx.scene.shape.Rectangle rectangle = createToolbarRectangle(r, ratio);
 
-        toolbarBox.getRowConstraints().add(toolbarRowCount, rowConstraints);
-        toolbarBox.addRow(toolbarRowCount++, rectangle);
+        toolbar.getRowConstraints().add(toolbarRowCount, rowConstraints);
+        toolbar.addRow(toolbarRowCount++, rectangle);
     }
 
     @Override
@@ -110,8 +118,8 @@ public class JFxRendering implements Rendering {
 
         javafx.scene.shape.Polygon polygon = createToolbarPolygon(p, radius);
 
-        toolbarBox.getRowConstraints().add(toolbarRowCount, rowConstraints);
-        toolbarBox.addRow(toolbarRowCount++, polygon);
+        toolbar.getRowConstraints().add(toolbarRowCount, rowConstraints);
+        toolbar.addRow(toolbarRowCount++, polygon);
     }
 
     @Override
@@ -143,8 +151,8 @@ public class JFxRendering implements Rendering {
             }
         }
 
-        toolbarBox.getRowConstraints().add(toolbarRowCount, rowConstraints);
-        toolbarBox.addRow(toolbarRowCount++, pane);
+        toolbar.getRowConstraints().add(toolbarRowCount, rowConstraints);
+        toolbar.addRow(toolbarRowCount++, pane);
     }
 
     @Override
@@ -550,5 +558,53 @@ public class JFxRendering implements Rendering {
         }
 
         return points;
+    }
+
+    @Override
+    public void registerComponent(Component component) {
+        component.setMediator(this);
+        switch (component.getName()) {
+            case "ToolBar":
+                toolbar = (ToolBarJFx) component;
+                break;
+            case "Root" :
+                root = (RootJFx) component;
+        }
+    }
+
+    @Override
+    public void undo() {
+        Editor.getInstance().undo();
+    }
+
+    @Override
+    public void redo() {
+        Editor.getInstance().redo();
+    }
+
+    @Override
+    public void save() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Text Files", "*.txt")); //TODO set extension once decided
+
+//        File file = fileChooser.showSaveDialog(primaryStage);
+//        if (file != null) {
+//            System.out.println("save file : " + file.getName());
+//            //TODO save file method
+//        }
+    }
+
+    @Override
+    public void open() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Text Files", "*.txt")); //TODO set extension once decided
+
+//        File file = fileChooser.showOpenDialog(primaryStage);
+//        if (file != null) {
+//            System.out.println("open file : " + file.getName());
+//            //TODO open file method
+//        }
     }
 }
