@@ -2,9 +2,7 @@ package ui;
 
 import editor.core.Editor;
 import editor.edition.EditionDialogI;
-import editor.mediator.ConcreteMediator;
-import editor.mediator.Mediator;
-import editor.mediator.UndoButtonJFx;
+import editor.mediator.*;
 import editor.shapes.Shape;
 import editor.shapes.ShapeI;
 import editor.utils.EditorManagementException;
@@ -17,15 +15,12 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -92,54 +87,21 @@ public class JavaFXApp extends Application implements ApplicationI {
         optionLayout.setStyle("-fx-background-color: firebrick");
         windowLayout.getChildren().add(optionLayout);
 
-        //TODO refacto
-        final double scale = (double) OPTION_HEIGHT/2;
-        ImageView saveIm = new ImageView( new Image(getClass().getClassLoader().getResource("save.png").toString()));
-        ImageView openIm = new ImageView( new Image(getClass().getClassLoader().getResource("open.png").toString()));
-        ImageView undoIm = new ImageView( new Image(getClass().getClassLoader().getResource("undo.png").toString()));
-        ImageView redoIm = new ImageView( new Image(getClass().getClassLoader().getResource("redo.png").toString()));
-        ImageView[] optionsIm = new ImageView[] {saveIm, openIm, undoIm, redoIm};
-        for(ImageView iv : new ArrayList<>(Arrays.asList(optionsIm))){
-            iv.setPreserveRatio(true);
-            iv.setFitHeight(scale);
-        }
-        Button saveBtn = new Button("", saveIm);
-        Button openBtn = new Button("", openIm);
-
         Mediator mediator = new ConcreteMediator();
-        editor.mediator.UndoButtonJFx undoBtn = new UndoButtonJFx("", undoIm);
+
+        ButtonJFx saveBtn = new SaveButtonJFx();
+        ButtonJFx openBtn = new OpenButtonJFx();
+        ButtonJFx undoBtn = new UndoButtonJFx();
+        ButtonJFx redoBtn = new RedoButtonJFx();
+
+        mediator.registerComponent(saveBtn);
+        mediator.registerComponent(openBtn);
         mediator.registerComponent(undoBtn);
+        mediator.registerComponent(redoBtn);
 
-        Button redoBtn = new Button("", redoIm);
-        Button[] optionsBtn = new Button[] {saveBtn, openBtn, undoBtn, redoBtn};
-        for(Button b : new ArrayList<>(Arrays.asList(optionsBtn))) {
-            b.setStyle("-fx-background-color: darkred");
+        ButtonJFx[] optionsBtn = new ButtonJFx[] {saveBtn, openBtn, undoBtn, redoBtn};
+        for(ButtonJFx b : new ArrayList<>(Arrays.asList(optionsBtn)))
             optionLayout.getChildren().add(b);
-        }
-
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("Text Files", "*.txt")); //TODO set extension once decided
-        openBtn.setOnMouseClicked(mouseEvent -> {
-            File file = fileChooser.showOpenDialog(primaryStage);
-            if (file != null) {
-                System.out.println("open file : " + file.getName());
-                //TODO open file method
-            }
-        });
-
-        saveBtn.setOnMouseClicked(mouseEvent -> {
-            if (mouseEvent.getButton() == MouseButton.PRIMARY) {
-                File file = fileChooser.showSaveDialog(primaryStage);
-                if (file != null) {
-                    System.out.println("save file : " + file.getName());
-                    //TODO save file method
-                }
-            }
-        });
-
-        //undoBtn.setOnMouseClicked(mouseEvent -> editor.undo());
-        redoBtn.setOnMouseClicked(mouseEvent -> editor.redo());
 
         // Editor layout
         HBox editorLayout = new HBox();
