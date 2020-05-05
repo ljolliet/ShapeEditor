@@ -1,4 +1,4 @@
-package editor.mediator;
+package ui.javafx;
 
 public class UndoButtonJFx extends ButtonJFx{
 

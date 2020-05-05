@@ -1,15 +1,13 @@
-package editor.mediator;
+package ui.javafx;
 
-import javafx.scene.layout.GridPane;
+import javafx.scene.Group;
+import ui.DragAndDropArea;
+import ui.Mediator;
 
-public class ToolBarJFx extends GridPane implements DragAndDropArea{
+// TODO Test with a Pane
+public class RootJFx extends Group implements DragAndDropArea {
 
     private Mediator mediator;
-
-    public ToolBarJFx(){
-        super();
-        this.setOnDragDetected(mouseEvent -> onClick());
-    }
 
     @Override
     public void onClick() {
@@ -33,6 +31,6 @@ public class ToolBarJFx extends GridPane implements DragAndDropArea{
 
     @Override
     public String getName() {
-        return "ToolBar";
+        return "Root";
     }
 }

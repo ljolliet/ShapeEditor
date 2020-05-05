@@ -1,4 +1,4 @@
-package editor.mediator;
+package ui;
 
 public interface Component {
     void setMediator(Mediator mediator);

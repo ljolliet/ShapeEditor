@@ -1,8 +1,5 @@
-package ui;
-
 import editor.core.Editor;
 import editor.edition.EditionDialogI;
-import editor.mediator.*;
 import editor.shapes.Shape;
 import editor.shapes.ShapeI;
 import editor.utils.EditorManagementException;
@@ -20,6 +17,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import ui.ApplicationI;
+import ui.Rendering;
+import ui.javafx.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package editor.mediator;
+package ui;
 
 public interface Button extends Component {
     String OPEN_RES = "open.png";

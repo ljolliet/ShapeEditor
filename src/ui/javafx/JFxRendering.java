@@ -1,12 +1,9 @@
-package ui;
+package ui.javafx;
 
 import editor.core.Editor;
 import editor.edition.PolygonEditionDialog;
 import editor.edition.RectangleEditionDialog;
 import editor.edition.ShapeEditionDialog;
-import editor.mediator.Component;
-import editor.mediator.RootJFx;
-import editor.mediator.ToolBarJFx;
 import editor.shapes.*;
 import editor.utils.Point2D;
 import editor.utils.SelectionRectangle;
@@ -15,11 +12,16 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import ui.ApplicationI;
+import ui.Component;
+import ui.Rendering;
 
 
 public class JFxRendering implements Rendering {

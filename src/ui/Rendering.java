@@ -1,6 +1,5 @@
 package ui;
 
-import editor.mediator.Mediator;
 import editor.shapes.Polygon;
 import editor.shapes.Rectangle;
 import editor.shapes.ShapeGroup;
