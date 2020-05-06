@@ -113,8 +113,9 @@ public class Editor extends Observable implements Originator {
             this.rendering.drawEditor();
     }
 
-    public void getSave() {
+    public String getSave() {
         this.exportVisitor.visit(this);
+        return ((JSONExportVisitor)this.exportVisitor).getSave();
     }
 
     public Scene getScene() {

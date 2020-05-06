@@ -24,6 +24,8 @@ import ui.Component;
 import ui.Rendering;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 
 
@@ -598,7 +600,13 @@ public class JFxRendering implements Rendering {
         File file = fileChooser.showSaveDialog(null);//TODO change
         if (file != null) {
             System.out.println("save file : " + file.getName());
-            Editor.getInstance().getSave();
+            try {
+                FileWriter myWriter = new FileWriter(file);
+                myWriter.write(Editor.getInstance().getSave());
+                myWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
