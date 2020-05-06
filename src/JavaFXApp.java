@@ -31,7 +31,7 @@ public class JavaFXApp extends Application implements ApplicationI {
     private Rendering rendering;
 
     private RootJFx root;
-    private ToolBarJFx toolbarBox;
+    private ToolbarJFx toolbarBox;
     private BorderPane borderPane;
     private ImageView trashImage;
 
@@ -99,9 +99,7 @@ public class JavaFXApp extends Application implements ApplicationI {
         rendering.registerComponent(undoBtn);
         rendering.registerComponent(redoBtn);
 
-        ButtonJFx[] optionsBtn = new ButtonJFx[] {saveBtn, openBtn, undoBtn, redoBtn};
-        for(ButtonJFx b : new ArrayList<>(Arrays.asList(optionsBtn)))
-            optionLayout.getChildren().add(b);
+        optionLayout.getChildren().addAll(saveBtn, openBtn, undoBtn, redoBtn);
 
         // Editor layout
         HBox editorLayout = new HBox();
@@ -115,7 +113,7 @@ public class JavaFXApp extends Application implements ApplicationI {
         borderPane.setPrefWidth(TOOLBAR_WIDTH);
         borderPane.setStyle("-fx-background-color: lightgray");
         // Toolbar
-        this.toolbarBox = new ToolBarJFx();
+        this.toolbarBox = new ToolbarJFx();
         toolbarBox.setPadding(new Insets(TOOLBAR_SPACING));
         toolbarBox.setAlignment(Pos.BASELINE_CENTER);
         borderPane.setCenter(toolbarBox);
@@ -143,8 +141,8 @@ public class JavaFXApp extends Application implements ApplicationI {
         root.getChildren().add(canvas);
 
         /* Set events */
-        setToolbarEvents();
-        setSceneEvents();
+        //setToolbarEvents();
+        //setSceneEvents();
 
         // Events on stack pane
         stackPane.setOnMouseDragged(event -> {

@@ -25,7 +25,7 @@ public class Scene implements Serializable {
         shapes.remove(shape);
     }
 
-    public void setSelectedShapes(ArrayList<Shape> shapes){
+    public void setSelectedShapes(List<Shape> shapes){
         this.selectedShapes = shapes;
     }
     public List<Shape> getShapes() {

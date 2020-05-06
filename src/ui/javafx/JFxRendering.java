@@ -23,10 +23,13 @@ import ui.ApplicationI;
 import ui.Component;
 import ui.Rendering;
 
+import java.util.Collection;
+import java.util.List;
+
 
 public class JFxRendering implements Rendering {
 
-    private ToolBarJFx toolbar;
+    private ToolbarJFx toolbar;
     private int toolbarRowCount;
     private RowConstraints rowConstraints;
     private Group root;
@@ -34,6 +37,7 @@ public class JFxRendering implements Rendering {
     private Stage editStage;
     private GridPane editGridPane;
     private Scene editScene;
+    private boolean fromToolbar;
 
 //    JFxRendering(GridPane toolbar, Group root) {
 //        this.toolbar = toolbar;
@@ -48,6 +52,7 @@ public class JFxRendering implements Rendering {
         this.editGridPane = new GridPane();
         this.editStage = new Stage();
         this.editScene = new Scene(editGridPane);
+        this.fromToolbar = false;
     }
 
     private void init() {
@@ -567,7 +572,7 @@ public class JFxRendering implements Rendering {
         component.setMediator(this);
         switch (component.getName()) {
             case "ToolBar":
-                toolbar = (ToolBarJFx) component;
+                toolbar = (ToolbarJFx) component;
                 break;
             case "Root" :
                 root = (RootJFx) component;
@@ -608,5 +613,76 @@ public class JFxRendering implements Rendering {
 //            System.out.println("open file : " + file.getName());
 //            //TODO open file method
 //        }
+    }
+
+    @Override
+    public void dragFromToolbar(ShapeI shape) {
+        // TODO Manage shadow shape and cursor
+        this.fromToolbar = true;
+        Editor.getInstance().setShapeDragged(shape);
+    }
+
+    @Override
+    public void dragFromScene(ShapeI shape) {
+        // TODO Manage shadow shape and cursor
+        this.fromToolbar = false;
+        Editor.getInstance().setShapeDragged(shape);
+    }
+
+    @Override
+    public void dropInToolbar() {
+        Editor editor = Editor.getInstance();
+
+        try {
+            // Clone the shape and paste it to the toolbar
+            ShapeI newShape = editor.getShapeDragged().clone();
+            editor.addShapeToToolbar(newShape);
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+
+        editor.setShapeDragged(null);
+    }
+
+    @Override
+    public void dropInScene(Point2D coords) {
+        Editor editor = Editor.getInstance();
+        // If from toolbar --> clone the shape
+        if (fromToolbar) {
+            try {
+                // Clone the shape and paste it to the scene
+                ShapeI newShape = editor.getShapeDragged().clone();
+                newShape.setPosition(coords);
+                System.out.println("ou" + newShape.getPosition());
+                editor.addShapeToScene((Shape) newShape);
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
+        }
+        // Else --> update position
+        else {
+            editor.getShapeDragged().setPosition(coords);
+//            editor.getShapeDragged().setPosition(new Point2D(coords.x + shadowShapeThreshold.x,
+//                    coords.y + shadowShapeThreshold.y));
+        }
+
+        editor.setShapeDragged(null);
+    }
+
+    @Override
+    public void startSelection(Point2D startPoint) {
+        Editor.getInstance().getSelectionShape().setSelectionStartPoint(startPoint);
+    }
+
+    @Override
+    public void moveSelection(Point2D point) {
+        Editor.getInstance().getSelectionShape().setSelectionEndPoint(point);
+        drawSelectionFrame();
+    }
+
+    @Override
+    public void stopSelection(List<Shape> shapes) {
+        Editor.getInstance().getScene().setSelectedShapes(shapes);
+        drawEditor();
     }
 }
