@@ -1,14 +1,11 @@
 package editor.core;
 
+import editor.save.*;
 import editor.shapes.Shape;
 import editor.shapes.ShapeI;
 import editor.observer.Observable;
 import editor.observer.Observer;
 import editor.observer.ShapeObserver;
-import editor.save.Caretaker;
-import editor.save.EditorMemento;
-import editor.save.Memento;
-import editor.save.Originator;
 import editor.utils.SelectionRectangle;
 import editor.utils.SelectionShape;
 import ui.Rendering;
@@ -27,6 +24,7 @@ public class Editor extends Observable implements Originator {
     private Rendering rendering;
     private Observer observer;
     private ShapeI shapeDragged;
+    private EditorVisitor exportVisitor;
 
     private Editor() {
         this.scene = new Scene();
@@ -34,6 +32,7 @@ public class Editor extends Observable implements Originator {
         this.history = new Caretaker(SIZE_HISTORY);
         this.selectionShape = new SelectionRectangle();
         this.observer = new ShapeObserver();
+        this.exportVisitor = new JSONExportVisitor();
         this.addObserver(observer);
         this.saveToMemento();
     }
@@ -112,6 +111,10 @@ public class Editor extends Observable implements Originator {
     public void redo() {
         if(this.history.redo())
             this.rendering.drawEditor();
+    }
+
+    public void getSave() {
+        this.exportVisitor.visit(this);
     }
 
     public Scene getScene() {

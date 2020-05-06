@@ -1,6 +1,7 @@
 package editor.shapes;
 
 import editor.edition.EditionDialogI;
+import editor.save.EditorVisitor;
 import editor.utils.Color;
 import editor.utils.Point2D;
 import editor.utils.SelectionShape;
@@ -44,4 +45,5 @@ public interface ShapeI extends Cloneable, Serializable {
 
     EditionDialogI createEditionDialog();
 
+    void accept(EditorVisitor visitor);
 }

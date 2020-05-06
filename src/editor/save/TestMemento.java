@@ -10,4 +10,9 @@ public class TestMemento implements Memento{
     @Override
     public void restore() {
     }
+
+    @Override
+    public String getState() {
+        return state;
+    }
 }

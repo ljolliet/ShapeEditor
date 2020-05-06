@@ -14,6 +14,7 @@ public class EditorMemento implements Memento {
         Editor.getInstance().restoreFromMemento(this);
     }
 
+    @Override
     public String getState() {
         return state;
     }

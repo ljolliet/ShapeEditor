@@ -1,5 +1,6 @@
 package editor.core;
 
+import editor.save.EditorVisitor;
 import editor.shapes.*;
 import editor.utils.Color;
 import editor.utils.Point2D;
@@ -45,5 +46,9 @@ public class Toolbar {
 
     public boolean contains(ShapeI shape) {
         return this.shapes.contains(shape);
+    }
+
+    public void accept(EditorVisitor v) {
+        v.visit(this);
     }
 }

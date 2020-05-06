@@ -23,7 +23,7 @@ import ui.ApplicationI;
 import ui.Component;
 import ui.Rendering;
 
-import java.util.Collection;
+import java.io.File;
 import java.util.List;
 
 
@@ -595,11 +595,11 @@ public class JFxRendering implements Rendering {
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("Text Files", "*.txt")); //TODO set extension once decided
 
-//        File file = fileChooser.showSaveDialog(primaryStage);
-//        if (file != null) {
-//            System.out.println("save file : " + file.getName());
-//            //TODO save file method
-//        }
+        File file = fileChooser.showSaveDialog(null);//TODO change
+        if (file != null) {
+            System.out.println("save file : " + file.getName());
+            Editor.getInstance().getSave();
+        }
     }
 
     @Override

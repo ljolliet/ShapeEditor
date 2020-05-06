@@ -1,5 +1,6 @@
 package editor.core;
 
+import editor.save.EditorVisitor;
 import editor.shapes.Shape;
 import editor.shapes.ShapeI;
 
@@ -42,5 +43,9 @@ public class Scene implements Serializable {
 
     public boolean contains(ShapeI shape) {
         return this.shapes.contains(shape);
+    }
+
+    public void accept(EditorVisitor v) {
+        v.visit(this);
     }
 }

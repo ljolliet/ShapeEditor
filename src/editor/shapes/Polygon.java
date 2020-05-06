@@ -2,6 +2,7 @@ package editor.shapes;
 
 import editor.edition.EditionDialogI;
 import editor.edition.PolygonEditionDialog;
+import editor.save.EditorVisitor;
 import editor.utils.Color;
 import editor.utils.Point2D;
 import ui.ApplicationI;
@@ -91,6 +92,11 @@ public class Polygon extends SimpleShape {
     @Override
     public EditionDialogI createEditionDialog() {
         return new PolygonEditionDialog(this);
+    }
+
+    @Override
+    public void accept(EditorVisitor visitor) {
+        visitor.visit(this);
     }
 
     public int getNbSides() {

@@ -1,6 +1,7 @@
 package editor.shapes;
 
 import editor.edition.RectangleEditionDialog;
+import editor.save.EditorVisitor;
 import editor.utils.Color;
 import editor.utils.Point2D;
 import ui.ApplicationI;
@@ -57,6 +58,11 @@ public class Rectangle extends SimpleShape {
     @Override
     public EditionDialogI createEditionDialog() {
         return new RectangleEditionDialog(this);
+    }
+
+    @Override
+    public void accept(EditorVisitor visitor) {
+        visitor.visit(this);
     }
 
     public double getWidth() {

@@ -1,5 +1,6 @@
 package editor.shapes;
 
+import editor.save.EditorVisitor;
 import editor.utils.Color;
 import editor.utils.Point2D;
 import editor.utils.SelectionShape;
@@ -200,6 +201,11 @@ public class ShapeGroup extends Shape {
 
     @Override
     public EditionDialogI createEditionDialog() {
-        return null; //TODO Group
+        return null; // TODO Group
+    }
+
+    @Override
+    public void accept(EditorVisitor visitor) {
+        visitor.visit(this);
     }
 }
