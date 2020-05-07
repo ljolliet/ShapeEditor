@@ -7,6 +7,7 @@ import editor.edition.RectangleEditionDialog;
 import editor.edition.ShapeEditionDialog;
 import editor.save.IOEditorException;
 import editor.shapes.*;
+import editor.utils.EditorManagementException;
 import editor.utils.Point2D;
 import editor.utils.SelectionRectangle;
 import javafx.geometry.Insets;
@@ -749,6 +750,21 @@ public class JFxRendering implements Rendering {
 
         shadowGroup.setCursor(Cursor.DEFAULT);
         editor.setShapeDragged(null);
+    }
+
+    @Override
+    public void dropInTrash() {
+        Editor editor = Editor.getInstance();
+        ShapeI shape = editor.getShapeDragged();
+
+        if (shape != null) {
+            if(editor.toolbarContains(shape))
+                editor.removeShapeFromToolbar(shape);
+            else if(editor.sceneContains(shape))
+                editor.removeShapeFromScene((Shape) shape);
+            else
+                throw new EditorManagementException("Trying to delete an unknown shape");
+        }
     }
 
     @Override

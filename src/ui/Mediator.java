@@ -20,6 +20,7 @@ public interface Mediator {
     void dragFromScene(ShapeI shape, Point2D coords);
     void dropInToolbar();
     void dropInScene(Point2D coords);
+    void dropInTrash();
 
     // Selection
     void startSelection(Point2D startPoint);

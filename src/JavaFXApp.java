@@ -86,11 +86,10 @@ public class JavaFXApp extends Application implements ApplicationI {
         borderPane.setCenter(toolbarBox);
         rendering.registerComponent(toolbarBox);
 
-        //trash
+        // Trash
         // TODO Refactor
-        ImageView trashImage = new ImageView(new Image(getClass().getClassLoader().getResource("trash.png").toString()));
-        trashImage.setPreserveRatio(true);
-        trashImage.setFitHeight(TRASH_HEIGHT);
+        TrashJFx trashImage = new TrashJFx();
+        rendering.registerComponent(trashImage);
 
         borderPane.setBottom(trashImage);
         BorderPane.setAlignment(trashImage, Pos.CENTER);
