@@ -47,7 +47,7 @@ public class JSONImportManager implements ImportManager {
 
     private Polygon getPolygon(JSONObject polygon) {
         long nbSides = (long) polygon.get("nbSides");
-        long sideLength = (long) polygon.get("sideLength");
+        double sideLength = (double) polygon.get("sideLength");
 
         JSONObject pos = (JSONObject) polygon.get("position");
         Point2D position = new Point2D((double)pos.get("x"), (double) pos.get("y"));
@@ -62,7 +62,7 @@ public class JSONImportManager implements ImportManager {
         Point2D rotationCenter = new Point2D((double)rotCenter.get("x"), (double) rotCenter.get("y"));
         double rotation = (double) polygon.get("rotation");
 
-        return new Polygon((int)nbSides, (int) sideLength, position, color, rotationCenter, rotation);
+        return new Polygon((int)nbSides, sideLength, position, color, rotationCenter, rotation);
     }
 
     private Rectangle getRectangle(JSONObject rectangle) {

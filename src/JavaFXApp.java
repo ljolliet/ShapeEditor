@@ -1,49 +1,29 @@
 import editor.core.Editor;
-import editor.edition.EditionDialogI;
-import editor.shapes.Shape;
-import editor.shapes.ShapeI;
-import editor.utils.EditorManagementException;
-import editor.utils.Point2D;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Cursor;
-import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import ui.ApplicationI;
 import ui.Rendering;
 import ui.javafx.*;
 
-import java.util.ArrayList;
-
 
 public class JavaFXApp extends Application implements ApplicationI {
-
-    private Editor editor;
-    private Rendering rendering;
-
-    private RootJFx root;
-    private ToolbarJFx toolbarBox;
-    private BorderPane borderPane;
-    private ImageView trashImage;
 
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle(WINDOW_TITLE);
         primaryStage.setResizable(false);
 
-        this.editor = Editor.getInstance();
-        rendering = new JFxRendering();
+        Editor editor = Editor.getInstance();
+        Rendering rendering = new JFxRendering();
         editor.setRendering(rendering);
 /*
         Stage
@@ -95,12 +75,12 @@ public class JavaFXApp extends Application implements ApplicationI {
         windowLayout.getChildren().add(editorLayout);
 
         //Toolbar root
-        this.borderPane = new BorderPane();
+        BorderPane borderPane = new BorderPane();
         borderPane.setMaxHeight(WINDOW_HEIGHT - OPTION_HEIGHT);
         borderPane.setPrefWidth(TOOLBAR_WIDTH);
         borderPane.setStyle("-fx-background-color: lightgray");
         // Toolbar
-        this.toolbarBox = new ToolbarJFx();
+        ToolbarJFx toolbarBox = new ToolbarJFx();
         toolbarBox.setPadding(new Insets(TOOLBAR_SPACING));
         toolbarBox.setAlignment(Pos.BASELINE_CENTER);
         borderPane.setCenter(toolbarBox);
@@ -108,7 +88,7 @@ public class JavaFXApp extends Application implements ApplicationI {
 
         //trash
         // TODO Refactor
-        this.trashImage = new ImageView(new Image(getClass().getClassLoader().getResource("trash.png").toString()));
+        ImageView trashImage = new ImageView(new Image(getClass().getClassLoader().getResource("trash.png").toString()));
         trashImage.setPreserveRatio(true);
         trashImage.setFitHeight(TRASH_HEIGHT);
 
@@ -118,7 +98,7 @@ public class JavaFXApp extends Application implements ApplicationI {
         editorLayout.getChildren().add(borderPane);
 
         // Scene layout
-        this.root = new RootJFx();
+        RootJFx root = new RootJFx();
         editorLayout.getChildren().add(root);
         rendering.registerComponent(root);
 

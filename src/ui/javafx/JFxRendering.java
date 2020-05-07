@@ -5,6 +5,7 @@ import editor.edition.EditionDialogI;
 import editor.edition.PolygonEditionDialog;
 import editor.edition.RectangleEditionDialog;
 import editor.edition.ShapeEditionDialog;
+import editor.save.IOEditorException;
 import editor.shapes.*;
 import editor.utils.Point2D;
 import editor.utils.SelectionRectangle;
@@ -626,26 +627,42 @@ public class JFxRendering implements Rendering {
     public void save() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("Text Files", "*.txt")); //TODO set extension once decided
+                new FileChooser.ExtensionFilter("Save Files", "*.json")); //TODO set extension once decided
+        fileChooser.setInitialFileName("*.json");
+
+        File saveDir = new File("save");
+        if (! saveDir.exists()) {
+            saveDir.mkdirs();
+        }
+        fileChooser.setInitialDirectory(saveDir);
 
         File file = fileChooser.showSaveDialog(null);//TODO put primary Stage
         if (file != null) {
-            System.out.println("save file : " + file.getName());
-            try {
-                FileWriter myWriter = new FileWriter(file);
-                myWriter.write(Editor.getInstance().getSave());
-                myWriter.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (file.getName().endsWith(".json")) {
+                System.out.println("save file : " + file.getName());
+                try {
+                    FileWriter myWriter = new FileWriter(file);
+                    myWriter.write(Editor.getInstance().getSave());
+                    myWriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+            else
+                throw new IOEditorException(file.getName() + " has no valid file-extension.");
         }
     }
 
     @Override
     public void open() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("Text Files", "*.txt")); //TODO set extension once decided
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Text Files", "*.json")); //TODO set extension once decided
+        File saveDir = new File("save");
+        if (! saveDir.exists()) {
+            saveDir.mkdirs();
+        }
+        fileChooser.setInitialDirectory(saveDir);
 
         File file = fileChooser.showOpenDialog(null);   //TODO put primary stage
         if (file != null) {
