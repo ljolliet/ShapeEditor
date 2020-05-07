@@ -253,7 +253,7 @@ public class JFxRendering implements Rendering {
         Editor editor = Editor.getInstance();
         groupShape.setOnAction(e -> {
             Shape group = new ShapeGroup();
-            for(Shape s : editor.getScene().getSelectedShapes()){
+            for(ShapeI s : editor.getScene().getSelectedShapes()){
                 group.addShape(s);
                 editor.removeShapeFromScene(s);
             }
@@ -779,7 +779,7 @@ public class JFxRendering implements Rendering {
     }
 
     @Override
-    public void stopSelection(List<Shape> shapes) {
+    public void stopSelection(List<ShapeI> shapes) {
         Editor.getInstance().getScene().setSelectedShapes(shapes);
         drawEditor();
     }

@@ -1,6 +1,5 @@
 package ui;
 
-import editor.shapes.Shape;
 import editor.shapes.ShapeI;
 import editor.utils.Point2D;
 
@@ -25,7 +24,7 @@ public interface Mediator {
     // Selection
     void startSelection(Point2D startPoint);
     void moveSelection(Point2D point);
-    void stopSelection(List<Shape> shapes);
+    void stopSelection(List<ShapeI> shapes);
 
     // Edition dialog
     void showEditionDialog(ShapeI shape, Point2D coords);

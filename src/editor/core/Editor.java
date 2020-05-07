@@ -54,7 +54,7 @@ public class Editor extends Observable implements Originator {
         notifyObservers();
     }
 
-    public void removeShapeFromScene(Shape s) {
+    public void removeShapeFromScene(ShapeI s) {
         this.scene.removeShape(s);
         notifyObservers();
     }

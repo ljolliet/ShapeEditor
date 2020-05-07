@@ -4,8 +4,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -87,7 +85,6 @@ public class JavaFXApp extends Application implements ApplicationI {
         rendering.registerComponent(toolbarBox);
 
         // Trash
-        // TODO Refactor
         TrashJFx trashImage = new TrashJFx();
         rendering.registerComponent(trashImage);
 

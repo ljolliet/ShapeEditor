@@ -1,8 +1,6 @@
 package ui.javafx;
 
 import editor.core.Editor;
-import editor.edition.EditionDialogI;
-import editor.shapes.Shape;
 import editor.shapes.ShapeI;
 import editor.utils.Point2D;
 import javafx.scene.Group;
@@ -86,10 +84,10 @@ public class RootJFx extends Group implements Component {
             mediator.dropInScene(new Point2D(event.getX(), event.getY()));
         }
         else if (Editor.getInstance().getSelectionShape() != null) {
-            ArrayList<Shape> selectedShapes = new ArrayList<>();
+            ArrayList<ShapeI> selectedShapes = new ArrayList<>();
 
             // Add all selected shapes in array
-            for (Shape shape : Editor.getInstance().getScene().getShapes())
+            for (ShapeI shape : Editor.getInstance().getScene().getShapes())
                 if (shape.contained(Editor.getInstance().getSelectionShape()))
                     selectedShapes.add(shape);
 

@@ -1,9 +1,7 @@
 package editor.save;
 
-import editor.core.Scene;
-import editor.core.Toolbar;
-import editor.shapes.Polygon;
-import editor.shapes.Rectangle;
+import editor.core.Editor;
+import editor.shapes.*;
 import editor.utils.Color;
 import editor.utils.Point2D;
 import org.json.simple.JSONArray;
@@ -11,15 +9,15 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class JSONImportManager implements ImportManager {
 
     @Override
     public void restore(String data) {
         JSONParser parser = new JSONParser();
-        Toolbar t = new Toolbar();
-        Scene s = new Scene();
         try {
             JSONObject obj = (JSONObject) parser.parse(data);
 
@@ -27,23 +25,45 @@ public class JSONImportManager implements ImportManager {
             JSONArray toolbar = (JSONArray) editor.get("toolbar");
             JSONArray scene = (JSONArray) editor.get("scene");
 
-            Iterator<JSONObject> iterator = toolbar.iterator();
-            JSONObject shape;
-            while (iterator.hasNext()) {
-                if((shape = iterator.next()).get("rectangle") != null){
-                    JSONObject rectangle = (JSONObject) shape.get("rectangle");
-                    t.addShape(this.getRectangle(rectangle));
-                }
-                else if(shape.get("polygon") != null){
-                    JSONObject polygon = (JSONObject) shape.get("polygon");
-                    t.addShape(this.getPolygon(polygon));
-                }
-            }
+            List<ShapeI> shapes = new ArrayList<>();
+            this.getShapes(toolbar, shapes);
+            Editor.getInstance().getToolbar().setShapes(shapes);
+
+            shapes = new ArrayList<>();
+            this.getShapes(scene, shapes);
+            Editor.getInstance().getScene().setShapes(shapes);
+
+            Editor.getInstance().getRendering().drawEditor();
 
         } catch (ParseException e) {
             e.printStackTrace();
         }
     }
+
+    private void getShapes(JSONArray array, List<ShapeI> shapes) {
+        Iterator<JSONObject> iterator = array.iterator();
+        JSONObject shape;
+        while (iterator.hasNext()) {
+            if((shape = iterator.next()).get("rectangle") != null){
+                JSONObject rectangle = (JSONObject) shape.get("rectangle");
+                shapes.add(this.getRectangle(rectangle));
+            }
+            else if(shape.get("polygon") != null){
+                JSONObject polygon = (JSONObject) shape.get("polygon");
+                shapes.add(this.getPolygon(polygon));
+            }
+            else if(shape.get("group") != null){
+                JSONArray group = (JSONArray) shape.get("group");
+                ShapeGroup g = new ShapeGroup();
+                List<ShapeI> childrenShapes = new ArrayList<>();
+                this.getShapes(group, childrenShapes);
+                for(ShapeI s : childrenShapes)
+                    g.addShape(s);
+                shapes.add(g);
+            }
+        }
+    }
+
 
     private Polygon getPolygon(JSONObject polygon) {
         long nbSides = (long) polygon.get("nbSides");
