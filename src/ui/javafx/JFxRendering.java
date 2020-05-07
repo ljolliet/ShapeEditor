@@ -785,4 +785,10 @@ public class JFxRendering implements Rendering {
 
         shadowShapeThreshold = new Point2D(0, 0);
     }
+
+    @Override
+    public void clearEditorActions() {
+        // TODO Clear shape selection
+        hideEditionDialog();
+    }
 }

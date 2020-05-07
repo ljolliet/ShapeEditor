@@ -33,4 +33,6 @@ public interface Mediator {
     // Shadow shape
     void moveShadowShape(Point2D coords);
     void clearShadowShape();
+
+    void clearEditorActions();
 }

@@ -28,7 +28,7 @@ public class RootJFx extends Group implements Component {
 
     private void onMousePressed(MouseEvent event) {
 
-        // rendering.hideEditionDialog(); // TODO
+        mediator.clearEditorActions();
 
         // Detect left click
         if (event.getButton() == MouseButton.PRIMARY) {
