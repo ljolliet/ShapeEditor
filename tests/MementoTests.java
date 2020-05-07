@@ -1,6 +1,6 @@
-import editor.save.Caretaker;
-import editor.save.Memento;
-import editor.save.TestMemento;
+import editor.save.memento.Caretaker;
+import editor.save.memento.Memento;
+import editor.save.memento.TestMemento;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

@@ -1,4 +1,4 @@
-package editor.save;
+package editor.save.memento;
 
 public interface Originator {
     Memento saveToMemento();

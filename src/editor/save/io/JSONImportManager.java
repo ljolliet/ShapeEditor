@@ -1,4 +1,4 @@
-package editor.save;
+package editor.save.io;
 
 import editor.core.Editor;
 import editor.shapes.*;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class JSONImportManager implements ImportManager {
+public class JSONImportManager implements EditorImportManager {
 
     @Override
     public void restore(String data) {

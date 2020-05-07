@@ -1,7 +1,7 @@
 package editor.shapes;
 
 import editor.edition.RectangleEditionDialog;
-import editor.save.EditorVisitor;
+import editor.core.EditorVisitor;
 import editor.utils.Color;
 import editor.utils.Point2D;
 import ui.ApplicationI;

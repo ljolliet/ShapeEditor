@@ -1,8 +1,5 @@
-package editor.save;
+package editor.core;
 
-import editor.core.Editor;
-import editor.core.Scene;
-import editor.core.Toolbar;
 import editor.shapes.Polygon;
 import editor.shapes.Rectangle;
 import editor.shapes.ShapeGroup;

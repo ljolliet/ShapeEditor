@@ -1,6 +1,13 @@
 package editor.core;
 
-import editor.save.*;
+import editor.save.io.EditorExportManager;
+import editor.save.io.EditorImportManager;
+import editor.save.io.JSONExportVisitor;
+import editor.save.io.JSONImportManager;
+import editor.save.memento.Caretaker;
+import editor.save.memento.EditorMemento;
+import editor.save.memento.Memento;
+import editor.save.memento.Originator;
 import editor.shapes.Shape;
 import editor.shapes.ShapeI;
 import editor.observer.Observable;
@@ -24,8 +31,8 @@ public class Editor extends Observable implements Originator {
     private Rendering rendering;
     private Observer observer;
     private ShapeI shapeDragged;
-    private EditorVisitor exportVisitor;
-    private ImportManager importManager;
+    private EditorExportManager exportVisitor;
+    private EditorImportManager importManager;
 
     private Editor() {
         this.scene = new Scene();
@@ -116,8 +123,11 @@ public class Editor extends Observable implements Originator {
     }
 
     public String getSave() {
-        this.exportVisitor.visit(this);
-        return ((JSONExportVisitor)this.exportVisitor).getSave();
+        return this.exportVisitor.getSave();
+    }
+
+    public void accept(EditorVisitor visitor) {
+        visitor.visit(this);
     }
 
     public void restoreFromString(String data) {

@@ -1,9 +1,12 @@
-package editor.core;
+package editor.save.io;
 
-import editor.save.EditorVisitor;
+import editor.core.Editor;
+import editor.core.Scene;
+import editor.core.Toolbar;
+import editor.core.EditorVisitor;
 import editor.shapes.*;
 
-public class JSONExportVisitor implements EditorVisitor {
+public class JSONExportVisitor implements EditorVisitor, EditorExportManager {
 
     StringBuilder sb = new StringBuilder();
 
@@ -15,14 +18,13 @@ public class JSONExportVisitor implements EditorVisitor {
         editor.getScene().accept(this);
         sb.append("}");
         sb.append("}");
-        System.out.println(this.getSave());
     }
 
     @Override
     public void visit(Toolbar toolbar) {
         boolean start = true;
         sb.append("\"toolbar\" : [");
-        for(ShapeI s : toolbar.shapes) {
+        for(ShapeI s : toolbar.getShapes()) {
             if(!start)
                 sb.append(",");
             else
@@ -36,7 +38,7 @@ public class JSONExportVisitor implements EditorVisitor {
     public void visit(Scene scene) {
         boolean start = true;
         sb.append(",\"scene\" : [");
-        for(ShapeI s : scene.shapes) {
+        for(ShapeI s : scene.getShapes()) {
             if(!start)
                 sb.append(",");
             else
@@ -86,7 +88,9 @@ public class JSONExportVisitor implements EditorVisitor {
         sb.append("}");
     }
 
+    @Override
     public String getSave(){
+        Editor.getInstance().accept(this);
         return sb.toString();
     }
 

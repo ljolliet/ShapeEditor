@@ -1,6 +1,5 @@
 package editor.core;
 
-import editor.save.EditorVisitor;
 import editor.shapes.*;
 import editor.utils.Color;
 import editor.utils.Point2D;

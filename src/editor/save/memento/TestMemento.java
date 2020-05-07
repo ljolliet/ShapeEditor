@@ -1,4 +1,4 @@
-package editor.save;
+package editor.save.memento;
 
 public class TestMemento implements Memento{
     private final String state;

@@ -5,7 +5,7 @@ import editor.edition.EditionDialogI;
 import editor.edition.PolygonEditionDialog;
 import editor.edition.RectangleEditionDialog;
 import editor.edition.ShapeEditionDialog;
-import editor.save.IOEditorException;
+import editor.save.io.IOEditorException;
 import editor.shapes.*;
 import editor.utils.EditorManagementException;
 import editor.utils.Point2D;

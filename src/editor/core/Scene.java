@@ -1,6 +1,5 @@
 package editor.core;
 
-import editor.save.EditorVisitor;
 import editor.shapes.ShapeI;
 
 import java.io.Serializable;

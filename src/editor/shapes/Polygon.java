@@ -2,7 +2,7 @@ package editor.shapes;
 
 import editor.edition.EditionDialogI;
 import editor.edition.PolygonEditionDialog;
-import editor.save.EditorVisitor;
+import editor.core.EditorVisitor;
 import editor.utils.Color;
 import editor.utils.Point2D;
 import ui.ApplicationI;
