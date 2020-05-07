@@ -1,6 +1,7 @@
-package editor.save.io;
+package editor.save.io.json;
 
 import editor.core.Editor;
+import editor.save.io.EditorImportManager;
 import editor.shapes.*;
 import editor.utils.Color;
 import editor.utils.Point2D;
@@ -22,14 +23,9 @@ public class JSONImportManager implements EditorImportManager {
             JSONObject obj = (JSONObject) parser.parse(data);
 
             JSONObject editor = (JSONObject) obj.get("editor");
-            JSONArray toolbar = (JSONArray) editor.get("toolbar");
             JSONArray scene = (JSONArray) editor.get("scene");
 
             List<ShapeI> shapes = new ArrayList<>();
-            this.getShapes(toolbar, shapes);
-            Editor.getInstance().getToolbar().setShapes(shapes);
-
-            shapes = new ArrayList<>();
             this.getShapes(scene, shapes);
             Editor.getInstance().getScene().setShapes(shapes);
 

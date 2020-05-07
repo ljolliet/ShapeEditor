@@ -1,9 +1,10 @@
-package editor.save.io;
+package editor.save.io.json;
 
 import editor.core.Editor;
 import editor.core.Scene;
 import editor.core.Toolbar;
 import editor.core.EditorVisitor;
+import editor.save.io.EditorExportManager;
 import editor.shapes.*;
 
 public class JSONExportVisitor implements EditorVisitor, EditorExportManager {
@@ -22,22 +23,13 @@ public class JSONExportVisitor implements EditorVisitor, EditorExportManager {
 
     @Override
     public void visit(Toolbar toolbar) {
-        boolean start = true;
-        sb.append("\"toolbar\" : [");
-        for(ShapeI s : toolbar.getShapes()) {
-            if(!start)
-                sb.append(",");
-            else
-                start = false;
-            s.accept(this);
-        }
-        sb.append("]");
+        //toolbar not saved
     }
 
     @Override
     public void visit(Scene scene) {
         boolean start = true;
-        sb.append(",\"scene\" : [");
+        sb.append("\"scene\" : [");
         for(ShapeI s : scene.getShapes()) {
             if(!start)
                 sb.append(",");

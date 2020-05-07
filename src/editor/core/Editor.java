@@ -2,8 +2,8 @@ package editor.core;
 
 import editor.save.io.EditorExportManager;
 import editor.save.io.EditorImportManager;
-import editor.save.io.JSONExportVisitor;
-import editor.save.io.JSONImportManager;
+import editor.save.io.json.JSONExportVisitor;
+import editor.save.io.json.JSONImportManager;
 import editor.save.memento.Caretaker;
 import editor.save.memento.EditorMemento;
 import editor.save.memento.Memento;
