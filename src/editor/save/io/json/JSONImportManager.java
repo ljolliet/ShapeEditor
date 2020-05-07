@@ -1,7 +1,7 @@
 package editor.save.io.json;
 
 import editor.core.Editor;
-import editor.save.io.EditorImportManager;
+import editor.save.io.ImportManager;
 import editor.shapes.*;
 import editor.utils.Color;
 import editor.utils.Point2D;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class JSONImportManager implements EditorImportManager {
+public class JSONImportManager implements ImportManager {
 
     @Override
     public void restore(String data) {
@@ -60,18 +60,18 @@ public class JSONImportManager implements EditorImportManager {
         }
     }
 
-
+    //TODO avoid duplication
     private Polygon getPolygon(JSONObject polygon) {
-        long nbSides = (long) polygon.get("nbSides");
+        double nbSides = (double) polygon.get("nbSides");
         double sideLength = (double) polygon.get("sideLength");
 
         JSONObject pos = (JSONObject) polygon.get("position");
         Point2D position = new Point2D((double)pos.get("x"), (double) pos.get("y"));
 
         JSONObject col = (JSONObject) polygon.get("color");
-        long red = (long) col.get("r");
-        long green = (long) col.get("g");
-        long blue = (long) col.get("b");
+        double red = (double) col.get("r");
+        double green = (double) col.get("g");
+        double blue = (double) col.get("b");
         Color color = new Color((int)red, (int)green, (int)blue);
 
         JSONObject rotCenter = (JSONObject) polygon.get("rotationCenter");
@@ -84,15 +84,15 @@ public class JSONImportManager implements EditorImportManager {
     private Rectangle getRectangle(JSONObject rectangle) {
         double width = (double) rectangle.get("width");
         double height = (double) rectangle.get("height");
-        long borderRadius = (long) rectangle.get("borderRadius");
+        double borderRadius = (double) rectangle.get("borderRadius");
 
         JSONObject pos = (JSONObject) rectangle.get("position");
         Point2D position = new Point2D((double)pos.get("x"), (double) pos.get("y"));
 
         JSONObject col = (JSONObject) rectangle.get("color");
-        long red = (long) col.get("r");
-        long green = (long) col.get("g");
-        long blue = (long) col.get("b");
+        double red = (double) col.get("r");
+        double green = (double) col.get("g");
+        double blue = (double) col.get("b");
         Color color = new Color((int)red, (int)green, (int)blue);
 
         JSONObject rotCenter = (JSONObject) rectangle.get("rotationCenter");

@@ -4,21 +4,30 @@ import editor.core.Editor;
 import editor.core.Scene;
 import editor.core.Toolbar;
 import editor.core.EditorVisitor;
-import editor.save.io.EditorExportManager;
+import editor.save.io.ExportManager;
 import editor.shapes.*;
 
-public class JSONExportVisitor implements EditorVisitor, EditorExportManager {
+public class JSONExportVisitor implements EditorVisitor, ExportManager {
+
+    static final char START_SYMBOL = '{';
+    static final char END_SYMBOL = '}';
+    static final char ARRAY_START_SYMBOL = '[';
+    static final char ARRAY_END_SYMBOL = ']';
+    static final char SEPARATOR_TOKEN = ',';
+    static final char QUOTE = '\"';
+    static final char COLON = ':';
 
     StringBuilder sb = new StringBuilder();
 
     @Override
     public void visit(Editor editor) {
-        sb.append("{");
-        sb.append("\"editor\" : {");
+        sb.append(START_SYMBOL);
+        this.addField(EDITOR_TOKEN);
+        sb.append(START_SYMBOL);
         editor.getToolbar().accept(this);
         editor.getScene().accept(this);
-        sb.append("}");
-        sb.append("}");
+        sb.append(END_SYMBOL);
+        sb.append(END_SYMBOL);
     }
 
     @Override
@@ -29,55 +38,59 @@ public class JSONExportVisitor implements EditorVisitor, EditorExportManager {
     @Override
     public void visit(Scene scene) {
         boolean start = true;
-        sb.append("\"scene\" : [");
+        this.addField(SCENE_TOKEN);
+        sb.append(ARRAY_START_SYMBOL);
         for(ShapeI s : scene.getShapes()) {
             if(!start)
-                sb.append(",");
+                sb.append(SEPARATOR_TOKEN);
             else
                 start = false;
             s.accept(this);
         }
-        sb.append("]");
+        sb.append(ARRAY_END_SYMBOL);
     }
 
     @Override
     public void visit(ShapeGroup g) {
         boolean start = true;
-        sb.append("{");
-        sb.append("\"group\" : [");
+        sb.append(START_SYMBOL);
+        this.addField(GROUP_TOKEN);
+        sb.append(ARRAY_START_SYMBOL);
         for(ShapeI s : g.getChildren()) {
             if(!start)
-                sb.append(",");
+                sb.append(SEPARATOR_TOKEN);
             else
                 start = false;
             s.accept(this);
         }
-        sb.append("]");
-        sb.append("}");
+        sb.append(ARRAY_END_SYMBOL);
+        sb.append(END_SYMBOL);
     }
 
     @Override
     public void visit(Rectangle r) {
-        sb.append("{");
-        sb.append("\"rectangle\" : {");
+        sb.append(START_SYMBOL);
+        this.addField(RECTANGLE_TOKEN);
+        sb.append(START_SYMBOL);
         this.addShape(r);
-        sb.append(", \"width\" : " + r.getWidth());
-        sb.append(", \"height\" : " + r.getHeight());
-        sb.append(", \"borderRadius\" : " + r.getBorderRadius());
-        sb.append("}");
-        sb.append("}");
+        this.addFieldAndValue(WIDTH_TOKEN, r.getWidth(), true);
+        this.addFieldAndValue(HEIGHT_TOKEN, r.getHeight(), true);
+        this.addFieldAndValue(BORDER_RADIUS_TOKEN, r.getBorderRadius(), true);
+        sb.append(END_SYMBOL);
+        sb.append(END_SYMBOL);
     }
 
 
     @Override
     public void visit(Polygon p) {
-        sb.append("{");
-        sb.append("\"polygon\" : {");
+        sb.append(START_SYMBOL);
+        this.addField(POLYGON_TOKEN);
+        sb.append(START_SYMBOL);
         this.addShape(p);
-        sb.append(", \"nbSides\" : " + p.getNbSides());
-        sb.append(", \"sideLength\" : " + p.getSideLength());
-        sb.append("}");
-        sb.append("}");
+        this.addFieldAndValue(NB_SIDES_TOKEN, p.getNbSides(), true);
+        this.addFieldAndValue(SIDE_LENGTH, p.getSideLength(), true);
+        sb.append(END_SYMBOL);
+        sb.append(END_SYMBOL);
     }
 
     @Override
@@ -86,29 +99,51 @@ public class JSONExportVisitor implements EditorVisitor, EditorExportManager {
         return sb.toString();
     }
 
+    private void addFieldAndValue(String token, double value, boolean separator) {
+        if(separator)
+            sb.append(SEPARATOR_TOKEN);
+        this.addField(token);
+        sb.append(value);
+    }
+
+    private void addField(String token) {
+        sb.append(QUOTE);
+        sb.append(token);
+        sb.append(QUOTE);
+        sb.append(COLON);
+    }
+    private void addSeparatorAndField(String token) {
+        sb.append(SEPARATOR_TOKEN);
+        this.addField(token);
+    }
+
     private void addShape(Shape s) {
 
-        sb.append("\"position\" : {");
-        sb.append("\"x\" : " + s.getPosition().x);
-        sb.append(",\"y\" : " + s.getPosition().y);
-        sb.append("}");
+        this.addField(POSITION_TOKEN);
+        sb.append(START_SYMBOL);
+        this.addFieldAndValue(X_TOKEN, s.getPosition().x, false);
+        this.addFieldAndValue(Y_TOKEN, s.getPosition().y, true);
+        sb.append(END_SYMBOL);
 
-        sb.append(",\"color\" : {");
-        sb.append("\"r\" : " + s.getColor().r);
-        sb.append(",\"g\" : " + s.getColor().g);
-        sb.append(",\"b\" : " + s.getColor().b);
-        sb.append("}");
+        this.addSeparatorAndField(COLOR_TOKEN);
+        sb.append(START_SYMBOL);
+        addFieldAndValue(RED_TOKEN, s.getColor().r, false);
+        addFieldAndValue(GREEN_TOKEN, s.getColor().g, true);
+        addFieldAndValue(BLUE_TOKEN, s.getColor().b, true);
+        sb.append(END_SYMBOL);
 
-        sb.append(",\"rotationCenter\" : {");
-        sb.append("\"x\" : " + s.getRotationCenter().x);
-        sb.append(",\"y\" : " + s.getRotationCenter().y);
-        sb.append("}");
+        this.addSeparatorAndField(ROTATION_CENTER_TOKEN);
+        sb.append(START_SYMBOL);
+        this.addFieldAndValue(X_TOKEN, s.getRotationCenter().x, false);
+        this.addFieldAndValue(Y_TOKEN, s.getRotationCenter().y, true);
+        sb.append(END_SYMBOL);
 
-        sb.append(",\"rotation\" : " + s.getRotation());
+        addFieldAndValue(ROTATION_TOKEN, s.getRotation(), true);
 
-        sb.append(",\"translation\" : {");
-        sb.append("\"x\" : " + s.getTranslation().width);
-        sb.append(",\"y\" : " + s.getTranslation().height);
-        sb.append("}");
+        this.addSeparatorAndField(TRANSLATION_TOKEN);
+        sb.append(START_SYMBOL);
+        addFieldAndValue(X_TOKEN, s.getTranslation().width, false);
+        addFieldAndValue(Y_TOKEN, s.getTranslation().height, true);
+        sb.append(END_SYMBOL);
     }
 }

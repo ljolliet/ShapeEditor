@@ -1,5 +1,5 @@
 package editor.save.io;
 
-public interface EditorImportManager {
+public interface ImportManager extends IOManager{
     void restore(String data);
 }

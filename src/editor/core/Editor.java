@@ -1,7 +1,7 @@
 package editor.core;
 
-import editor.save.io.EditorExportManager;
-import editor.save.io.EditorImportManager;
+import editor.save.io.ExportManager;
+import editor.save.io.ImportManager;
 import editor.save.io.json.JSONExportVisitor;
 import editor.save.io.json.JSONImportManager;
 import editor.save.memento.Caretaker;
@@ -31,8 +31,8 @@ public class Editor extends Observable implements Originator {
     private Rendering rendering;
     private Observer observer;
     private ShapeI shapeDragged;
-    private EditorExportManager exportVisitor;
-    private EditorImportManager importManager;
+    private ExportManager exportVisitor;
+    private ImportManager importManager;
 
     private Editor() {
         this.scene = new Scene();
