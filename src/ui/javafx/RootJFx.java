@@ -1,6 +1,7 @@
 package ui.javafx;
 
 import editor.core.Editor;
+import editor.edition.EditionDialogI;
 import editor.shapes.Shape;
 import editor.shapes.ShapeI;
 import editor.utils.Point2D;
@@ -26,10 +27,13 @@ public class RootJFx extends Group implements Component {
     }
 
     private void onMousePressed(MouseEvent event) {
+
+        // rendering.hideEditionDialog(); // TODO
+
+        // Detect left click
         if (event.getButton() == MouseButton.PRIMARY) {
             boolean inShape = false;
 
-            System.out.println(new Point2D(event.getX(), event.getY()));
             // Look if the mouse is on an existing shape
             for (ShapeI shape : Editor.getInstance().getScene().getShapes()) {
                 if (shape.contains(new Point2D(event.getX(), event.getY()))) { // Found
@@ -41,6 +45,20 @@ public class RootJFx extends Group implements Component {
             // If no shape found --> start select action
             if (!inShape)
                 mediator.startSelection(new Point2D(event.getX(), event.getY()));
+        }
+        // Right click
+        else if (event.getButton() == MouseButton.SECONDARY) {
+            // Click on a selection
+            if (Editor.getInstance().getScene().getSelectedShapes().size() > 1) {
+                mediator.showGroupEditionDialog(new Point2D(event.getScreenX(), event.getScreenY()));
+            }
+            // Click on a single shape
+            else {
+                // Look for the clicked shape
+                for (ShapeI shape : Editor.getInstance().getScene().getShapes())
+                    if (shape.contains(new Point2D(event.getX(), event.getY()))) // Found
+                        mediator.showEditionDialog(shape, new Point2D(event.getScreenX(), event.getScreenY()));
+            }
         }
     }
 

@@ -1,6 +1,7 @@
 package ui.javafx;
 
 import editor.core.Editor;
+import editor.edition.EditionDialogI;
 import editor.edition.PolygonEditionDialog;
 import editor.edition.RectangleEditionDialog;
 import editor.edition.ShapeEditionDialog;
@@ -705,5 +706,19 @@ public class JFxRendering implements Rendering {
     public void stopSelection(List<Shape> shapes) {
         Editor.getInstance().getScene().setSelectedShapes(shapes);
         drawEditor();
+    }
+
+    @Override
+    public void showEditionDialog(ShapeI shape, Point2D coords) {
+        // Create edition dialog
+        EditionDialogI ed = shape.createEditionDialog();
+        ed.setPosition(coords);
+        // Draw it
+        ed.draw(this);
+    }
+
+    @Override
+    public void showGroupEditionDialog(Point2D point) {
+        // TODO
     }
 }
