@@ -9,18 +9,19 @@ public class JSONExportVisitor implements EditorVisitor {
 
     @Override
     public void visit(Editor editor) {
-        sb.append("{ \"editor\" : {");
+        sb.append("{");
+        sb.append("\"editor\" : {");
         editor.getToolbar().accept(this);
         editor.getScene().accept(this);
         sb.append("}");
         sb.append("}");
-        System.out.println(sb.toString());
+        System.out.println(this.getSave());
     }
 
     @Override
     public void visit(Toolbar toolbar) {
         boolean start = true;
-        sb.append("\"toolbar\" : {");
+        sb.append("\"toolbar\" : [");
         for(ShapeI s : toolbar.shapes) {
             if(!start)
                 sb.append(",");
@@ -28,13 +29,13 @@ public class JSONExportVisitor implements EditorVisitor {
                 start = false;
             s.accept(this);
         }
-        sb.append("}");
+        sb.append("]");
     }
 
     @Override
     public void visit(Scene scene) {
         boolean start = true;
-        sb.append(",\"scene\" : {");
+        sb.append(",\"scene\" : [");
         for(ShapeI s : scene.shapes) {
             if(!start)
                 sb.append(",");
@@ -42,13 +43,14 @@ public class JSONExportVisitor implements EditorVisitor {
                 start = false;
             s.accept(this);
         }
-        sb.append("}");
+        sb.append("]");
     }
 
     @Override
     public void visit(ShapeGroup g) {
         boolean start = true;
-        sb.append("\"group\" : {");
+        sb.append("{");
+        sb.append("\"group\" : [");
         for(ShapeI s : g.getChildren()) {
             if(!start)
                 sb.append(",");
@@ -56,26 +58,31 @@ public class JSONExportVisitor implements EditorVisitor {
                 start = false;
             s.accept(this);
         }
+        sb.append("]");
         sb.append("}");
     }
 
     @Override
     public void visit(Rectangle r) {
+        sb.append("{");
         sb.append("\"rectangle\" : {");
         this.addShape(r);
         sb.append(", \"width\" : " + r.getWidth());
         sb.append(", \"height\" : " + r.getHeight());
         sb.append(", \"borderRadius\" : " + r.getBorderRadius());
         sb.append("}");
+        sb.append("}");
     }
 
 
     @Override
     public void visit(Polygon p) {
+        sb.append("{");
         sb.append("\"polygon\" : {");
         this.addShape(p);
         sb.append(", \"nbSides\" : " + p.getNbSides());
         sb.append(", \"sideLength\" : " + p.getSideLength());
+        sb.append("}");
         sb.append("}");
     }
 

@@ -25,7 +25,6 @@ import ui.Rendering;
 import ui.javafx.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 
 public class JavaFXApp extends Application implements ApplicationI {

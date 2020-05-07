@@ -25,6 +25,7 @@ public class Editor extends Observable implements Originator {
     private Observer observer;
     private ShapeI shapeDragged;
     private EditorVisitor exportVisitor;
+    private ImportManager importManager;
 
     private Editor() {
         this.scene = new Scene();
@@ -33,6 +34,7 @@ public class Editor extends Observable implements Originator {
         this.selectionShape = new SelectionRectangle();
         this.observer = new ShapeObserver();
         this.exportVisitor = new JSONExportVisitor();
+        this.importManager = new JSONImportManager();
         this.addObserver(observer);
         this.saveToMemento();
     }
@@ -116,6 +118,10 @@ public class Editor extends Observable implements Originator {
     public String getSave() {
         this.exportVisitor.visit(this);
         return ((JSONExportVisitor)this.exportVisitor).getSave();
+    }
+
+    public void restoreFromString(String data) {
+        this.importManager.restore(data);
     }
 
     public Scene getScene() {

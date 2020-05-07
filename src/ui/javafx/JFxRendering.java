@@ -24,9 +24,11 @@ import ui.Component;
 import ui.Rendering;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Scanner;
 
 
 public class JFxRendering implements Rendering {
@@ -597,7 +599,7 @@ public class JFxRendering implements Rendering {
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("Text Files", "*.txt")); //TODO set extension once decided
 
-        File file = fileChooser.showSaveDialog(null);//TODO change
+        File file = fileChooser.showSaveDialog(null);//TODO put primary Stage
         if (file != null) {
             System.out.println("save file : " + file.getName());
             try {
@@ -616,11 +618,22 @@ public class JFxRendering implements Rendering {
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("Text Files", "*.txt")); //TODO set extension once decided
 
-//        File file = fileChooser.showOpenDialog(primaryStage);
-//        if (file != null) {
-//            System.out.println("open file : " + file.getName());
-//            //TODO open file method
-//        }
+        File file = fileChooser.showOpenDialog(null);   //TODO put primary stage
+        if (file != null) {
+            System.out.println("open file : " + file.getName());
+            Scanner myReader = null;
+            try {
+                myReader = new Scanner(file);
+                StringBuilder sb = new StringBuilder();
+                while (myReader.hasNextLine()) {
+                    sb.append(myReader.nextLine());
+                }
+                Editor.getInstance().restoreFromString(sb.toString());
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            myReader.close();
+        }
     }
 
     @Override
