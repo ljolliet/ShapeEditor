@@ -34,10 +34,12 @@ public class RootJFx extends Group implements Component {
         if (event.getButton() == MouseButton.PRIMARY) {
             boolean inShape = false;
 
+            Point2D coords = new Point2D(event.getX(), event.getY());
+
             // Look if the mouse is on an existing shape
             for (ShapeI shape : Editor.getInstance().getScene().getShapes()) {
-                if (shape.contains(new Point2D(event.getX(), event.getY()))) { // Found
-                    mediator.dragFromScene(shape);
+                if (shape.contains(coords)) { // Found
+                    mediator.dragFromScene(shape, coords);
                     inShape = true;
                     break;
                 }

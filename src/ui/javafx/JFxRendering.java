@@ -9,6 +9,7 @@ import editor.shapes.*;
 import editor.utils.Point2D;
 import editor.utils.SelectionRectangle;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -37,33 +38,55 @@ public class JFxRendering implements Rendering {
     private ToolbarJFx toolbar;
     private int toolbarRowCount;
     private RowConstraints rowConstraints;
-    private Group root;
+
+    private RootJFx root;
+
+    private WindowPaneJFx windowPane;
+
+    /* Edition */
     private ContextMenu contextMenu;
     private Stage editStage;
     private GridPane editGridPane;
     private Scene editScene;
+
+    /* Drag & drop */
     private boolean fromToolbar;
 
-//    JFxRendering(GridPane toolbar, Group root) {
-//        this.toolbar = toolbar;
-//        this.root = root;
-//
-//    }
+    /* Shadow shape */
+    private Group shadowShape;
+    private Group shadowGroup;
+    private Point2D shadowShapeThreshold;
+
 
     public JFxRendering() {
+        this.fromToolbar = false;
+        this.initToolbar();
+        this.initEdition();
+    }
+
+    private void initToolbar() {
         this.toolbarRowCount = 0;
         this.rowConstraints = new RowConstraints(ApplicationI.TOOLBAR_CELL_HEIGHT);
+    }
+
+    private void initEdition() {
         this.contextMenu = new ContextMenu();
         this.editGridPane = new GridPane();
         this.editStage = new Stage();
         this.editScene = new Scene(editGridPane);
-        this.fromToolbar = false;
     }
 
-    private void init() {
+    private void initShadowShape() {
+        shadowShapeThreshold = new Point2D(0, 0);
+
+        shadowGroup = new Group(new Canvas(ApplicationI.WINDOW_WIDTH, ApplicationI.WINDOW_HEIGHT));
+        // The group is completely transparent to mouse events
+        shadowGroup.setMouseTransparent(true);
+        windowPane.getChildren().add(shadowGroup);
+    }
+
+    private void initEditor() {
         // Remove all shapes of the scene and of the toolbar
-        //root.getChildren().removeIf(child -> child instanceof javafx.scene.shape.Shape);
-        //toolbar.getChildren().removeIf(child -> child instanceof javafx.scene.shape.Shape);
         root.getChildren().removeIf(child -> !(child instanceof Canvas));
         toolbar.getChildren().clear();
         toolbar.getRowConstraints().clear();
@@ -74,7 +97,7 @@ public class JFxRendering implements Rendering {
     public void drawEditor() {
         Editor editor = Editor.getInstance();
         // Clear shapes
-        this.init();
+        this.initEditor();
 
         // Draw scene
         for (ShapeI s: editor.getScene().getShapes())
@@ -86,7 +109,7 @@ public class JFxRendering implements Rendering {
     }
 
     @Override
-    public void drawSelectionFrame(){
+    public void drawSelectionFrame() {
         Editor editor = Editor.getInstance();
         drawEditor();
         SelectionRectangle s = (SelectionRectangle)editor.getSelectionShape();
@@ -576,11 +599,16 @@ public class JFxRendering implements Rendering {
     public void registerComponent(Component component) {
         component.setMediator(this);
         switch (component.getName()) {
-            case "ToolBar":
+            case "Toolbar":
                 toolbar = (ToolbarJFx) component;
                 break;
-            case "Root" :
+            case "Root":
                 root = (RootJFx) component;
+                break;
+            case "windowPane":
+                windowPane = (WindowPaneJFx) component;
+                this.initShadowShape();
+                break;
         }
     }
 
@@ -639,15 +667,29 @@ public class JFxRendering implements Rendering {
 
     @Override
     public void dragFromToolbar(ShapeI shape) {
-        // TODO Manage shadow shape and cursor
+        // Shadow shape
+        shadowShape = (Group) getShadowShape(shape);
+        shadowGroup.getChildren().add(shadowShape);
+        shadowGroup.toFront();
+        shadowShape.setVisible(false);
+
         this.fromToolbar = true;
+        shadowGroup.setCursor(Cursor.CLOSED_HAND);
         Editor.getInstance().setShapeDragged(shape);
     }
 
     @Override
-    public void dragFromScene(ShapeI shape) {
-        // TODO Manage shadow shape and cursor
+    public void dragFromScene(ShapeI shape, Point2D coords) {
+        // Shadow shape
+        shadowShape = (Group) getShadowShape(shape);
+        shadowGroup.getChildren().add(shadowShape);
+        shadowGroup.toFront();
+        shadowShape.setVisible(false);
+        this.shadowShapeThreshold = new Point2D(shape.getPosition().x - coords.x,
+                shape.getPosition().y - coords.y);
+
         this.fromToolbar = false;
+        shadowGroup.setCursor(Cursor.CLOSED_HAND);
         Editor.getInstance().setShapeDragged(shape);
     }
 
@@ -663,6 +705,7 @@ public class JFxRendering implements Rendering {
             e.printStackTrace();
         }
 
+        shadowGroup.setCursor(Cursor.DEFAULT);
         editor.setShapeDragged(null);
     }
 
@@ -683,11 +726,11 @@ public class JFxRendering implements Rendering {
         }
         // Else --> update position
         else {
-            editor.getShapeDragged().setPosition(coords);
-//            editor.getShapeDragged().setPosition(new Point2D(coords.x + shadowShapeThreshold.x,
-//                    coords.y + shadowShapeThreshold.y));
+            editor.getShapeDragged().setPosition(new Point2D(coords.x + shadowShapeThreshold.x,
+                    coords.y + shadowShapeThreshold.y));
         }
 
+        shadowGroup.setCursor(Cursor.DEFAULT);
         editor.setShapeDragged(null);
     }
 
@@ -720,5 +763,26 @@ public class JFxRendering implements Rendering {
     @Override
     public void showGroupEditionDialog(Point2D point) {
         // TODO
+    }
+
+    @Override
+    public void moveShadowShape(Point2D coords) {
+        if (shadowShape != null) {
+            if (!shadowShape.isVisible())
+                shadowShape.setVisible(true);
+
+            shadowShape.setTranslateX(coords.x + shadowShapeThreshold.x);
+            shadowShape.setTranslateY(coords.y + shadowShapeThreshold.y);
+        }
+    }
+
+    @Override
+    public void clearShadowShape() {
+        // Delete all shadow shapes
+        shadowGroup.getChildren().removeIf(node -> !(node instanceof Canvas));
+        // Bring editor to foreground
+        shadowGroup.toBack();
+
+        shadowShapeThreshold = new Point2D(0, 0);
     }
 }

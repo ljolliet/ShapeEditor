@@ -58,6 +58,6 @@ public class ToolbarJFx extends GridPane implements Component {
 
     @Override
     public String getName() {
-        return "ToolBar";
+        return "Toolbar";
     }
 }
