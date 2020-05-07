@@ -37,12 +37,6 @@ public class JavaFXApp extends Application implements ApplicationI {
     private BorderPane borderPane;
     private ImageView trashImage;
 
-    private boolean fromToolbar = false;
-
-//    private Group shadowShape;
-//    private Group shadowGroup;
-//    private Point2D shadowShapeThreshold = new Point2D(0,0);
-
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle(WINDOW_TITLE);
@@ -72,25 +66,17 @@ public class JavaFXApp extends Application implements ApplicationI {
         Scene scene = new Scene(windowPane);
         primaryStage.setScene(scene);
 
-//        // Create a group to move the shadow shape inside
-//        shadowGroup = new Group(new Canvas(WINDOW_WIDTH, WINDOW_HEIGHT));
-//        // The group is completely transparent to mouse events
-//        shadowGroup.setMouseTransparent(true);
-//        windowPane.getChildren().add(shadowGroup);
         rendering.registerComponent(windowPane);
-
         windowLayout.toFront();
 
         // Top option bar
         HBox optionLayout = new HBox();
         optionLayout.setPrefHeight(OPTION_HEIGHT);
-        //optionLayout.setPrefWidth(WINDOW_WIDTH);
         optionLayout.setSpacing(OPTION_SPACING);
         optionLayout.setSpacing(OPTION_SPACING);
         optionLayout.setPadding(new Insets(OPTION_SPACING));
         optionLayout.setStyle("-fx-background-color: firebrick");
         windowLayout.getChildren().add(optionLayout);
-
 
         ButtonJFx saveBtn = new SaveButtonJFx();
         ButtonJFx openBtn = new OpenButtonJFx();
@@ -106,8 +92,6 @@ public class JavaFXApp extends Application implements ApplicationI {
 
         // Editor layout
         HBox editorLayout = new HBox();
-        //editorLayout.setPrefHeight(WINDOW_HEIGHT - OPTION_HEIGHT);
-        //editorLayout.setPrefWidth(WINDOW_WIDTH);
         windowLayout.getChildren().add(editorLayout);
 
         //Toolbar root
@@ -123,7 +107,7 @@ public class JavaFXApp extends Application implements ApplicationI {
         rendering.registerComponent(toolbarBox);
 
         //trash
-        //TODO refacto
+        // TODO Refactor
         this.trashImage = new ImageView(new Image(getClass().getClassLoader().getResource("trash.png").toString()));
         trashImage.setPreserveRatio(true);
         trashImage.setFitHeight(TRASH_HEIGHT);
@@ -143,241 +127,9 @@ public class JavaFXApp extends Application implements ApplicationI {
         canvas.setHeight(SCENE_HEIGHT);
         root.getChildren().add(canvas);
 
-        /* Set events */
-        //setToolbarEvents();
-        //setSceneEvents();
-
-        // Events on stack pane
-//        windowPane.setOnMouseDragged(event -> {
-//            // Move shadow shape to mouse coords
-//            if (shadowShape != null) {
-//                shadowShape.setTranslateX(event.getX() + shadowShapeThreshold.x);
-//                shadowShape.setTranslateY(event.getY() + shadowShapeThreshold.y);
-//            }
-//        });
-//
-//        windowPane.setOnMouseDragReleased(event -> {
-//            // Delete all shadow shapes
-//            shadowGroup.getChildren().removeIf(node -> !(node instanceof Canvas));
-//            // Bring editor to foreground
-//            shadowGroup.toBack();
-//
-//            shadowShapeThreshold = new Point2D(0, 0);
-//        });
-
-
-
         // Draw editor
         rendering.drawEditor();
 
         primaryStage.show();
     }
-
-//    private void setToolbarEvents() {
-//        toolbarBox.setOnDragDetected(event -> {
-//            System.out.println("[TOOLBAR] Drag detected");
-//            // Start drag event
-//            toolbarBox.startFullDrag();
-//            fromToolbar = true;
-//
-//            // Detect left click
-//            if (event.getButton() == MouseButton.PRIMARY) {
-//                int i = 0;
-//                // Search for shape selected
-//                for (Node node : toolbarBox.getChildren()) {
-//                    if (event.getPickResult().getIntersectedNode() == node) { // Found
-//                        ShapeI s = editor.getToolbar().getShapes().get(i);
-//
-//                        // Create shadow shape with dragged shape
-//                        shadowShape = (Group) rendering.getShadowShape(s);
-//                        // Display shadow shape
-//                        shadowGroup.getChildren().add(shadowShape);
-//                        shadowGroup.toFront();
-//
-//                        shadowGroup.setCursor(Cursor.CLOSED_HAND);
-//                        editor.setShapeDragged(s);
-//                        break;
-//                    }
-//                    i++;
-//                }
-//            }
-//        });
-//
-//        borderPane.setOnMouseDragReleased(event -> {
-//            System.out.println("[BORDERPANE] Drag released");
-//
-//            // Detect left click
-//            if (event.getButton() == MouseButton.PRIMARY) {
-//                if (editor.getShapeDragged() != null) {
-//                    Node intersectedNode = event.getPickResult().getIntersectedNode();
-//
-//                    // If release over trash --> delete selected shape
-//                    if (intersectedNode == this.trashImage) {
-//                        if(editor.toolbarContains(editor.getShapeDragged()))
-//                            editor.removeShapeFromToolbar(editor.getShapeDragged());
-//                        else if(editor.sceneContains(editor.getShapeDragged()) )
-//                            editor.removeShapeFromScene((Shape) editor.getShapeDragged());
-//                        else
-//                            throw new EditorManagementException("Trying to delete an unknown shape");
-//                    }
-//                    // If release over toolbar --> add shape to toolbar
-//                    else if (intersectedNode == this.toolbarBox) {
-//                        try {
-//                            // Clone the shape and paste it to the toolbar
-//                            ShapeI newShape = editor.getShapeDragged().clone();
-//                            editor.addShapeToToolbar(newShape);
-//                        } catch (CloneNotSupportedException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//
-//                    shadowGroup.setCursor(Cursor.DEFAULT);
-//                    editor.setShapeDragged(null);
-//                }
-//            }
-//        });
-//    }
-//
-//    private void setSceneEvents() {
-//        root.setOnDragDetected(event -> {
-//            System.out.println("[ROOT] Drag detected");
-//            root.startFullDrag();
-//            fromToolbar = false;
-//        });
-//
-//        root.setOnMouseDragged(event -> {
-//            // Detect left click
-//            if (event.getButton() == MouseButton.PRIMARY) {
-//
-//                // If there is a shape to drag
-//                if (editor.getShapeDragged() != null) {
-//                    // Display shadow shape
-//                    if (!shadowGroup.getChildren().contains(shadowShape)) {
-//                        shadowGroup.getChildren().add(shadowShape);
-//                        shadowGroup.toFront();
-//                    }
-//                }
-//                // Else, it is a select action
-//                else {
-//                    editor.getSelectionShape().setSelectionEndPoint(new Point2D(event.getX(), event.getY()));
-//                    rendering.drawSelectionFrame();
-//                }
-//            }
-//        });
-//
-//        root.setOnMouseDragReleased(event -> {
-//            System.out.println("[ROOT] Drag released");
-//
-//            // If there is a shape dragged
-//            if (editor.getShapeDragged() != null) {
-//                // If from toolbar --> clone the shape
-//                if (fromToolbar) {
-//                    try {
-//                        // Clone the shape and paste it to the scene
-//                        ShapeI newShape = editor.getShapeDragged().clone();
-//                        newShape.setPosition(new Point2D(event.getX(), event.getY()));
-//                        editor.addShapeToScene((Shape) newShape);
-//                    } catch (CloneNotSupportedException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//                // Else --> update position
-//                else {
-//                    editor.getShapeDragged().setPosition(new Point2D(event.getX() + shadowShapeThreshold.x,
-//                            event.getY() + shadowShapeThreshold.y));
-//                }
-//
-//                editor.setShapeDragged(null);
-//            }
-//        });
-//
-//        root.setOnMousePressed(event -> {
-//            // Close edition dialog
-//            rendering.hideEditionDialog();
-//
-//            // Detect left click
-//            if (event.getButton() == MouseButton.PRIMARY) {
-//                System.out.println("[ROOT] Mouse pressed");
-//
-//                boolean inShape = false;
-//                // Look if the mouse is on an existing shape
-//                for (ShapeI s : editor.getScene().getShapes()) {
-//                    if (s.contains(new Point2D(event.getX(), event.getY()))) { // Found
-//                        // Create shadow shape with dragged shape
-//                        shadowShape = (Group) rendering.getShadowShape(s);
-//                        shadowShapeThreshold = new Point2D(s.getPosition().x - event.getX(),
-//                                s.getPosition().y - event.getY());
-//
-//                        shadowGroup.setCursor(Cursor.CLOSED_HAND);
-//                        editor.setShapeDragged(s);
-//                        inShape = true;
-//                        break;
-//                    }
-//                }
-//                // If no shape found --> start select action
-//                if (!inShape)
-//                    editor.getSelectionShape().setSelectionStartPoint(new Point2D(event.getX(), event.getY()));
-//            }
-//        });
-//
-//        root.setOnMouseReleased(event -> {
-//            System.out.println("[ROOT] Mouse released");
-//
-//            // Detect left click
-//            if (event.getButton() == MouseButton.PRIMARY) {
-//                // Hide shadow shape
-//                shadowGroup.getChildren().remove(shadowShape);
-//                shadowGroup.toBack();
-//
-//                // If it is a select action
-//                if (editor.getSelectionShape() != null) {
-//                    ArrayList<Shape> selectedShapes = new ArrayList<>();
-//
-//                    // Add all selected shapes in array
-//                    for (Shape s : editor.getScene().getShapes())
-//                        if (s.contained(editor.getSelectionShape())) {
-//                            selectedShapes.add(s);
-//                            System.out.println(s + " selected");
-//                        }
-//
-//                    // Save selected shapes
-//                    editor.getScene().setSelectedShapes(selectedShapes);
-//                }
-//
-//
-//                shadowGroup.setCursor(Cursor.DEFAULT);
-//                editor.setShapeDragged(null);
-//                rendering.drawEditor();
-//            }
-//        });
-//
-//        root.setOnMouseClicked(e -> {
-//            System.out.println("[ROOT] Mouse clicked");
-//
-//            // Close edition dialog
-//            rendering.hideEditionDialog();
-//
-//            // Detect right click
-//            if (e.getButton() == MouseButton.SECONDARY) {
-//                // Click on a selection
-//                if (editor.getScene().getSelectedShapes().size() > 1) {
-//                   // rendering.showGroupDialog(new Point2D(e.getScreenX(), e.getScreenY()));    //TODO Refacto
-//                }
-//                // Click on a single shape
-//                else {
-//                    // Look for the clicked shape
-//                    for (ShapeI s : editor.getScene().getShapes()) {
-//                        if (s.contains(new Point2D(e.getX(), e.getY()))) { // Found
-//                            System.out.println("right click on shape");
-//                            // Create edition dialog
-//                            EditionDialogI ed = s.createEditionDialog();
-//                            ed.setPosition(new Point2D(e.getScreenX(), e.getScreenY()));
-//                            // Draw it
-//                            ed.draw(rendering);
-//                        }
-//                    }
-//                }
-//            }
-//        });
-//    }
 }
