@@ -22,8 +22,8 @@ public class JSONImportManager implements ImportManager {
         try {
             JSONObject obj = (JSONObject) parser.parse(data);
 
-            JSONObject editor = (JSONObject) obj.get("editor");
-            JSONArray scene = (JSONArray) editor.get("scene");
+            JSONObject editor = (JSONObject) obj.get(EDITOR_TOKEN);
+            JSONArray scene = (JSONArray) editor.get(SCENE_TOKEN);
 
             List<ShapeI> shapes = new ArrayList<>();
             this.getShapes(scene, shapes);
@@ -40,16 +40,16 @@ public class JSONImportManager implements ImportManager {
         Iterator<JSONObject> iterator = array.iterator();
         JSONObject shape;
         while (iterator.hasNext()) {
-            if((shape = iterator.next()).get("rectangle") != null){
-                JSONObject rectangle = (JSONObject) shape.get("rectangle");
+            if((shape = iterator.next()).get(RECTANGLE_TOKEN) != null){
+                JSONObject rectangle = (JSONObject) shape.get(RECTANGLE_TOKEN);
                 shapes.add(this.getRectangle(rectangle));
             }
-            else if(shape.get("polygon") != null){
-                JSONObject polygon = (JSONObject) shape.get("polygon");
+            else if(shape.get(POLYGON_TOKEN) != null){
+                JSONObject polygon = (JSONObject) shape.get(POLYGON_TOKEN);
                 shapes.add(this.getPolygon(polygon));
             }
-            else if(shape.get("group") != null){
-                JSONArray group = (JSONArray) shape.get("group");
+            else if(shape.get(GROUP_TOKEN) != null){
+                JSONArray group = (JSONArray) shape.get(GROUP_TOKEN);
                 ShapeGroup g = new ShapeGroup();
                 List<ShapeI> childrenShapes = new ArrayList<>();
                 this.getShapes(group, childrenShapes);
@@ -62,42 +62,42 @@ public class JSONImportManager implements ImportManager {
 
     //TODO avoid duplication
     private Polygon getPolygon(JSONObject polygon) {
-        double nbSides = (double) polygon.get("nbSides");
-        double sideLength = (double) polygon.get("sideLength");
+        double nbSides = (double) polygon.get(NB_SIDES_TOKEN);
+        double sideLength = (double) polygon.get(SIDE_LENGTH);
 
-        JSONObject pos = (JSONObject) polygon.get("position");
-        Point2D position = new Point2D((double)pos.get("x"), (double) pos.get("y"));
+        JSONObject pos = (JSONObject) polygon.get(POSITION_TOKEN);
+        Point2D position = new Point2D((double)pos.get(X_TOKEN), (double) pos.get(Y_TOKEN));
 
-        JSONObject col = (JSONObject) polygon.get("color");
-        double red = (double) col.get("r");
-        double green = (double) col.get("g");
-        double blue = (double) col.get("b");
+        JSONObject col = (JSONObject) polygon.get(COLOR_TOKEN);
+        double red = (double) col.get(RED_TOKEN);
+        double green = (double) col.get(GREEN_TOKEN);
+        double blue = (double) col.get(BLUE_TOKEN);
         Color color = new Color((int)red, (int)green, (int)blue);
 
-        JSONObject rotCenter = (JSONObject) polygon.get("rotationCenter");
-        Point2D rotationCenter = new Point2D((double)rotCenter.get("x"), (double) rotCenter.get("y"));
-        double rotation = (double) polygon.get("rotation");
+        JSONObject rotCenter = (JSONObject) polygon.get(ROTATION_CENTER_TOKEN);
+        Point2D rotationCenter = new Point2D((double)rotCenter.get(X_TOKEN), (double) rotCenter.get(Y_TOKEN));
+        double rotation = (double) polygon.get(ROTATION_TOKEN);
 
         return new Polygon((int)nbSides, sideLength, position, color, rotationCenter, rotation);
     }
 
     private Rectangle getRectangle(JSONObject rectangle) {
-        double width = (double) rectangle.get("width");
-        double height = (double) rectangle.get("height");
-        double borderRadius = (double) rectangle.get("borderRadius");
+        double width = (double) rectangle.get(WIDTH_TOKEN);
+        double height = (double) rectangle.get(HEIGHT_TOKEN);
+        double borderRadius = (double) rectangle.get(BORDER_RADIUS_TOKEN);
 
-        JSONObject pos = (JSONObject) rectangle.get("position");
-        Point2D position = new Point2D((double)pos.get("x"), (double) pos.get("y"));
+        JSONObject pos = (JSONObject) rectangle.get(POSITION_TOKEN);
+        Point2D position = new Point2D((double)pos.get(X_TOKEN), (double) pos.get(Y_TOKEN));
 
-        JSONObject col = (JSONObject) rectangle.get("color");
-        double red = (double) col.get("r");
-        double green = (double) col.get("g");
-        double blue = (double) col.get("b");
+        JSONObject col = (JSONObject) rectangle.get(COLOR_TOKEN);
+        double red = (double) col.get(RED_TOKEN);
+        double green = (double) col.get(GREEN_TOKEN);
+        double blue = (double) col.get(BLUE_TOKEN);
         Color color = new Color((int)red, (int)green, (int)blue);
 
-        JSONObject rotCenter = (JSONObject) rectangle.get("rotationCenter");
-        Point2D rotationCenter = new Point2D((double)rotCenter.get("x"), (double) rotCenter.get("y"));
-        double rotation = (double) rectangle.get("rotation");
+        JSONObject rotCenter = (JSONObject) rectangle.get(ROTATION_CENTER_TOKEN);
+        Point2D rotationCenter = new Point2D((double)rotCenter.get(X_TOKEN), (double) rotCenter.get(Y_TOKEN));
+        double rotation = (double) rectangle.get(ROTATION_TOKEN);
 
         return new Rectangle(width, height, (int) borderRadius, position, color, rotationCenter, rotation);
     }
