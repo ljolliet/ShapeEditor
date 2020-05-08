@@ -1,5 +1,6 @@
 package editor.core;
 
+import editor.shapes.Shape;
 import editor.shapes.ShapeI;
 
 import java.io.Serializable;
@@ -8,7 +9,7 @@ import java.util.List;
 
 public class Scene implements Serializable {
 
-    List<ShapeI> shapes;
+    List<Shape> shapes;
     List<ShapeI> selectedShapes;
 
     public Scene() {
@@ -16,18 +17,18 @@ public class Scene implements Serializable {
         this.selectedShapes = new ArrayList<>();
     }
 
-    public void addShape(ShapeI shape) {
+    public void addShape(Shape shape) {
         shapes.add(shape);
     }
 
-    public void removeShape(ShapeI shape) {
+    public void removeShape(Shape shape) {
         shapes.remove(shape);
     }
 
     public void setSelectedShapes(List<ShapeI> shapes){
         this.selectedShapes = shapes;
     }
-    public List<ShapeI> getShapes() {
+    public List<Shape> getShapes() {
         return new ArrayList<>(shapes);
     }
 
@@ -35,11 +36,11 @@ public class Scene implements Serializable {
         return new ArrayList<>(selectedShapes);
     }
 
-    public void setShapes(List<ShapeI> shapes) {
+    public void setShapes(List<Shape> shapes) {
         this.shapes = shapes;
     }
 
-    public boolean contains(ShapeI shape) {
+    public boolean contains(Shape shape) {
         return this.shapes.contains(shape);
     }
 

@@ -255,7 +255,7 @@ public class JFxRendering implements Rendering {
             Shape group = new ShapeGroup();
             for(ShapeI s : editor.getScene().getSelectedShapes()){
                 group.addShape(s);
-                editor.removeShapeFromScene(s);
+                editor.removeShapeFromScene((Shape) s);
             }
             editor.addShapeToScene(group);
         });
@@ -760,7 +760,7 @@ public class JFxRendering implements Rendering {
         if (shape != null) {
             if(editor.toolbarContains(shape))
                 editor.removeShapeFromToolbar(shape);
-            else if(editor.sceneContains(shape))
+            else if(editor.sceneContains((Shape) shape))
                 editor.removeShapeFromScene((Shape) shape);
             else
                 throw new EditorManagementException("Trying to delete an unknown shape");

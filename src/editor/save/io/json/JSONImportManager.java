@@ -25,10 +25,10 @@ public class JSONImportManager implements ImportManager {
             JSONObject editor = (JSONObject) obj.get(EDITOR_TOKEN);
             JSONArray scene = (JSONArray) editor.get(SCENE_TOKEN);
 
-            List<ShapeI> shapes = new ArrayList<>();
+            List<Shape> shapes = new ArrayList<>();
             this.getShapes(scene, shapes);
             Editor.getInstance().getScene().setShapes(shapes);
-
+            Editor.getInstance().getHistory().clear();
             Editor.getInstance().getRendering().drawEditor();
 
         } catch (ParseException e) {
@@ -36,7 +36,7 @@ public class JSONImportManager implements ImportManager {
         }
     }
 
-    private void getShapes(JSONArray array, List<ShapeI> shapes) {
+    private void getShapes(JSONArray array, List<Shape> shapes) {
         Iterator<JSONObject> iterator = array.iterator();
         JSONObject shape;
         while (iterator.hasNext()) {
@@ -51,7 +51,7 @@ public class JSONImportManager implements ImportManager {
             else if(shape.get(GROUP_TOKEN) != null){
                 JSONArray group = (JSONArray) shape.get(GROUP_TOKEN);
                 ShapeGroup g = new ShapeGroup();
-                List<ShapeI> childrenShapes = new ArrayList<>();
+                List<Shape> childrenShapes = new ArrayList<>();
                 this.getShapes(group, childrenShapes);
                 for(ShapeI s : childrenShapes)
                     g.addShape(s);

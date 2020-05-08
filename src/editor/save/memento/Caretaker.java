@@ -53,4 +53,9 @@ public class Caretaker{
     public boolean contains(Memento m) {
         return mementoHistory.contains(m);
     }
+
+    public void clear() {
+        this.mementoHistory.clear();
+        this.currentMementoIndex = -1;
+    }
 }

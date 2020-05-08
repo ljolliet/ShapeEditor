@@ -61,7 +61,7 @@ public class Editor extends Observable implements Originator {
         notifyObservers();
     }
 
-    public void removeShapeFromScene(ShapeI s) {
+    public void removeShapeFromScene(Shape s) {
         this.scene.removeShape(s);
         notifyObservers();
     }
@@ -102,6 +102,8 @@ public class Editor extends Observable implements Originator {
             ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
             List list[] = (List[]) ois.readObject();
             this.scene.setShapes(list[0]);
+            for(Shape s : this.scene.getShapes())
+                s.addObserver(this.observer);
             this.toolbar.setShapes(list[1]);
             ois.close();
         } catch (ClassNotFoundException e) {
@@ -166,7 +168,7 @@ public class Editor extends Observable implements Originator {
         return this.toolbar.contains(shape);
     }
 
-    public boolean sceneContains(ShapeI shape) {
+    public boolean sceneContains(Shape  shape) {
         return this.scene.contains(shape);
     }
 }
