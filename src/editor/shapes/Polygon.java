@@ -110,4 +110,10 @@ public class Polygon extends SimpleShape {
     public double getRadius() {
         return radius;
     }
+
+    public void setAllPolygonValues(int nbSides, double sideLength, Point2D position, Color color, double rotation) {
+        this.nbSides = nbSides;
+        this.sideLength = sideLength;
+        this.setAllValues(position, color, rotation);
+    }
 }

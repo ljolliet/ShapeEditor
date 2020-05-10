@@ -116,5 +116,11 @@ public abstract class SimpleShape extends Shape {
         return translation;
     }
 
-
+    //@Override
+    public void setAllValues(Point2D position, Color color, double rotation){
+        this.position = position;
+        this.color = color;
+        this.rotation = rotation;
+        notifyObservers();
+    }
 }
