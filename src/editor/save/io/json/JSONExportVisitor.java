@@ -21,6 +21,7 @@ public class JSONExportVisitor implements EditorVisitor, ExportManager {
 
     @Override
     public void visit(Editor editor) {
+        sb.delete(0, sb.length());
         sb.append(START_SYMBOL);
         this.addField(EDITOR_TOKEN);
         sb.append(START_SYMBOL);

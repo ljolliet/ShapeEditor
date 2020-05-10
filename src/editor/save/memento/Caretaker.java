@@ -18,7 +18,7 @@ public class Caretaker{
             mementoHistory.remove(mementoHistory.get(0));
         }
         else if(currentMementoIndex < mementoHistory.size() - 1) {
-            Set<Memento> toDelete = new HashSet();
+            HashSet<Memento> toDelete = new HashSet<>();
             for (int i = currentMementoIndex + 1; i < mementoHistory.size(); i++)
                 toDelete.add(mementoHistory.get(i));
             this.mementoHistory.removeAll(toDelete);
