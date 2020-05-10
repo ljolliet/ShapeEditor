@@ -128,19 +128,29 @@ public class ShapeBuilderJFx {
 
         for (ShapeI shape: group.getChildren()) {
             Group jfxShape = new Group();
+            boolean isGroup = false;
 
             // Create shapes
-            if (shape instanceof Rectangle)
+            if (shape instanceof Rectangle) {
                 jfxShape.getChildren().add(createToolbarRectangle((Rectangle) shape, ratio));
-            else if (shape instanceof Polygon)
+            }
+            else if (shape instanceof Polygon) {
                 jfxShape.getChildren().add(createToolbarPolygon((Polygon) shape,
                         ((Polygon) shape).getRadius() * ratio));
-            else if (shape instanceof ShapeGroup)
+            }
+            else if (shape instanceof ShapeGroup) {
                 jfxShape.getChildren().add(createToolbarGroup((ShapeGroup) shape, ratio));
+                isGroup = true;
+            }
 
-            // Create translation related to position
-            jfxShape.setTranslateX(shape.getPosition().x * ratio);
-            jfxShape.setTranslateY(shape.getPosition().y * ratio);
+            // For groups, don't apply translation because children
+            // already have it applied
+            if (!isGroup) {
+                // Create translation related to position
+                jfxShape.setTranslateX(shape.getPosition().x * ratio);
+                jfxShape.setTranslateY(shape.getPosition().y * ratio);
+            }
+
             // Add to group
             jfxGroup.getChildren().add(jfxShape);
         }
