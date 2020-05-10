@@ -44,11 +44,11 @@ public class ShapeGroup extends Shape {
     public ShapeI clone() {
         ShapeI c = super.clone();
 
-        Set<ShapeI> set = new HashSet<>();
+        // Add a copy of each child
+        c.setChildren(new HashSet<>());
         for (ShapeI shape: this.getChildren())
-            set.add(shape.clone());
+            c.addShape(shape.clone());
 
-        c.setChildren(set);
         return c;
     }
 
