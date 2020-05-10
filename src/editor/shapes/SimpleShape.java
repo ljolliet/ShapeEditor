@@ -20,6 +20,14 @@ public abstract class SimpleShape extends Shape {
         this.translation = new Vec2D(0,0);
     }
 
+    public double getX() {
+        return position.x;
+    }
+
+    public double getY() {
+        return position.y;
+    }
+
     @Override
     public Set<ShapeI> getChildren() {
         return null;
@@ -83,14 +91,6 @@ public abstract class SimpleShape extends Shape {
         notifyObservers();
     }
 
-    public double getX() {
-        return position.x;
-    }
-
-    public double getY() {
-        return position.y;
-    }
-
     @Override
     public Point2D getPosition() {
         return position;
@@ -116,7 +116,6 @@ public abstract class SimpleShape extends Shape {
         return translation;
     }
 
-    //@Override
     public void setAllValues(Point2D position, Color color, double rotation){
         this.position = position;
         this.color = color;

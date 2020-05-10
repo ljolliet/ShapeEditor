@@ -494,7 +494,7 @@ public class JFxRendering implements Rendering {
         final String extension = Editor.getInstance().getSaveExtension();
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("Save Files", "*" + extension)); //TODO set extension once decided
+                new FileChooser.ExtensionFilter("Save Files", "*" + extension));
         fileChooser.setInitialFileName(new Date() + extension);
 
         File saveDir = new File("save");
@@ -524,7 +524,7 @@ public class JFxRendering implements Rendering {
     public void open() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Text Files", "*" + Editor.getInstance().getSaveExtension())); //TODO set extension once decided
+                new FileChooser.ExtensionFilter("Text Files", "*" + Editor.getInstance().getSaveExtension()));
         File saveDir = new File("save");
         if (! saveDir.exists()) {
             saveDir.mkdirs();

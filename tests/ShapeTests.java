@@ -9,13 +9,13 @@ public class ShapeTests {
 
     @Test
     public void cloneTest() throws CloneNotSupportedException {
-        ShapeI s1 = ShapeFactory.makePolygone(5);
+        ShapeI s1 = ShapeFactory.makePolygon(5);
         ShapeI s2 = ShapeFactory.makeRectangle();
         ShapeI group = new ShapeGroup();
         group.addShape(s1);
         group.addShape(s2);
         ShapeI groupClone = group.clone();
-        groupClone.addShape(ShapeFactory.makePolygone(5));
+        groupClone.addShape(ShapeFactory.makePolygon(5));
         assertNotEquals(s1, s1.clone());
         assertNotEquals(group, groupClone);
         assertNotEquals(group.getChildren(), groupClone.getChildren());

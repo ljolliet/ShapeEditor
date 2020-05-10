@@ -36,7 +36,6 @@ public interface ShapeI extends Cloneable, Serializable {
     void setRotation(double angle);
     void setRotationCenter(Point2D pos);
     void setTranslation(Vec2D translation);
-    //void setAllValues(Point2D position, Color color, double rotation);
 
     Point2D getPosition();
     Color getColor();
