@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Observable implements ObservableI{
-    private final Set<Observer> observers = new HashSet<>();
+    private Set<Observer> observers = new HashSet<>();
 
     @Override
     public void addObserver(Observer observer) {
@@ -21,5 +21,9 @@ public class Observable implements ObservableI{
         Set<Observer> copy = new HashSet<>(this.observers);
         for (Observer o : copy)
             o.update();
+    }
+
+    protected void setObservers(Set<Observer> observers) {
+        this.observers = observers;
     }
 }

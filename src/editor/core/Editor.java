@@ -134,6 +134,9 @@ public class Editor extends Observable implements Originator {
 
     public void restoreFromString(String data) {
         this.importManager.restore(data);
+        history.clear();
+        this.saveToMemento();
+        rendering.drawEditor();
     }
 
     public Scene getScene() {

@@ -20,7 +20,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
-import javafx.scene.transform.Rotate;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import ui.ApplicationI;
@@ -600,7 +599,6 @@ public class JFxRendering implements Rendering {
                 // Clone the shape and paste it to the scene
                 ShapeI newShape = editor.getShapeDragged().clone();
                 newShape.setPosition(coords);
-                System.out.println("ou" + newShape.getPosition());
                 editor.addShapeToScene((Shape) newShape);
             } catch (CloneNotSupportedException e) {
                 e.printStackTrace();
