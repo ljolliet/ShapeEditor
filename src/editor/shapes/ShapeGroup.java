@@ -85,7 +85,11 @@ public class ShapeGroup extends Shape {
         for (ShapeI s: shapes)
             points.addAll(Arrays.asList(s.getPoints()));
 
-        return (Point2D[]) points.toArray();
+        Point2D[] pointsArray = new Point2D[points.size()];
+        for (int i = 0; i < points.size(); i++)
+            pointsArray[i] = points.get(i);
+
+        return pointsArray;
     }
 
     @Override
