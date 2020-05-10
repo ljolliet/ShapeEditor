@@ -1,5 +1,7 @@
 package editor.utils;
 
+import ui.ApplicationI;
+
 public class SelectionRectangle implements SelectionShape {
 
     private Point2D selectionStartPoint = new Point2D(0.,0.);
@@ -21,11 +23,17 @@ public class SelectionRectangle implements SelectionShape {
 
     @Override
     public void setSelectionStartPoint(Point2D selectionStartPoint) {
-        this.selectionStartPoint = selectionStartPoint;
+        double x = Math.max(0, Math.min(ApplicationI.SCENE_WIDTH, selectionStartPoint.x));
+        double y = Math.max(0, Math.min(ApplicationI.SCENE_HEIGHT, selectionStartPoint.y));
+
+        this.selectionStartPoint = new Point2D(x, y);
     }
     @Override
     public void setSelectionEndPoint(Point2D selectionEndPoint) {
-        this.selectionEndPoint = selectionEndPoint;
+        double x = Math.max(0, Math.min(ApplicationI.SCENE_WIDTH, selectionEndPoint.x));
+        double y = Math.max(0, Math.min(ApplicationI.SCENE_HEIGHT, selectionEndPoint.y));
+
+        this.selectionEndPoint = new Point2D(x, y);
     }
 
     public double getWidth() {
