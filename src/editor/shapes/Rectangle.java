@@ -91,4 +91,12 @@ public class Rectangle extends SimpleShape {
         this.borderRadius = borderRadius;
         notifyObservers();
     }
+
+
+    public void setAllRectangleValues(double width, double height, int borderRadius, Point2D position, Color color, double rotation){
+        this.width = width;
+        this.height = height;
+        this.borderRadius = borderRadius;
+        this.setAllValues(position,color,rotation);
+    }
 }

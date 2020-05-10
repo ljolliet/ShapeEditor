@@ -1,6 +1,8 @@
 package editor.shapes;
 
 import editor.core.EditorVisitor;
+import editor.edition.GroupeEditionDialog;
+//import editor.save.EditorVisitor;
 import editor.utils.Color;
 import editor.utils.Point2D;
 import editor.utils.SelectionShape;
@@ -136,6 +138,11 @@ public class ShapeGroup extends Shape {
             s.setTranslation(translation);
     }
 
+    /*@Override
+    public void setAllValues(Point2D position, Color color, double rotation) {
+        //TODO
+    }*/
+
     @Override
     public Point2D getPosition() {
         double minX = ApplicationI.SCENE_WIDTH;
@@ -205,7 +212,7 @@ public class ShapeGroup extends Shape {
 
     @Override
     public EditionDialogI createEditionDialog() {
-        return null; // TODO Group
+        return new GroupeEditionDialog(this);
     }
 
     @Override
