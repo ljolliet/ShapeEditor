@@ -3,7 +3,8 @@ package editor.observer;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Observable implements ObservableI{
+public abstract class Observable implements ObservableI {
+
     private Set<Observer> observers = new HashSet<>();
 
     @Override

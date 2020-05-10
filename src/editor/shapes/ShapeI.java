@@ -23,7 +23,7 @@ public interface ShapeI extends Cloneable, Serializable {
     Set<ShapeI> getChildren();
     void setChildren(Set<ShapeI> shapes);
 
-    ShapeI clone() throws CloneNotSupportedException;
+    ShapeI clone();
     void drawInScene(Rendering rendering);
     void drawInToolbar(Rendering rendering);
 

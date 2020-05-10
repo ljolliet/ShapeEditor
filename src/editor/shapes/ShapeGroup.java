@@ -41,7 +41,7 @@ public class ShapeGroup extends Shape {
     }
 
     @Override
-    public ShapeI clone() throws CloneNotSupportedException {
+    public ShapeI clone() {
         ShapeI c = super.clone();
 
         Set<ShapeI> set = new HashSet<>();

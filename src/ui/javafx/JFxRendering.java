@@ -581,13 +581,9 @@ public class JFxRendering implements Rendering {
     public void dropInToolbar() {
         Editor editor = Editor.getInstance();
 
-        try {
-            // Clone the shape and paste it to the toolbar
-            ShapeI newShape = editor.getShapeDragged().clone();
-            editor.addShapeToToolbar(newShape);
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
+        // Clone the shape and paste it to the toolbar
+        ShapeI newShape = editor.getShapeDragged().clone();
+        editor.addShapeToToolbar(newShape);
 
         shadowGroup.setCursor(Cursor.DEFAULT);
         editor.setShapeDragged(null);
@@ -598,14 +594,10 @@ public class JFxRendering implements Rendering {
         Editor editor = Editor.getInstance();
         // If from toolbar --> clone the shape
         if (fromToolbar) {
-            try {
-                // Clone the shape and paste it to the scene
-                ShapeI newShape = editor.getShapeDragged().clone();
-                newShape.setPosition(coords);
-                editor.addShapeToScene((Shape) newShape);
-            } catch (CloneNotSupportedException e) {
-                e.printStackTrace();
-            }
+            // Clone the shape and paste it to the scene
+            ShapeI newShape = editor.getShapeDragged().clone();
+            newShape.setPosition(coords);
+            editor.addShapeToScene((Shape) newShape);
         }
         // Else --> update position
         else {
