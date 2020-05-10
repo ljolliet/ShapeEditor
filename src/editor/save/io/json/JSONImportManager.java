@@ -27,6 +27,8 @@ public class JSONImportManager implements ImportManager {
 
             List<Shape> shapes = new ArrayList<>();
             this.getShapes(scene, shapes);
+            for(Shape s : shapes)
+                s.addObserver(Editor.getInstance().getObserver());  //TODO : better way ?
             Editor.getInstance().getScene().setShapes(shapes);
         } catch (ParseException e) {
             e.printStackTrace();

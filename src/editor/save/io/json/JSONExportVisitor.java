@@ -100,6 +100,11 @@ public class JSONExportVisitor implements EditorVisitor, ExportManager {
         return sb.toString();
     }
 
+    @Override
+    public String getExtension() {
+        return ".json";
+    }
+
     private void addFieldAndValue(String token, double value, boolean separator) {
         if(separator)
             sb.append(SEPARATOR_TOKEN);

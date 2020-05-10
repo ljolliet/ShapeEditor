@@ -174,4 +174,12 @@ public class Editor extends Observable implements Originator {
     public boolean sceneContains(Shape  shape) {
         return this.scene.contains(shape);
     }
+
+    public String getSaveExtension() {
+        return this.exportVisitor.getExtension();
+    }
+
+    public Observer getObserver() {
+        return this.observer;
+    }
 }

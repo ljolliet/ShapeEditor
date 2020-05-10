@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -489,10 +490,11 @@ public class JFxRendering implements Rendering {
 
     @Override
     public void save() {
+        final String extension = Editor.getInstance().getSaveExtension();
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("Save Files", "*.json")); //TODO set extension once decided
-        fileChooser.setInitialFileName("*.json");
+                new FileChooser.ExtensionFilter("Save Files", "*" + extension)); //TODO set extension once decided
+        fileChooser.setInitialFileName(new Date() + extension);
 
         File saveDir = new File("save");
         if (! saveDir.exists()) {
@@ -502,7 +504,7 @@ public class JFxRendering implements Rendering {
 
         File file = fileChooser.showSaveDialog(null);//TODO put primary Stage
         if (file != null) {
-            if (file.getName().endsWith(".json")) {
+            if (file.getName().endsWith(extension)) {
                 System.out.println("save file : " + file.getName());
                 try {
                     FileWriter myWriter = new FileWriter(file);
@@ -521,7 +523,7 @@ public class JFxRendering implements Rendering {
     public void open() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Text Files", "*.json")); //TODO set extension once decided
+                new FileChooser.ExtensionFilter("Text Files", "*" + Editor.getInstance().getSaveExtension())); //TODO set extension once decided
         File saveDir = new File("save");
         if (! saveDir.exists()) {
             saveDir.mkdirs();
