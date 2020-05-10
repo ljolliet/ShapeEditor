@@ -16,6 +16,7 @@ import java.util.List;
 
 public class JSONImportManager implements ImportManager {
 
+
     @Override
     public void restore(String data) {
         JSONParser parser = new JSONParser();
@@ -71,7 +72,8 @@ public class JSONImportManager implements ImportManager {
         double red = (double) col.get(RED_TOKEN);
         double green = (double) col.get(GREEN_TOKEN);
         double blue = (double) col.get(BLUE_TOKEN);
-        Color color = new Color((int)red, (int)green, (int)blue);
+        double alpha = (double) col.get(OPACITY_TOKEN);
+        Color color = new Color((int)red, (int)green, (int)blue, alpha);
 
         JSONObject rotCenter = (JSONObject) polygon.get(ROTATION_CENTER_TOKEN);
         Point2D rotationCenter = new Point2D((double)rotCenter.get(X_TOKEN), (double) rotCenter.get(Y_TOKEN));
@@ -92,7 +94,8 @@ public class JSONImportManager implements ImportManager {
         double red = (double) col.get(RED_TOKEN);
         double green = (double) col.get(GREEN_TOKEN);
         double blue = (double) col.get(BLUE_TOKEN);
-        Color color = new Color((int)red, (int)green, (int)blue);
+        double alpha = (double) col.get(OPACITY_TOKEN);
+        Color color = new Color((int)red, (int)green, (int)blue, alpha);
 
         JSONObject rotCenter = (JSONObject) rectangle.get(ROTATION_CENTER_TOKEN);
         Point2D rotationCenter = new Point2D((double)rotCenter.get(X_TOKEN), (double) rotCenter.get(Y_TOKEN));

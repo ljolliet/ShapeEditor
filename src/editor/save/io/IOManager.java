@@ -11,6 +11,7 @@ public interface IOManager {
       String RED_TOKEN = "r";
       String GREEN_TOKEN = "g";
       String BLUE_TOKEN = "b";
+      String OPACITY_TOKEN = "opacity";
       String ROTATION_TOKEN = "rotation";
       String POSITION_TOKEN = "position";
       String ROTATION_CENTER_TOKEN = "rotationCenter";

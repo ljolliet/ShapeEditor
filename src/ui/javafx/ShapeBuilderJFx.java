@@ -7,7 +7,6 @@ import editor.shapes.ShapeGroup;
 import editor.shapes.ShapeI;
 import editor.utils.Point2D;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 
@@ -21,7 +20,7 @@ public class ShapeBuilderJFx {
         javafx.scene.shape.Rectangle rectangle = new javafx.scene.shape.Rectangle(r.getWidth(), r.getHeight());
 
         // Color
-        Color color = Color.rgb(r.getColor().r, r.getColor().g, r.getColor().b);
+        Color color = Color.rgb(r.getColor().r, r.getColor().g, r.getColor().b, r.getColor().a);
         rectangle.setFill(color);
 
         // Add stroke if selected
@@ -56,7 +55,7 @@ public class ShapeBuilderJFx {
         javafx.scene.shape.Polygon polygon = new javafx.scene.shape.Polygon(points);
 
         // Color
-        Color color = Color.rgb(p.getColor().r, p.getColor().g, p.getColor().b);
+        Color color = Color.rgb(p.getColor().r, p.getColor().g, p.getColor().b, p.getColor().a);
         polygon.setFill(color);
 
         // Add stroke if selected
@@ -81,7 +80,7 @@ public class ShapeBuilderJFx {
                 new javafx.scene.shape.Rectangle(r.getWidth() * ratio, r.getHeight() * ratio);
 
         // Color
-        Color color = Color.rgb(r.getColor().r, r.getColor().g, r.getColor().b);
+        Color color = Color.rgb(r.getColor().r, r.getColor().g, r.getColor().b, r.getColor().a);
         rectangle.setFill(color);
 
         // Rotation
@@ -99,7 +98,7 @@ public class ShapeBuilderJFx {
         javafx.scene.shape.Polygon polygon = new javafx.scene.shape.Polygon(points);
 
         // Color
-        Color color = Color.rgb(p.getColor().r, p.getColor().g, p.getColor().b);
+        Color color = Color.rgb(p.getColor().r, p.getColor().g, p.getColor().b, p.getColor().a);
         polygon.setFill(color);
 
         // Rotation

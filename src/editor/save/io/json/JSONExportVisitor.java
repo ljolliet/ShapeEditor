@@ -136,6 +136,7 @@ public class JSONExportVisitor implements EditorVisitor, ExportManager {
         addFieldAndValue(RED_TOKEN, s.getColor().r, false);
         addFieldAndValue(GREEN_TOKEN, s.getColor().g, true);
         addFieldAndValue(BLUE_TOKEN, s.getColor().b, true);
+        addFieldAndValue(OPACITY_TOKEN, s.getColor().a, true);
         sb.append(END_SYMBOL);
 
         this.addSeparatorAndField(ROTATION_CENTER_TOKEN);

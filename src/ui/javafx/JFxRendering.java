@@ -425,9 +425,10 @@ public class JFxRendering implements Rendering {
     }
 
     private editor.utils.Color colorFromJFxColor(Color value) {
-        return new editor.utils.Color((int)value.getRed()*255,
-                (int)value.getGreen()*255,
-                (int)value.getBlue()*255);
+        return new editor.utils.Color((int) (value.getRed()*255),
+                (int)(value.getGreen()*255),
+                (int) (value.getBlue()*255),
+                value.getOpacity());
     }
 
     ///////////////////////////

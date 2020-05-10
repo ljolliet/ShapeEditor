@@ -2,7 +2,6 @@ package editor.shapes;
 
 import editor.core.EditorVisitor;
 import editor.edition.GroupeEditionDialog;
-//import editor.save.EditorVisitor;
 import editor.utils.Color;
 import editor.utils.Point2D;
 import editor.utils.SelectionShape;
