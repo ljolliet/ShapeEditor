@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import ui.ApplicationI;
 import ui.Component;
 import ui.DragAndDropArea;
 import ui.Mediator;
@@ -28,16 +29,11 @@ public class ToolbarJFx extends GridPane implements Component {
 
         // Detect left click
         if (event.getButton() == MouseButton.PRIMARY) {
-            int i = 0;
-            // Search for shape selected
-            for (Node node : this.getChildren()) {
-                if (event.getPickResult().getIntersectedNode() == node) { // Found
-                    ShapeI shape = Editor.getInstance().getToolbar().getShapes().get(i);
-                    System.out.println(shape);
-                    mediator.dragFromToolbar(shape);
-                    break;
-                }
-                i++;
+            int pos = (int) ((event.getY() - this.getPadding().getTop()) / ApplicationI.TOOLBAR_CELL_HEIGHT);
+
+            if (pos >= 0 && pos < this.getChildren().size()) {
+                ShapeI shape = Editor.getInstance().getToolbar().getShapes().get(pos);
+                mediator.dragFromToolbar(shape);
             }
         }
     }

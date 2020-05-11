@@ -11,7 +11,6 @@ import ui.Mediator;
 
 import java.util.ArrayList;
 
-// TODO Test with a Pane
 public class RootJFx extends Group implements Component {
 
     private Mediator mediator;
