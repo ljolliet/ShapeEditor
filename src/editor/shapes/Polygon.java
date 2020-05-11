@@ -113,7 +113,7 @@ public class Polygon extends SimpleShape {
 
     public void setAllPolygonValues(int nbSides, double sideLength, Point2D position, Color color, double rotation) {
         this.nbSides = nbSides;
-        this.sideLength = sideLength;
+        setSideLength(sideLength);
         this.setAllValues(position, color, rotation);
     }
 }

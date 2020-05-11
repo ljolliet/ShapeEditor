@@ -29,11 +29,4 @@ public class PolygonEditionDialog extends ShapeEditionDialog {
         return (Polygon)super.getTarget();
     }
 
-    public void setNbSides(int nbSides) {
-        this.getTarget().setNbSides(nbSides);
-    }
-
-    public void setSideLength(double sideLength) {
-        this.getTarget().setSideLength(sideLength);
-    }
 }
