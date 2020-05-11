@@ -60,47 +60,41 @@ public class JSONImportManager implements ImportManager {
         }
     }
 
-    //TODO avoid duplication
     private Polygon getPolygon(JSONObject polygon) {
         double nbSides = (double) polygon.get(NB_SIDES_TOKEN);
         double sideLength = (double) polygon.get(SIDE_LENGTH);
-
-        JSONObject pos = (JSONObject) polygon.get(POSITION_TOKEN);
-        Point2D position = new Point2D((double)pos.get(X_TOKEN), (double) pos.get(Y_TOKEN));
-
-        JSONObject col = (JSONObject) polygon.get(COLOR_TOKEN);
-        double red = (double) col.get(RED_TOKEN);
-        double green = (double) col.get(GREEN_TOKEN);
-        double blue = (double) col.get(BLUE_TOKEN);
-        double alpha = (double) col.get(OPACITY_TOKEN);
-        Color color = new Color((int)red, (int)green, (int)blue, alpha);
-
-        JSONObject rotCenter = (JSONObject) polygon.get(ROTATION_CENTER_TOKEN);
-        Point2D rotationCenter = new Point2D((double)rotCenter.get(X_TOKEN), (double) rotCenter.get(Y_TOKEN));
         double rotation = (double) polygon.get(ROTATION_TOKEN);
 
-        return new Polygon((int)nbSides, sideLength, position, color, rotationCenter, rotation);
+        return new Polygon((int)nbSides, sideLength, this.getPosition(polygon), this.getColor(polygon),
+                this.getRotationCenter(polygon), rotation);
     }
 
     private Rectangle getRectangle(JSONObject rectangle) {
         double width = (double) rectangle.get(WIDTH_TOKEN);
         double height = (double) rectangle.get(HEIGHT_TOKEN);
         double borderRadius = (double) rectangle.get(BORDER_RADIUS_TOKEN);
+        double rotation = (double) rectangle.get(ROTATION_TOKEN);
 
-        JSONObject pos = (JSONObject) rectangle.get(POSITION_TOKEN);
-        Point2D position = new Point2D((double)pos.get(X_TOKEN), (double) pos.get(Y_TOKEN));
+        return new Rectangle(width, height, (int) borderRadius,this.getPosition(rectangle),
+                this.getColor(rectangle), getRotationCenter(rectangle), rotation);
+    }
 
-        JSONObject col = (JSONObject) rectangle.get(COLOR_TOKEN);
+    private Point2D getRotationCenter(JSONObject shape) {
+        JSONObject rotCenter = (JSONObject) shape.get(ROTATION_CENTER_TOKEN);
+        return new Point2D((double)rotCenter.get(X_TOKEN), (double) rotCenter.get(Y_TOKEN));
+    }
+
+    private Point2D getPosition(JSONObject shape){
+        JSONObject pos = (JSONObject) shape.get(POSITION_TOKEN);
+        return new Point2D((double)pos.get(X_TOKEN), (double) pos.get(Y_TOKEN));
+    }
+
+    private Color getColor(JSONObject shape){
+        JSONObject col = (JSONObject) shape.get(COLOR_TOKEN);
         double red = (double) col.get(RED_TOKEN);
         double green = (double) col.get(GREEN_TOKEN);
         double blue = (double) col.get(BLUE_TOKEN);
         double alpha = (double) col.get(OPACITY_TOKEN);
-        Color color = new Color((int)red, (int)green, (int)blue, alpha);
-
-        JSONObject rotCenter = (JSONObject) rectangle.get(ROTATION_CENTER_TOKEN);
-        Point2D rotationCenter = new Point2D((double)rotCenter.get(X_TOKEN), (double) rotCenter.get(Y_TOKEN));
-        double rotation = (double) rectangle.get(ROTATION_TOKEN);
-
-        return new Rectangle(width, height, (int) borderRadius, position, color, rotationCenter, rotation);
+        return  new Color((int)red, (int)green, (int)blue, alpha);
     }
 }

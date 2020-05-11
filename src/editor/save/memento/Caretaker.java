@@ -14,13 +14,13 @@ public class Caretaker{
     }
 
     public void push(Memento m){
-        if(mementoHistory.size() == sizeLimit) {
+        if(mementoHistory.size() >= sizeLimit) {
             mementoHistory.remove(mementoHistory.get(0));
         }
-        else if(currentMementoIndex < mementoHistory.size() - 1) {
+        else if(currentMementoIndex < mementoHistory.size() - 1) {  //push after a undo
             HashSet<Memento> toDelete = new HashSet<>();
             for (int i = currentMementoIndex + 1; i < mementoHistory.size(); i++)
-                toDelete.add(mementoHistory.get(i));
+                toDelete.add(mementoHistory.get(i));    //delete all memento after current one
             this.mementoHistory.removeAll(toDelete);
         }
         this.mementoHistory.add(m);

@@ -1,7 +1,6 @@
 package editor.shapes;
 
 import editor.observer.Observable;
-import editor.observer.Observer;
 
 import java.util.HashSet;
 
