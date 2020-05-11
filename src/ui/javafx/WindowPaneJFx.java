@@ -2,7 +2,6 @@ package ui.javafx;
 
 import editor.utils.Point2D;
 import javafx.scene.Node;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import ui.Component;
@@ -14,21 +13,24 @@ public class WindowPaneJFx extends StackPane implements Component {
 
     public WindowPaneJFx() {
         super();
-        this.setOnMouseDragged(this::onMouseDragged);
-        this.setOnMouseDragReleased(this::onMouseDragReleased);
+        this.initEvents();
     }
 
     public WindowPaneJFx(Node node) {
         super(node);
+        this.initEvents();
+    }
+
+    private void initEvents() {
         this.setOnMouseDragged(this::onMouseDragged);
-        this.setOnMouseDragReleased(this::onMouseDragReleased);
+        this.setOnMouseReleased(this::onMouseReleased);
     }
 
     private void onMouseDragged(MouseEvent event) {
         mediator.moveShadowShape(new Point2D(event.getX(), event.getY()));
     }
 
-    private void onMouseDragReleased(MouseEvent event) {
+    private void onMouseReleased(MouseEvent event) {
         mediator.clearShadowShape();
     }
 

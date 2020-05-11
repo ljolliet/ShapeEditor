@@ -21,24 +21,21 @@ public class RootJFx extends Group implements Component {
         this.setOnMousePressed(this::onMousePressed);
         this.setOnDragDetected(this::onDragDetected);
         this.setOnMouseDragged(this::onMouseDragged);
-        this.setOnMouseDragReleased(this::setOnMouseDragReleased);
+        this.setOnMouseDragReleased(this::onMouseDragReleased);
+        this.setOnMouseReleased(this::onMouseReleased);
     }
 
     private void onMousePressed(MouseEvent event) {
-
         mediator.clearEditorActions();
-        mediator.stopSelection(new ArrayList<>());
+
         // Detect left click
         if (event.getButton() == MouseButton.PRIMARY) {
-            boolean inShape = false;
-
             Point2D coords = new Point2D(event.getX(), event.getY());
 
             // Look if the mouse is on an existing shape
             for (ShapeI shape : Editor.getInstance().getScene().getShapes()) {
                 if (shape.contains(coords)) { // Found
                     mediator.dragFromScene(shape, coords);
-                    inShape = true;
                     break;
                 }
             }
@@ -62,7 +59,7 @@ public class RootJFx extends Group implements Component {
     private void onDragDetected(MouseEvent event) {
         System.out.println("[ROOT] Drag detected");
         // If no shape found --> start select action
-        mediator.startSelection(new Point2D(event.getX(), event.getY()));
+        mediator.startSelection(new Point2D(event.getX(), event.getY())); // TODO
         startFullDrag();
     }
 
@@ -73,16 +70,18 @@ public class RootJFx extends Group implements Component {
                 mediator.moveSelection(new Point2D(event.getX(), event.getY()));
     }
 
-    private void setOnMouseDragReleased(MouseEvent event) {
+    private void onMouseDragReleased(MouseEvent event) {
         System.out.println("[ROOT] Drag released");
-
-        System.out.println(new Point2D(event.getX(), event.getY()));
 
         // If there is a shape dragged
         if (Editor.getInstance().getShapeDragged() != null) {
             mediator.dropInScene(new Point2D(event.getX(), event.getY()));
         }
-        else if (Editor.getInstance().getSelectionShape() != null) {
+    }
+
+    private void onMouseReleased(MouseEvent event) {
+        // If there is a selection action
+        if (Editor.getInstance().getSelectionShape().isOn()) {
             ArrayList<ShapeI> selectedShapes = new ArrayList<>();
 
             // Add all selected shapes in array
@@ -91,6 +90,9 @@ public class RootJFx extends Group implements Component {
                     selectedShapes.add(shape);
 
             mediator.stopSelection(selectedShapes);
+        }
+        else {
+            mediator.stopSelection(new ArrayList<>());
         }
     }
 

@@ -191,9 +191,6 @@ public class Editor extends Observable implements Originator {
     }
 
     public void setSceneSelectedShapes(List<ShapeI> shapes) {
-        Editor.getInstance().getScene().setSelectedShapes(shapes);
-        rendering.drawEditor();
+        scene.setSelectedShapes(shapes);
     }
-
-
 }

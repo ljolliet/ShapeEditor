@@ -27,6 +27,7 @@ import ui.Component;
 import ui.Rendering;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -610,6 +611,7 @@ public class JFxRendering implements Rendering {
     public void stopSelection(List<ShapeI> shapes) {
         Editor.getInstance().getSelectionShape().setOn(false);
         Editor.getInstance().setSceneSelectedShapes(shapes);
+        drawEditor();
     }
 
     @Override
@@ -649,7 +651,9 @@ public class JFxRendering implements Rendering {
 
     @Override
     public void clearEditorActions() {
-        // TODO Clear shape selection
+        Editor.getInstance().getSelectionShape().setOn(false);
+        Editor.getInstance().setSceneSelectedShapes(new ArrayList<>());
+
         hideEditionDialog();
     }
 }
