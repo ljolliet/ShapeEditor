@@ -27,6 +27,12 @@ public class ShapeBuilderJFx {
         if (editor.getScene().getSelectedShapes().contains(r))
             rectangle.setStroke(color.darker());
 
+        // Add transparency if shapeDragged
+        if (editor.getShapeDragged() != null && editor.getShapeDragged().equals(r)) {
+            System.out.println("here");
+            rectangle.setOpacity(r.getColor().a /2);
+    }
+
         // Rotation
         Rotate rotate = new Rotate(r.getRotation());
         rotate.setPivotX(r.getX() + r.getRotationCenter().x);
@@ -61,6 +67,12 @@ public class ShapeBuilderJFx {
         // Add stroke if selected
         if (editor.getScene().getSelectedShapes().contains(p))
             polygon.setStroke(color.darker());
+
+        // Add transparency if shapeDragged
+        if (editor.getShapeDragged() != null && editor.getShapeDragged().equals(p)) {
+            System.out.println("here");
+            polygon.setOpacity(p.getColor().a /2);
+        }
 
         // Rotation
         Rotate rotate = new Rotate(p.getRotation());

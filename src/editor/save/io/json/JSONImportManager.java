@@ -21,14 +21,14 @@ public class JSONImportManager implements ImportManager {
 
     @Override
     public void restore(File file) {
-        this.restorefromString(IOManager.readFile(file));
+        this.restoreFromString(IOManager.readFile(file));
     }
 
     @Override
     public void restoreToolbar() {
         File config = new File(TOOLBAR_CONFIG_FILE + getExtension());
         if(config.exists())
-            this.restorefromString(IOManager.readFile(config));
+            this.restoreFromString(IOManager.readFile(config));
     }
 
     @Override
@@ -38,7 +38,7 @@ public class JSONImportManager implements ImportManager {
 
 
     //TODO refactor
-    public void restorefromString(String data) {
+    public void restoreFromString(String data) {
         JSONParser parser = new JSONParser();
         try {
             JSONObject obj = (JSONObject) parser.parse(data);

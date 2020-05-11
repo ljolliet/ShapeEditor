@@ -65,6 +65,7 @@ public class RootJFx extends Group implements Component {
     private void onDragDetected(MouseEvent event) {
         System.out.println("[ROOT] Drag detected");
         startFullDrag();
+        Editor.getInstance().getRendering().drawEditor();
     }
 
     private void onMouseDragged(MouseEvent event) {
