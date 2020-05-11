@@ -1,9 +1,7 @@
 package editor.save.io;
 
+import java.io.File;
+
 public interface ImportManager extends IOManager{
-    /**
-     * Restore the state of editor with a save.
-     * @param data The save to restore.
-     */
-    void restore(String data);
+    void restore(File file);
 }

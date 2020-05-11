@@ -5,7 +5,6 @@ import editor.edition.EditionDialogI;
 import editor.edition.PolygonEditionDialog;
 import editor.edition.RectangleEditionDialog;
 import editor.edition.ShapeEditionDialog;
-import editor.save.io.IOEditorException;
 import editor.shapes.*;
 import editor.utils.EditorManagementException;
 import editor.utils.Point2D;
@@ -27,12 +26,8 @@ import ui.Component;
 import ui.Rendering;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-import java.util.Scanner;
 
 
 public class JFxRendering implements Rendering {
@@ -505,20 +500,7 @@ public class JFxRendering implements Rendering {
         fileChooser.setInitialDirectory(saveDir);
 
         File file = fileChooser.showSaveDialog(null);//TODO put primary Stage
-        if (file != null) {
-            if (file.getName().endsWith(extension)) {
-                System.out.println("save file : " + file.getName());
-                try {
-                    FileWriter myWriter = new FileWriter(file);
-                    myWriter.write(Editor.getInstance().getSave());
-                    myWriter.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            else
-                throw new IOEditorException(file.getName() + " has no valid file-extension.");
-        }
+        Editor.getInstance().saveScene(file);
     }
 
     @Override
@@ -533,21 +515,7 @@ public class JFxRendering implements Rendering {
         fileChooser.setInitialDirectory(saveDir);
 
         File file = fileChooser.showOpenDialog(null);   //TODO put primary stage
-        if (file != null) {
-            System.out.println("open file : " + file.getName());
-            Scanner myReader = null;
-            try {
-                myReader = new Scanner(file);
-                StringBuilder sb = new StringBuilder();
-                while (myReader.hasNextLine()) {
-                    sb.append(myReader.nextLine());
-                }
-                Editor.getInstance().restoreFromString(sb.toString());
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            myReader.close();
-        }
+        Editor.getInstance().restoreScene(file);
     }
 
     @Override

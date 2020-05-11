@@ -108,4 +108,9 @@ public class JavaFXApp extends Application implements ApplicationI {
 
         primaryStage.show();
     }
+
+    @Override
+    public void stop() throws Exception {
+        super.stop();
+    }
 }

@@ -1,11 +1,14 @@
 package editor.save.io.json;
 
 import editor.core.Editor;
+import editor.core.EditorVisitor;
 import editor.core.Scene;
 import editor.core.Toolbar;
-import editor.core.EditorVisitor;
 import editor.save.io.ExportManager;
+import editor.save.io.IOManager;
 import editor.shapes.*;
+
+import java.io.File;
 
 public class JSONExportVisitor implements EditorVisitor, ExportManager {
 
@@ -21,24 +24,36 @@ public class JSONExportVisitor implements EditorVisitor, ExportManager {
 
     @Override
     public void visit(Editor editor) {
-        sb.delete(0, sb.length());
-        sb.append(START_SYMBOL);
-        this.addField(EDITOR_TOKEN);
-        sb.append(START_SYMBOL);
-        editor.getToolbar().accept(this);
-        editor.getScene().accept(this);
-        sb.append(END_SYMBOL);
-        sb.append(END_SYMBOL);
+
     }
 
     @Override
     public void visit(Toolbar toolbar) {
-        //toolbar not saved
+        boolean start = true;
+        sb.append(START_SYMBOL);
+        this.addField(EDITOR_TOKEN);
+        sb.append(START_SYMBOL);
+        this.addField(TOOLBAR_TOKEN);
+        sb.append(ARRAY_START_SYMBOL);
+        for(ShapeI s : toolbar.getShapes()) {
+            if(!start)
+                sb.append(SEPARATOR_TOKEN);
+            else
+                start = false;
+            s.accept(this);
+        }
+        sb.append(ARRAY_END_SYMBOL);
+        sb.append(END_SYMBOL);
+        sb.append(END_SYMBOL);
     }
 
     @Override
     public void visit(Scene scene) {
+        //cannot avoid duplication because container don't have the same type
         boolean start = true;
+        sb.append(START_SYMBOL);
+        this.addField(EDITOR_TOKEN);
+        sb.append(START_SYMBOL);
         this.addField(SCENE_TOKEN);
         sb.append(ARRAY_START_SYMBOL);
         for(ShapeI s : scene.getShapes()) {
@@ -49,6 +64,8 @@ public class JSONExportVisitor implements EditorVisitor, ExportManager {
             s.accept(this);
         }
         sb.append(ARRAY_END_SYMBOL);
+        sb.append(END_SYMBOL);
+        sb.append(END_SYMBOL);
     }
 
     @Override
@@ -81,7 +98,6 @@ public class JSONExportVisitor implements EditorVisitor, ExportManager {
         sb.append(END_SYMBOL);
     }
 
-
     @Override
     public void visit(Polygon p) {
         sb.append(START_SYMBOL);
@@ -95,14 +111,22 @@ public class JSONExportVisitor implements EditorVisitor, ExportManager {
     }
 
     @Override
-    public String getSave(){
-        Editor.getInstance().accept(this);
-        return sb.toString();
+    public String getExtension() {
+        return ".json";
     }
 
     @Override
-    public String getExtension() {
-        return ".json";
+    public void saveScene(File file){
+        sb.delete(0, sb.length());
+        Editor.getInstance().getScene().accept(this);
+        IOManager.writeInFile(file, sb.toString(), getExtension());
+    }
+
+    @Override
+    public void saveToolbar(File file) {
+        sb.delete(0, sb.length());
+        Editor.getInstance().getToolbar().accept(this);
+        IOManager.writeInFile(file, sb.toString(), getExtension());
     }
 
     private void addFieldAndValue(String token, double value, boolean separator) {

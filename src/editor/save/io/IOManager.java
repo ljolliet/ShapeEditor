@@ -1,5 +1,11 @@
 package editor.save.io;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
 public interface IOManager {
       String EDITOR_TOKEN = "editor";
       String TOOLBAR_TOKEN = "toolbar";
@@ -24,4 +30,38 @@ public interface IOManager {
       String NB_SIDES_TOKEN = "nbSides";
       String SIDE_LENGTH = "sideLength";
 
+      static void writeInFile(File file, String data, String extension) {
+            if (file != null) {
+                  if (file.getName().endsWith(extension)) {
+                        System.out.println("save file : " + file.getName());
+                        try {
+                              FileWriter myWriter = new FileWriter(file);
+                              myWriter.write(data);
+                              myWriter.close();
+                        } catch (IOException e) {
+                              e.printStackTrace();
+                        }
+                  } else
+                        throw new IOEditorException(file.getName() + " has no valid file-extension.");
+            }
+      }
+
+      static String readFile(File file){
+            if (file != null) {
+                  System.out.println("open file : " + file.getName());
+                  Scanner myReader = null;
+                  try {
+                        myReader = new Scanner(file);
+                        StringBuilder sb = new StringBuilder();
+                        while (myReader.hasNextLine()) {
+                              sb.append(myReader.nextLine());
+                        }
+                        myReader.close();
+                        return sb.toString();
+                  } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                  }
+            }
+            return null;
+      }
 }

@@ -1,6 +1,7 @@
 package editor.save.io.json;
 
 import editor.core.Editor;
+import editor.save.io.IOManager;
 import editor.save.io.ImportManager;
 import editor.shapes.*;
 import editor.utils.Color;
@@ -10,6 +11,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -18,19 +20,30 @@ public class JSONImportManager implements ImportManager {
 
 
     @Override
-    public void restore(String data) {
+    public void restore(File file) {
+        this.restorefromString(IOManager.readFile(file));
+    }
+    //TODO refactor
+    public void restorefromString(String data) {
         JSONParser parser = new JSONParser();
         try {
             JSONObject obj = (JSONObject) parser.parse(data);
 
             JSONObject editor = (JSONObject) obj.get(EDITOR_TOKEN);
             JSONArray scene = (JSONArray) editor.get(SCENE_TOKEN);
-
-            List<Shape> shapes = new ArrayList<>();
-            this.getShapes(scene, shapes);
-            for(Shape s : shapes)
-                s.addObserver(Editor.getInstance().getObserver());  //TODO : better way ?
-            Editor.getInstance().getScene().setShapes(shapes);
+            JSONArray toolbar = (JSONArray) editor.get(TOOLBAR_TOKEN);
+            if(scene != null) {
+                List<Shape> shapes = new ArrayList<>();
+                this.getShapes(scene, shapes);
+                for (Shape s : shapes)
+                    s.addObserver(Editor.getInstance().getObserver());  //TODO : better way ?
+                Editor.getInstance().getScene().setShapes(shapes);
+            }
+            if(toolbar != null){
+                List<Shape> shapes = new ArrayList<>();
+                this.getShapes(toolbar, shapes);
+                Editor.getInstance().getScene().setShapes(shapes);
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }

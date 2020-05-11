@@ -1,5 +1,8 @@
 package editor.core;
 
+import editor.observer.Observable;
+import editor.observer.Observer;
+import editor.observer.ShapeObserver;
 import editor.save.io.ExportManager;
 import editor.save.io.ImportManager;
 import editor.save.io.json.JSONExportVisitor;
@@ -10,9 +13,6 @@ import editor.save.memento.Memento;
 import editor.save.memento.Originator;
 import editor.shapes.Shape;
 import editor.shapes.ShapeI;
-import editor.observer.Observable;
-import editor.observer.Observer;
-import editor.observer.ShapeObserver;
 import editor.utils.SelectionRectangle;
 import editor.utils.SelectionShape;
 import ui.Rendering;
@@ -122,19 +122,23 @@ public class Editor extends Observable implements Originator {
             this.rendering.drawEditor();
     }
 
-    public String getSave() {
-        return this.exportVisitor.getSave();
+    public void saveToolbar(File file) {
+        this.exportVisitor.saveToolbar(file);
+    }
+
+    public void saveScene(File file) {
+        this.exportVisitor.saveScene(file);
+    }
+
+    public void restoreScene(File file) {
+        this.importManager.restore(file);
+        history.clear();
+        this.saveToMemento();
+        rendering.drawEditor();
     }
 
     public void accept(EditorVisitor visitor) {
         visitor.visit(this);
-    }
-
-    public void restoreFromString(String data) {
-        this.importManager.restore(data);
-        history.clear();
-        this.saveToMemento();
-        rendering.drawEditor();
     }
 
     public Scene getScene() {
@@ -182,9 +186,11 @@ public class Editor extends Observable implements Originator {
     }
 
     public void setSceneSelectedShapes(List<ShapeI> shapes) {
-        if(!scene.getSelectedShapes().equals(shapes)) {
-            Editor.getInstance().getScene().setSelectedShapes(shapes);
-            rendering.drawEditor();
-        }
+        Editor.getInstance().getScene().setSelectedShapes(shapes);
+        rendering.drawEditor();
     }
+
+
+
+
 }
