@@ -55,7 +55,7 @@ public class JSONImportManager implements ImportManager {
             }
             if(toolbar != null){
                 List<ShapeI> shapes = new ArrayList<>();
-                //this.getShapes(toolbar, shapes); TODO
+                this.getShapes(toolbar, shapes);
                 Editor.getInstance().getToolbar().setShapes(shapes);
             }
         } catch (ParseException e) {
@@ -64,7 +64,7 @@ public class JSONImportManager implements ImportManager {
     }
 
 
-    private void getShapes(JSONArray array, List<Shape> shapes) {
+    private void getShapes(JSONArray array, List<? super Shape> shapes) {
         Iterator<JSONObject> iterator = array.iterator();
         JSONObject shape;
         while (iterator.hasNext()) {
@@ -79,7 +79,7 @@ public class JSONImportManager implements ImportManager {
             else if(shape.get(GROUP_TOKEN) != null){
                 JSONArray group = (JSONArray) shape.get(GROUP_TOKEN);
                 ShapeGroup g = new ShapeGroup();
-                List<Shape> childrenShapes = new ArrayList<>();
+                List<ShapeI> childrenShapes = new ArrayList<>();
                 this.getShapes(group, childrenShapes);
                 for(ShapeI s : childrenShapes)
                     g.addShape(s);

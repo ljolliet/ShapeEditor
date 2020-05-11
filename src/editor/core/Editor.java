@@ -128,6 +128,7 @@ public class Editor extends Observable implements Originator {
 
     public void restoreToolbar() {
         this.importManager.restoreToolbar();
+        //TODO add security
     }
 
     public void saveScene(File file) {

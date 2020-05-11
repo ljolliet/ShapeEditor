@@ -21,7 +21,7 @@ public class JavaFXApp extends Application implements ApplicationI {
         primaryStage.setResizable(false);
 
         Editor editor = Editor.getInstance();
-       // editor.restoreToolbar();
+        editor.restoreToolbar();
         Rendering rendering = new JFxRendering();
         editor.setRendering(rendering);
 /*
