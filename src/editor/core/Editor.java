@@ -11,8 +11,7 @@ import editor.save.memento.Caretaker;
 import editor.save.memento.EditorMemento;
 import editor.save.memento.Memento;
 import editor.save.memento.Originator;
-import editor.shapes.Shape;
-import editor.shapes.ShapeI;
+import editor.shapes.*;
 import editor.utils.SelectionRectangle;
 import editor.utils.SelectionShape;
 import ui.Rendering;
@@ -128,7 +127,7 @@ public class Editor extends Observable implements Originator {
 
     public void restoreToolbar() {
         this.importManager.restoreToolbar();
-        //TODO add security
+        this.toolbar.checkInitialised();
     }
 
     public void saveScene(File file) {

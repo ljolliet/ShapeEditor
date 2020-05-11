@@ -24,9 +24,8 @@ public class Toolbar {
         group2.addShape(pol1);
         group2.addShape(group);
 
+        checkInitialised();
         addShape(group2);
-        addShape(ShapeFactory.makeRectangle());
-        addShape(ShapeFactory.makeHexagon());
     }
 
     public void addShape(ShapeI shape) {
@@ -51,5 +50,18 @@ public class Toolbar {
 
     public void accept(EditorVisitor v) {
         v.visit(this);
+    }
+
+    public void checkInitialised() {
+        boolean containsRectangle = false, containsPolygon = false;
+        for(ShapeI s: shapes)
+            if(s instanceof Rectangle)
+                containsRectangle = true;
+            else if(s instanceof Polygon)
+                containsPolygon = true;
+        if(!containsRectangle)
+            shapes.add(0, ShapeFactory.makeRectangle());
+        if(!containsPolygon)
+            shapes.add(1, ShapeFactory.makeHexagon());
     }
 }
