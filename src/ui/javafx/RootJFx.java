@@ -30,15 +30,21 @@ public class RootJFx extends Group implements Component {
 
         // Detect left click
         if (event.getButton() == MouseButton.PRIMARY) {
+            boolean inShape = false;
             Point2D coords = new Point2D(event.getX(), event.getY());
 
             // Look if the mouse is on an existing shape
             for (ShapeI shape : Editor.getInstance().getScene().getShapes()) {
                 if (shape.contains(coords)) { // Found
                     mediator.dragFromScene(shape, coords);
+                    inShape = true;
                     break;
                 }
             }
+
+            // If no shape found --> start select action
+            if (!inShape)
+                mediator.startSelection(new Point2D(event.getX(), event.getY()));
         }
         // Right click
         else if (event.getButton() == MouseButton.SECONDARY) {
@@ -58,8 +64,6 @@ public class RootJFx extends Group implements Component {
 
     private void onDragDetected(MouseEvent event) {
         System.out.println("[ROOT] Drag detected");
-        // If no shape found --> start select action
-        mediator.startSelection(new Point2D(event.getX(), event.getY())); // TODO
         startFullDrag();
     }
 
