@@ -106,10 +106,8 @@ public class Editor extends Observable implements Originator {
                 s.addObserver(this.observer);
             this.toolbar.setShapes(list[1]);
             ois.close();
-        } catch (ClassNotFoundException e) {
-            System.out.print("ClassNotFoundException occurred.");
-        } catch (IOException e) {
-            System.out.print("IOException occurred.");
+        } catch (ClassNotFoundException | IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -181,5 +179,12 @@ public class Editor extends Observable implements Originator {
 
     public Observer getObserver() {
         return this.observer;
+    }
+
+    public void setSceneSelectedShapes(List<ShapeI> shapes) {
+        if(!scene.getSelectedShapes().equals(shapes)) {
+            Editor.getInstance().getScene().setSelectedShapes(shapes);
+            rendering.drawEditor();
+        }
     }
 }

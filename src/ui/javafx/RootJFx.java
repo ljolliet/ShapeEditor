@@ -27,7 +27,7 @@ public class RootJFx extends Group implements Component {
     private void onMousePressed(MouseEvent event) {
 
         mediator.clearEditorActions();
-
+        mediator.stopSelection(new ArrayList<>());
         // Detect left click
         if (event.getButton() == MouseButton.PRIMARY) {
             boolean inShape = false;
@@ -42,15 +42,12 @@ public class RootJFx extends Group implements Component {
                     break;
                 }
             }
-            // If no shape found --> start select action
-            if (!inShape)
-                mediator.startSelection(new Point2D(event.getX(), event.getY()));
         }
         // Right click
         else if (event.getButton() == MouseButton.SECONDARY) {
             // Click on a selection
             if (Editor.getInstance().getScene().getSelectedShapes().size() > 1) {
-                mediator.showGroupEditionDialog(new Point2D(event.getScreenX(), event.getScreenY()));
+                //TODO : not a group but a list of shape //mediator.showGroupEditionDialog(new Point2D(event.getScreenX(), event.getScreenY()));
             }
             // Click on a single shape
             else {
@@ -64,6 +61,8 @@ public class RootJFx extends Group implements Component {
 
     private void onDragDetected(MouseEvent event) {
         System.out.println("[ROOT] Drag detected");
+        // If no shape found --> start select action
+        mediator.startSelection(new Point2D(event.getX(), event.getY()));
         startFullDrag();
     }
 

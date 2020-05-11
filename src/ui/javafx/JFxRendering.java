@@ -115,14 +115,15 @@ public class JFxRendering implements Rendering {
         Editor editor = Editor.getInstance();
         drawEditor();
         SelectionRectangle s = (SelectionRectangle)editor.getSelectionShape();
+        if(s.isOn()) {
+            javafx.scene.shape.Rectangle selectionFrame = new javafx.scene.shape.Rectangle(s.getWidth(), s.getHeight());
+            selectionFrame.setStroke(Color.DARKRED);
+            selectionFrame.setFill(Color.TRANSPARENT);
+            selectionFrame.setX(s.getPosition().x);
+            selectionFrame.setY(s.getPosition().y);
 
-        javafx.scene.shape.Rectangle selectionFrame = new javafx.scene.shape.Rectangle(s.getWidth(), s.getHeight());
-        selectionFrame.setStroke(Color.DARKRED);
-        selectionFrame.setFill(Color.TRANSPARENT);
-        selectionFrame.setX(s.getPosition().x);
-        selectionFrame.setY(s.getPosition().y);
-
-        root.getChildren().add(selectionFrame);
+            root.getChildren().add(selectionFrame);
+        }
     }
 
     @Override
@@ -626,6 +627,7 @@ public class JFxRendering implements Rendering {
 
     @Override
     public void startSelection(Point2D startPoint) {
+        Editor.getInstance().getSelectionShape().setOn(true);
         Editor.getInstance().getSelectionShape().setSelectionStartPoint(startPoint);
     }
 
@@ -637,8 +639,8 @@ public class JFxRendering implements Rendering {
 
     @Override
     public void stopSelection(List<ShapeI> shapes) {
-        Editor.getInstance().getScene().setSelectedShapes(shapes);
-        drawEditor();
+        Editor.getInstance().getSelectionShape().setOn(false);
+        Editor.getInstance().setSceneSelectedShapes(shapes);
     }
 
     @Override

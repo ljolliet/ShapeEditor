@@ -6,6 +6,7 @@ public class SelectionRectangle implements SelectionShape {
 
     private Point2D selectionStartPoint = new Point2D(0.,0.);
     private Point2D selectionEndPoint = new Point2D(0.,0.);
+    private boolean on = false;
 
     @Override
     public Point2D getPosition() {
@@ -34,6 +35,16 @@ public class SelectionRectangle implements SelectionShape {
         double y = Math.max(0, Math.min(ApplicationI.SCENE_HEIGHT, selectionEndPoint.y));
 
         this.selectionEndPoint = new Point2D(x, y);
+    }
+
+    @Override
+    public void setOn(boolean on) {
+        this.on = on;
+    }
+
+    @Override
+    public boolean isOn() {
+        return this.on;
     }
 
     public double getWidth() {

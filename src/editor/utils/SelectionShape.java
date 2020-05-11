@@ -5,4 +5,7 @@ public interface SelectionShape {
     boolean contains(Point2D p);
     void setSelectionStartPoint(Point2D p);
     void setSelectionEndPoint(Point2D p);
+
+    void setOn(boolean b);
+    boolean isOn();
 }

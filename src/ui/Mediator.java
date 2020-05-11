@@ -28,10 +28,11 @@ public interface Mediator {
 
     // Edition dialog
     void showEditionDialog(ShapeI shape, Point2D coords);
-    void showGroupEditionDialog(Point2D point);
 
+    void showGroupEditionDialog(Point2D point);
     // Shadow shape
     void moveShadowShape(Point2D coords);
+
     void clearShadowShape();
 
     void clearEditorActions();
