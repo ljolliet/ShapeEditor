@@ -591,6 +591,8 @@ public class JFxRendering implements Rendering {
             else
                 throw new EditorManagementException("Trying to delete an unknown shape");
         }
+
+        editor.setShapeDragged(null);
     }
 
     @Override
