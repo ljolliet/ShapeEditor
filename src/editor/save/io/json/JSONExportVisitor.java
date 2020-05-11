@@ -9,6 +9,7 @@ import editor.save.io.IOManager;
 import editor.shapes.*;
 
 import java.io.File;
+import java.io.IOException;
 
 public class JSONExportVisitor implements EditorVisitor, ExportManager {
 
@@ -123,10 +124,19 @@ public class JSONExportVisitor implements EditorVisitor, ExportManager {
     }
 
     @Override
-    public void saveToolbar(File file) {
+    public void saveToolbar() {
         sb.delete(0, sb.length());
         Editor.getInstance().getToolbar().accept(this);
-        IOManager.writeInFile(file, sb.toString(), getExtension());
+        File folder = new File(CONFIG_FOLDER);
+        File config = new File(TOOLBAR_CONFIG_FILE + getExtension());
+        try {
+            if(!folder.exists())
+                folder.mkdirs();
+            config.createNewFile(); // overwrite file current config file
+            IOManager.writeInFile(config, sb.toString(), getExtension());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void addFieldAndValue(String token, double value, boolean separator) {

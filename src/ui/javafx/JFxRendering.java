@@ -5,6 +5,7 @@ import editor.edition.EditionDialogI;
 import editor.edition.PolygonEditionDialog;
 import editor.edition.RectangleEditionDialog;
 import editor.edition.ShapeEditionDialog;
+import editor.save.io.IOManager;
 import editor.shapes.*;
 import editor.utils.EditorManagementException;
 import editor.utils.Point2D;
@@ -508,7 +509,7 @@ public class JFxRendering implements Rendering {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Text Files", "*" + Editor.getInstance().getSaveExtension()));
-        File saveDir = new File("save");
+        File saveDir = new File(IOManager.SAVE_DIRECTORY);
         if (! saveDir.exists()) {
             saveDir.mkdirs();
         }

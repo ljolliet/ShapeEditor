@@ -21,6 +21,7 @@ public class JavaFXApp extends Application implements ApplicationI {
         primaryStage.setResizable(false);
 
         Editor editor = Editor.getInstance();
+       // editor.restoreToolbar();
         Rendering rendering = new JFxRendering();
         editor.setRendering(rendering);
 /*
@@ -111,6 +112,7 @@ public class JavaFXApp extends Application implements ApplicationI {
 
     @Override
     public void stop() throws Exception {
+        Editor.getInstance().saveToolbar();
         super.stop();
     }
 }

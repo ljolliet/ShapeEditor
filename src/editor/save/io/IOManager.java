@@ -7,6 +7,10 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public interface IOManager {
+      String CONFIG_FOLDER = ".config";
+      String TOOLBAR_CONFIG_FILE = CONFIG_FOLDER + "/toolbar";
+      String SAVE_DIRECTORY = "save";
+
       String EDITOR_TOKEN = "editor";
       String TOOLBAR_TOKEN = "toolbar";
       String SCENE_TOKEN = "scene";
@@ -29,6 +33,8 @@ public interface IOManager {
       String BORDER_RADIUS_TOKEN = "borderRadius";
       String NB_SIDES_TOKEN = "nbSides";
       String SIDE_LENGTH = "sideLength";
+
+      String getExtension();
 
       static void writeInFile(File file, String data, String extension) {
             if (file != null) {

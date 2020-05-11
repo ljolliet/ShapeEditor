@@ -122,8 +122,12 @@ public class Editor extends Observable implements Originator {
             this.rendering.drawEditor();
     }
 
-    public void saveToolbar(File file) {
-        this.exportVisitor.saveToolbar(file);
+    public void saveToolbar() {
+        this.exportVisitor.saveToolbar();
+    }
+
+    public void restoreToolbar() {
+        this.importManager.restoreToolbar();
     }
 
     public void saveScene(File file) {
@@ -189,8 +193,6 @@ public class Editor extends Observable implements Originator {
         Editor.getInstance().getScene().setSelectedShapes(shapes);
         rendering.drawEditor();
     }
-
-
 
 
 }

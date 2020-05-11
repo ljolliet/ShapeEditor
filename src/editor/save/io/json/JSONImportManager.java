@@ -23,6 +23,20 @@ public class JSONImportManager implements ImportManager {
     public void restore(File file) {
         this.restorefromString(IOManager.readFile(file));
     }
+
+    @Override
+    public void restoreToolbar() {
+        File config = new File(TOOLBAR_CONFIG_FILE + getExtension());
+        if(config.exists())
+            this.restorefromString(IOManager.readFile(config));
+    }
+
+    @Override
+    public String getExtension() {
+        return ".json";
+    }
+
+
     //TODO refactor
     public void restorefromString(String data) {
         JSONParser parser = new JSONParser();
@@ -40,14 +54,15 @@ public class JSONImportManager implements ImportManager {
                 Editor.getInstance().getScene().setShapes(shapes);
             }
             if(toolbar != null){
-                List<Shape> shapes = new ArrayList<>();
-                this.getShapes(toolbar, shapes);
-                Editor.getInstance().getScene().setShapes(shapes);
+                List<ShapeI> shapes = new ArrayList<>();
+                //this.getShapes(toolbar, shapes); TODO
+                Editor.getInstance().getToolbar().setShapes(shapes);
             }
         } catch (ParseException e) {
             e.printStackTrace();
         }
     }
+
 
     private void getShapes(JSONArray array, List<Shape> shapes) {
         Iterator<JSONObject> iterator = array.iterator();
