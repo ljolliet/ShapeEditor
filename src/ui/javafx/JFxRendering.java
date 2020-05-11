@@ -529,7 +529,7 @@ public class JFxRendering implements Rendering {
         shadowShape.setVisible(false);
 
         this.fromToolbar = true;
-        shadowGroup.setCursor(Cursor.CLOSED_HAND);
+        windowPane.setCursor(Cursor.CLOSED_HAND);
         Editor.getInstance().setShapeDragged(shape);
     }
 
@@ -544,7 +544,7 @@ public class JFxRendering implements Rendering {
                 shape.getPosition().y - coords.y);
 
         this.fromToolbar = false;
-        shadowGroup.setCursor(Cursor.CLOSED_HAND);
+        windowPane.setCursor(Cursor.CLOSED_HAND);
         Editor.getInstance().setShapeDragged(shape);
     }
 
@@ -556,7 +556,6 @@ public class JFxRendering implements Rendering {
         ShapeI newShape = editor.getShapeDragged().clone();
         editor.addShapeToToolbar(newShape);
 
-        shadowGroup.setCursor(Cursor.DEFAULT);
         editor.setShapeDragged(null);
     }
 
@@ -576,7 +575,6 @@ public class JFxRendering implements Rendering {
                     coords.y + shadowShapeThreshold.y));
         }
 
-        shadowGroup.setCursor(Cursor.DEFAULT);
         editor.setShapeDragged(null);
     }
 
@@ -647,6 +645,8 @@ public class JFxRendering implements Rendering {
         shadowGroup.toBack();
 
         shadowShapeThreshold = new Point2D(0, 0);
+
+        windowPane.setCursor(Cursor.DEFAULT);
     }
 
     @Override
