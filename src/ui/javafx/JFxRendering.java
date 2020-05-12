@@ -588,14 +588,20 @@ public class JFxRendering implements Rendering {
         ShapeI shape = editor.getShapeDragged();
 
         if (shape != null) {
-            if(editor.toolbarContains(shape))
+            if (editor.toolbarContains(shape)) { // From toolbar
                 editor.removeShapeFromToolbar(shape);
-            else if(editor.sceneContains((Shape) shape))
-                editor.removeShapeFromScene((Shape) shape);
-            else
-                throw new EditorManagementException("Trying to delete an unknown shape");
+            }
+            else { // From scene
+                for (ShapeI s: editor.getScene().getSelectedShapes())
+                    if (editor.sceneContains((Shape) s))
+                        editor.removeShapeFromScene((Shape) s);
+                    else
+                        throw new EditorManagementException("Trying to delete an unknown shape");
+            }
+
         }
 
+        setSelectedShapes(new ArrayList<>());
         editor.setShapeDragged(null);
     }
 
