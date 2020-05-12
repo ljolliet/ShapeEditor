@@ -41,6 +41,14 @@ public class ShapeGroup extends Shape {
     }
 
     @Override
+    public boolean containsChild(ShapeI s) {
+        for(ShapeI c : this.shapes)
+            if(c.equals(s) || c.containsChild(s))
+                return true;
+        return false;
+    }
+
+    @Override
     public ShapeI clone() {
         ShapeI c = super.clone();
 
@@ -74,9 +82,15 @@ public class ShapeGroup extends Shape {
         return false;
     }
 
+    /**
+     * @return true if all children is contained
+     */
     @Override
     public boolean contained(SelectionShape s) {
-        return false;
+        for(ShapeI child : shapes)
+            if(!child.contained(s))
+                return false;
+        return true;
     }
 
     @Override

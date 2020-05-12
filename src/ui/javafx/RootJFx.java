@@ -92,7 +92,6 @@ public class RootJFx extends Group implements Component {
             for (ShapeI shape : Editor.getInstance().getScene().getShapes())
                 if (shape.contained(Editor.getInstance().getSelectionShape()))
                     selectedShapes.add(shape);
-
             mediator.stopSelection(selectedShapes);
         }
         else {

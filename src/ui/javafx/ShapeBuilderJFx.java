@@ -14,6 +14,7 @@ public class ShapeBuilderJFx {
 
     private ShapeBuilderJFx() {}
 
+    //TODO try to refacto
     public static javafx.scene.shape.Rectangle createSceneRectangle(Rectangle r) {
         Editor editor = Editor.getInstance();
 
@@ -24,14 +25,18 @@ public class ShapeBuilderJFx {
         rectangle.setFill(color);
 
         // Add stroke if selected
-        if (editor.getScene().getSelectedShapes().contains(r))
-            rectangle.setStroke(color.darker());
+        for(ShapeI s : editor.getScene().getSelectedShapes()){
+            System.out.println(s);
+            if(s.equals(r) || s.containsChild(r)){
+                rectangle.setStroke(color.darker());
+                System.out.println("STROKE");
+            }
+        }
 
         // Add transparency if shapeDragged
         if (editor.getShapeDragged() != null && editor.getShapeDragged().equals(r)) {
-            System.out.println("here");
             rectangle.setOpacity(r.getColor().a /2);
-    }
+        }
 
         // Rotation
         Rotate rotate = new Rotate(r.getRotation());
@@ -65,12 +70,17 @@ public class ShapeBuilderJFx {
         polygon.setFill(color);
 
         // Add stroke if selected
-        if (editor.getScene().getSelectedShapes().contains(p))
-            polygon.setStroke(color.darker());
+        for(ShapeI s : editor.getScene().getSelectedShapes()){
+            System.out.println(s);
+            if(s.equals(p) || s.containsChild(p)){
+                polygon.setStroke(color.darker());
+                System.out.println("STROKE");
+            }
+        }
+
 
         // Add transparency if shapeDragged
         if (editor.getShapeDragged() != null && editor.getShapeDragged().equals(p)) {
-            System.out.println("here");
             polygon.setOpacity(p.getColor().a /2);
         }
 

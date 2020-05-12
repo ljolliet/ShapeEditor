@@ -39,6 +39,11 @@ public abstract class SimpleShape extends Shape {
     }
 
     @Override
+    public boolean containsChild(ShapeI s) {
+        return false;
+    }
+
+    @Override
     public void addShape(ShapeI s) {
         throw new ShapeException("Cannot add a shape to a SimpleShape");
     }

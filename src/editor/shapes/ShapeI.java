@@ -27,6 +27,7 @@ public interface ShapeI extends Cloneable, Serializable {
     void drawInScene(Rendering rendering);
     void drawInToolbar(Rendering rendering);
 
+    boolean containsChild(ShapeI s);
     boolean contains(Point2D position);
     boolean contained(SelectionShape s);
 
