@@ -130,6 +130,7 @@ public class Editor extends Observable implements Originator {
         this.toolbar.checkInitialised();
     }
 
+
     public void saveScene(File file) {
         this.exportVisitor.saveScene(file);
     }
@@ -138,7 +139,8 @@ public class Editor extends Observable implements Originator {
         this.importManager.restore(file);
         history.clear();
         this.saveToMemento();
-        rendering.drawEditor();
+        if(rendering != null)
+            rendering.drawEditor();
     }
 
     public void accept(EditorVisitor visitor) {
@@ -167,6 +169,14 @@ public class Editor extends Observable implements Originator {
 
     public ShapeI getShapeDragged() {
         return shapeDragged;
+    }
+
+    public ExportManager getExportVisitor() {
+        return exportVisitor;
+    }
+
+    public ImportManager getImportManager() {
+        return importManager;
     }
 
     public void setShapeDragged(ShapeI shapeDragged) {
