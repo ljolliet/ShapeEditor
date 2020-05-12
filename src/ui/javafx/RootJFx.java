@@ -27,36 +27,55 @@ public class RootJFx extends Group implements Component {
     private void onMousePressed(MouseEvent event) {
         mediator.clearEditorActions();
 
+        ShapeI shape = null;
+        Point2D coords = new Point2D(event.getX(), event.getY());
+
+        // Look if the mouse is on an existing shape
+        for (ShapeI s : Editor.getInstance().getScene().getShapes()) {
+            if (s.contains(coords)) { // Found
+                shape = s;
+                break;
+            }
+        }
+
         // Detect left click
         if (event.getButton() == MouseButton.PRIMARY) {
-            boolean inShape = false;
-            Point2D coords = new Point2D(event.getX(), event.getY());
+            if (shape != null) {
+                if (event.isShortcutDown()) // CTRL for Windows, CMD for Mac, etc
+                    mediator.toggleSelectedShape(shape);
+                else {
+                    // Look if the clicked shape is contained
+                    // into the selected shapes
+                    boolean here = false;
+                    for (ShapeI s: Editor.getInstance().getScene().getSelectedShapes())
+                        if (shape.equals(s) || s.containsChild(shape)) {
+                            here = true;
+                            break;
+                        }
 
-            // Look if the mouse is on an existing shape
-            for (ShapeI shape : Editor.getInstance().getScene().getShapes()) {
-                if (shape.contains(coords)) { // Found
-                    mediator.dragFromScene(shape, coords);
-                    inShape = true;
-                    break;
+                    if (!here)
+                        mediator.selectShape(shape);
                 }
-            }
 
-            // If no shape found --> start select action
-            if (!inShape)
+                if (Editor.getInstance().getScene().getSelectedShapes().size() > 0)
+                    mediator.dragFromScene(new Point2D(event.getX(), event.getY()));
+            }
+            else {
+                // Clear selection
+                mediator.stopSelection(new ArrayList<>());
+                // Begin a new one
                 mediator.startSelection(new Point2D(event.getX(), event.getY()));
+            }
         }
         // Right click
         else if (event.getButton() == MouseButton.SECONDARY) {
-            // Click on a selection
             if (Editor.getInstance().getScene().getSelectedShapes().size() > 1) {
-                //TODO : not a group but a list of shape //mediator.showGroupEditionDialog(new Point2D(event.getScreenX(), event.getScreenY()));
+                // TODO : not a group but a list of shape
+                // mediator.showGroupEditionDialog(new Point2D(event.getScreenX(), event.getScreenY()));
             }
-            // Click on a single shape
-            else {
-                // Look for the clicked shape
-                for (ShapeI shape : Editor.getInstance().getScene().getShapes())
-                    if (shape.contains(new Point2D(event.getX(), event.getY()))) // Found
-                        mediator.showEditionDialog(shape, new Point2D(event.getScreenX(), event.getScreenY()));
+            else if (shape != null) {
+                mediator.selectShape(shape);
+                mediator.showEditionDialog(shape, new Point2D(event.getScreenX(), event.getScreenY()));
             }
         }
     }
@@ -94,9 +113,9 @@ public class RootJFx extends Group implements Component {
                     selectedShapes.add(shape);
             mediator.stopSelection(selectedShapes);
         }
-        else {
-            mediator.stopSelection(new ArrayList<>());
-        }
+
+        Editor.getInstance().setShapeDragged(null);
+        Editor.getInstance().getRendering().drawEditor();
     }
 
     @Override

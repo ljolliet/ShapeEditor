@@ -16,12 +16,14 @@ public interface Mediator {
 
     // Drag & drop
     void dragFromToolbar(ShapeI shape);
-    void dragFromScene(ShapeI shape, Point2D coords);
+    void dragFromScene(Point2D coords);
     void dropInToolbar();
     void dropInScene(Point2D coords);
     void dropInTrash();
 
     // Selection
+    void selectShape(ShapeI shape);
+    void toggleSelectedShape(ShapeI shape);
     void startSelection(Point2D startPoint);
     void moveSelection(Point2D point);
     void stopSelection(List<ShapeI> shapes);
@@ -29,10 +31,11 @@ public interface Mediator {
     // Edition dialog
     void showEditionDialog(ShapeI shape, Point2D coords);
     void showGroupEditionDialog(Point2D point);
-    
+
     // Shadow shape
     void moveShadowShape(Point2D coords);
 
     void clearShadowShape();
     void clearEditorActions();
+
 }

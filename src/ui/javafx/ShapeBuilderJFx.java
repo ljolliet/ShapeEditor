@@ -32,7 +32,9 @@ public class ShapeBuilderJFx {
         }
 
         // Add transparency if shapeDragged
-        if (editor.getShapeDragged() != null && editor.getShapeDragged().equals(r)) {
+        if (editor.getShapeDragged() != null
+                && (editor.getShapeDragged().equals(r)
+                || editor.getShapeDragged().containsChild(r))) {
             rectangle.setOpacity(r.getColor().a /2);
         }
 
@@ -74,10 +76,11 @@ public class ShapeBuilderJFx {
             }
         }
 
-
         // Add transparency if shapeDragged
-        if (editor.getShapeDragged() != null && editor.getShapeDragged().equals(p)) {
-            polygon.setOpacity(p.getColor().a /2);
+        if (editor.getShapeDragged() != null
+                && (editor.getShapeDragged().equals(p)
+                    || editor.getShapeDragged().containsChild(p))) {
+                polygon.setOpacity(p.getColor().a /2);
         }
 
         // Rotation

@@ -105,13 +105,13 @@ public class JFxRendering implements Rendering {
         // Draw toolbar
         for (ShapeI s: editor.getToolbar().getShapes())
             s.drawInToolbar(this);
+
+        drawSelectionFrame();
     }
 
-    @Override
-    public void drawSelectionFrame() {
-        Editor editor = Editor.getInstance();
-        drawEditor();
-        SelectionRectangle s = (SelectionRectangle)editor.getSelectionShape();
+    private void drawSelectionFrame() {
+        SelectionRectangle s = (SelectionRectangle) Editor.getInstance().getSelectionShape();
+
         if(s.isOn()) {
             javafx.scene.shape.Rectangle selectionFrame = new javafx.scene.shape.Rectangle(s.getWidth(), s.getHeight());
             selectionFrame.setStroke(Color.DARKRED);
@@ -534,7 +534,11 @@ public class JFxRendering implements Rendering {
     }
 
     @Override
-    public void dragFromScene(ShapeI shape, Point2D coords) {
+    public void dragFromScene(Point2D coords) {
+        ShapeI shape = new ShapeGroup();
+        for (ShapeI s: Editor.getInstance().getScene().getSelectedShapes())
+            shape.addShape(s);
+
         // Shadow shape
         shadowShape = (Group) getShadowShape(shape);
         shadowGroup.getChildren().add(shadowShape);
@@ -596,6 +600,29 @@ public class JFxRendering implements Rendering {
     }
 
     @Override
+    public void selectShape(ShapeI shape) {
+        List<ShapeI> list = new ArrayList<>();
+        list.add(shape);
+        Editor.getInstance().setSceneSelectedShapes(list);
+    }
+
+    public void toggleSelectedShape(ShapeI shape) {
+        List<ShapeI> list = Editor.getInstance().getScene().getSelectedShapes();
+
+        // Toggle
+        if (list.contains(shape))
+            list.remove(shape);
+        else
+            list.add(shape);
+
+        Editor.getInstance().setSceneSelectedShapes(list);
+    }
+
+    public void setSelectedShapes(List<ShapeI> shapes) {
+        Editor.getInstance().setSceneSelectedShapes(shapes);
+    }
+
+    @Override
     public void startSelection(Point2D startPoint) {
         Editor.getInstance().getSelectionShape().setOn(true);
         Editor.getInstance().getSelectionShape().setSelectionStartPoint(startPoint);
@@ -604,13 +631,13 @@ public class JFxRendering implements Rendering {
     @Override
     public void moveSelection(Point2D point) {
         Editor.getInstance().getSelectionShape().setSelectionEndPoint(point);
-        drawSelectionFrame();
+        drawEditor();
     }
 
     @Override
     public void stopSelection(List<ShapeI> shapes) {
         Editor.getInstance().getSelectionShape().setOn(false);
-        Editor.getInstance().setSceneSelectedShapes(shapes);
+        setSelectedShapes(shapes);
         drawEditor();
     }
 
@@ -653,8 +680,8 @@ public class JFxRendering implements Rendering {
 
     @Override
     public void clearEditorActions() {
-        Editor.getInstance().getSelectionShape().setOn(false);
-        Editor.getInstance().setSceneSelectedShapes(new ArrayList<>());
+        //Editor.getInstance().getSelectionShape().setOn(false);
+        //setSelectedShapes(new ArrayList<>());
 
         hideEditionDialog();
     }

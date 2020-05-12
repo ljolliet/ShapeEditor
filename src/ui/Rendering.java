@@ -12,7 +12,6 @@ import editor.utils.Point2D;
 public interface Rendering extends Mediator {
 
     void drawEditor();
-    void drawSelectionFrame();
 
     void drawInScene(Rectangle rectangle);
     void drawInScene(Polygon polygon);
@@ -29,10 +28,10 @@ public interface Rendering extends Mediator {
     void setEditionDialog(RectangleEditionDialog recED);
 
     void showEditionDialog(Point2D position);
+    void showGroupDialog(Point2D position);
     void hideEditionDialog();
 
     void setRectangleDialog(RectangleEditionDialog recED);
     void setPolygonDialog(PolygonEditionDialog polED);
 
-    void showGroupDialog(Point2D position);
 }
