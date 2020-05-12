@@ -120,35 +120,41 @@ public class ShapeGroup extends Shape {
         double deltaY = y - position.y;
 
         // Set new position for all children
-        for (ShapeI s: shapes)
+        for (ShapeI s: shapes) {
             s.setPosition(new Point2D(
                     s.getPosition().x + deltaX,
                     s.getPosition().y + deltaY
             ));
+        }
+        notifyObservers();
     }
 
     @Override
     public void setColor(Color color) {
         for (ShapeI s: shapes)
             s.setColor(color);
+        notifyObservers();
     }
 
     @Override
     public void setRotation(double angle) {
         for (ShapeI s: shapes)
             s.setRotation(angle);
+        notifyObservers();
     }
 
     @Override
     public void setRotationCenter(Point2D pos) {
         for (ShapeI s: shapes)
             s.setRotationCenter(pos);
+        notifyObservers();
     }
 
     @Override
     public void setTranslation(Vec2D translation) {
         for (ShapeI s: shapes)
             s.setTranslation(translation);
+        notifyObservers();
     }
 
     /*@Override

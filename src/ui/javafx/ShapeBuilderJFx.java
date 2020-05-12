@@ -26,10 +26,8 @@ public class ShapeBuilderJFx {
 
         // Add stroke if selected
         for(ShapeI s : editor.getScene().getSelectedShapes()){
-            System.out.println(s);
             if(s.equals(r) || s.containsChild(r)){
                 rectangle.setStroke(color.darker());
-                System.out.println("STROKE");
             }
         }
 
@@ -71,10 +69,8 @@ public class ShapeBuilderJFx {
 
         // Add stroke if selected
         for(ShapeI s : editor.getScene().getSelectedShapes()){
-            System.out.println(s);
             if(s.equals(p) || s.containsChild(p)){
                 polygon.setStroke(color.darker());
-                System.out.println("STROKE");
             }
         }
 
