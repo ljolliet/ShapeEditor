@@ -11,8 +11,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
 public class IOTests {
 
@@ -94,7 +93,7 @@ public class IOTests {
         //save
         ExportManager exportManager = e.getExportVisitor();
         exportManager.saveToolbar(f);
-        e.getToolbar().setShapes(new ArrayList<>()); // erase data in scene
+        e.getToolbar().setShapes(new ArrayList<>()); // erase data in toolbar
         assertEquals(0, e.getScene().getShapes().size());
         //load
         ImportManager importManager = e.getImportManager();
@@ -116,8 +115,38 @@ public class IOTests {
         assertEquals(((Rectangle)shapeAfter).getBorderRadius(), ((Rectangle)shapeBefore).getBorderRadius());
         assertEquals(((Rectangle)shapeAfter).getWidth(), ((Rectangle)shapeBefore).getWidth(),0.);
         assertEquals(((Rectangle)shapeAfter).getHeight(), ((Rectangle)shapeBefore).getHeight(),0.);
-        f.delete();
 
+        f.delete();
+    }
+
+    @Test
+    public void checkEmptyToolbarBehavior(){
+        //if toolbar empty on load, a polygon and a rectangle are added
+        Editor e = Editor.getInstance();
+        File f = new File(".test.json");
+        // erase data in toolbar
+        e.getToolbar().setShapes(new ArrayList<>());
+        assertEquals(0, e.getToolbar().getShapes().size());
+        //save
+        ExportManager exportManager = e.getExportVisitor();
+        exportManager.saveToolbar(f);
+        //load
+        ImportManager importManager = e.getImportManager();
+        importManager.restore(f);
+        assertEquals(0, e.getToolbar().getShapes().size()); //list still empty
+        e.getToolbar().checkInitialised();
+        assertEquals(2, e.getToolbar().getShapes().size());
+        boolean containsPolygon = false, containsRectangle = false;
+        for(ShapeI s : e.getToolbar().getShapes()) {
+            if (s instanceof Polygon)
+                containsPolygon = true;
+            else if (s instanceof Rectangle)
+                containsRectangle = true;
+        }
+        assertTrue(containsPolygon);
+        assertTrue(containsRectangle);
+
+        f.delete();
     }
 
 }
