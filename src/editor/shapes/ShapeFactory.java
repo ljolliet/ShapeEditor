@@ -18,7 +18,7 @@ public class ShapeFactory {
                 new Point2D(0,0), 90);
     }
 
-    public static ShapeI makeHexagon() {
+    public static Polygon makeHexagon() {
         return makePolygon(6);
     }
 }

@@ -27,4 +27,13 @@ public abstract class Observable implements ObservableI {
     protected void setObservers(Set<Observer> observers) {
         this.observers = observers;
     }
+
+    public Set<Observer> getObservers(){
+        return this.observers;
+    }
+
+    public void clearObservers(){
+        this.observers.clear();
+    }
 }
+
