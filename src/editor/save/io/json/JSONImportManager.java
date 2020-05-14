@@ -21,7 +21,9 @@ public class JSONImportManager implements ImportManager {
 
     @Override
     public void restore(File file) {
-        this.restoreFromString(IOManager.readFile(file));
+        String data;
+        if((data = IOManager.readFile(file)) != null)
+            this.restoreFromString(data);
     }
 
     @Override

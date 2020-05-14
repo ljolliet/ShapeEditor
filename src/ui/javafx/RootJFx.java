@@ -74,7 +74,6 @@ public class RootJFx extends Group implements Component {
             List<ShapeI> shapes = Editor.getInstance().getScene().getSelectedShapes();
             if (shapes.size() > 1) {
                 mediator.showContextMenu(shapes, new Point2D(event.getScreenX(), event.getScreenY()));
-                    //TODO : not a group but a list of shape //mediator.showGroupEditionDialog(new Point2D(event.getScreenX(), event.getScreenY()))
             }
             else if (shape != null) {
                 mediator.selectShape(shape);
