@@ -2,7 +2,7 @@ package ui.javafx;
 
 import editor.core.Editor;
 import editor.edition.EditionDialogI;
-import editor.edition.GroupeEditionDialog;
+import editor.edition.GroupEditionDialog;
 import editor.edition.PolygonEditionDialog;
 import editor.edition.RectangleEditionDialog;
 import editor.save.io.IOManager;
@@ -42,14 +42,10 @@ public class JFxRendering implements Rendering {
 
     /* Edition */
     private EditionDialogI dialogED;
-    private ContextMenu contextMenu;
-    private Stage editStage;
+    private ContextMenu contextMenu = new ContextMenu();
+    private Stage editStage = new Stage();
 
     private EditDialogJFx editDialog;
-
-    private CancelButtonJFx cancelButton = new CancelButtonJFx();
-    private OkButtonJFx okButton = new OkButtonJFx();
-    private ApplyButtonJFx applyButton = new ApplyButtonJFx();
 
     /* Drag & drop */
     private boolean fromToolbar;
@@ -61,24 +57,31 @@ public class JFxRendering implements Rendering {
 
 
     public JFxRendering() {
+        //init toolbar
         this.fromToolbar = false;
-        this.initToolbar();
-        this.initEdition();
-    }
-
-    private void initToolbar() {
         this.toolbarRowCount = 0;
         this.rowConstraints = new RowConstraints(ApplicationI.TOOLBAR_CELL_HEIGHT);
     }
 
-    private void initEdition() {
-        this.contextMenu = new ContextMenu();
-        this.editStage = new Stage();
-
-        this.registerComponent(cancelButton);
-        this.registerComponent(okButton);
-        this.registerComponent(applyButton);
+    @Override
+    public void registerComponent(Component component) {
+        component.setMediator(this);
+        switch (component.getName()) {
+            case "Toolbar":
+                toolbar = (ToolbarJFx) component;
+                break;
+            case "Root":
+                root = (RootJFx) component;
+                break;
+            case "WindowPane":
+                windowPane = (WindowPaneJFx) component;
+                this.initShadowShape();
+                break;
+            case "EditDialog":
+                editDialog = (EditDialogJFx) component;
+        }
     }
+
 
     private void initShadowShape() {
         shadowShapeThreshold = new Point2D(0, 0);
@@ -178,30 +181,17 @@ public class JFxRendering implements Rendering {
 
 
     @Override
-    public void setEditionDialog(RectangleEditionDialog recED) {
-        contextMenu.getItems().clear();
-        addEditToDialog();
-        editDialog = new RectangleEditJFx(recED, okButton, applyButton, cancelButton);
-    }
+    public void drawEditionDialog(EditionDialogI shapeED, Point2D position) {
+        if(shapeED instanceof RectangleEditionDialog)
+            this.registerComponent(new RectangleEditJFx((RectangleEditionDialog) shapeED));
+        else if(shapeED instanceof PolygonEditionDialog)
+            this.registerComponent(new PolygonEditJFx((PolygonEditionDialog) shapeED));
+        else if(shapeED instanceof GroupEditionDialog)
+            this.registerComponent(new GroupEditJFx((GroupEditionDialog) shapeED));
 
-    @Override
-    public void setEditionDialog(PolygonEditionDialog polED) {
-        contextMenu.getItems().clear();
-        addEditToDialog();
-        editDialog = new PolygonEditJFx(polED, okButton, applyButton, cancelButton);
-    }
-
-    @Override
-    public void setEditionDialog(GroupeEditionDialog groupED) {
-        contextMenu.getItems().clear();
-        addGroupEditToDialog();
-        editDialog = new GroupEditJFx(groupED, okButton, applyButton, cancelButton);
-    }
-
-    @Override
-    public void showEditionDialog(Point2D position) {
         contextMenu.show(this.root, position.x, position.y);
     }
+
 
     @Override
     public void hideEditionDialog(){
@@ -259,24 +249,6 @@ public class JFxRendering implements Rendering {
         return grp;
     }
 
-    @Override
-    public void registerComponent(Component component) {
-        component.setMediator(this);
-        switch (component.getName()) {
-            case "Toolbar":
-                toolbar = (ToolbarJFx) component;
-                break;
-            case "Root":
-                root = (RootJFx) component;
-                break;
-            case "windowPane":
-                windowPane = (WindowPaneJFx) component;
-                this.initShadowShape();
-                break;
-            case "editDialog":
-                editDialog = (EditDialogJFx) component;
-        }
-    }
 
     @Override
     public void undo() {
@@ -449,7 +421,9 @@ public class JFxRendering implements Rendering {
     }
 
     @Override
-    public void showEditionDialog(ShapeI shape, Point2D coords) {
+    public void showMenu(ShapeI shape, Point2D coords) {
+        contextMenu.getItems().clear();
+        addEditToDialog();
         dialogED = shape.createEditionDialog();
         dialogED.setPosition(coords);
         dialogED.draw(this);
@@ -461,7 +435,7 @@ public class JFxRendering implements Rendering {
         final MenuItem group = new MenuItem("Group");
         group.setOnAction(event -> createGroup(shapes));
         contextMenu.getItems().add(group);
-        this.showEditionDialog(coords);
+        //this.showEditionDialog(coords); TODO
     }
 
     private void createGroup(List<ShapeI> shapes){

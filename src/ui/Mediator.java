@@ -29,7 +29,7 @@ public interface Mediator {
     void stopSelection(List<ShapeI> shapes);
 
     // Edition dialog
-    void showEditionDialog(ShapeI shape, Point2D coords);
+    void showMenu(ShapeI shape, Point2D coords);
     void showContextMenu(List<ShapeI> shapes, Point2D point2D);
     void cancelEdit();
     void applyEdit();

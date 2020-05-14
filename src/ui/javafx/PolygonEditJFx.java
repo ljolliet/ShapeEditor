@@ -8,8 +8,8 @@ import javafx.scene.control.SpinnerValueFactory;
 
 public class PolygonEditJFx extends EditDialogJFx {
 
-    public PolygonEditJFx(PolygonEditionDialog polED, OkButtonJFx okButton, ApplyButtonJFx applyButton, CancelButtonJFx cancelButton){
-        super(okButton, applyButton, cancelButton);
+    public PolygonEditJFx(PolygonEditionDialog polED){
+        super();
         super.addColorToGridPane(polED);
         super.addPositionToGridPane(polED);
         super.addRotationToGridPane(polED);

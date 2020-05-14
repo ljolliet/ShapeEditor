@@ -1,7 +1,7 @@
 package editor.shapes;
 
 import editor.core.EditorVisitor;
-import editor.edition.GroupeEditionDialog;
+import editor.edition.GroupEditionDialog;
 import editor.utils.Color;
 import editor.utils.Point2D;
 import editor.utils.SelectionShape;
@@ -240,7 +240,7 @@ public class ShapeGroup extends Shape {
 
     @Override
     public EditionDialogI createEditionDialog() {
-        return new GroupeEditionDialog(this);
+        return new GroupEditionDialog(this);
     }
 
     @Override

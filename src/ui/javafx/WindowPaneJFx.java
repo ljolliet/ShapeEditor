@@ -41,6 +41,6 @@ public class WindowPaneJFx extends StackPane implements Component {
 
     @Override
     public String getName() {
-        return "windowPane";
+        return "WindowPane";
     }
 }

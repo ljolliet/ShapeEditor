@@ -1,24 +1,19 @@
 package editor.edition;
 
-import editor.shapes.Polygon;
-import editor.shapes.Shape;
 import editor.shapes.ShapeGroup;
-import editor.shapes.ShapeI;
 import editor.utils.Point2D;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.paint.Color;
 import ui.Rendering;
 
-public class GroupeEditionDialog extends ShapeEditionDialog {
+public class GroupEditionDialog extends ShapeEditionDialog {
 
-    public GroupeEditionDialog(ShapeGroup shapeGroup) {
+    public GroupEditionDialog(ShapeGroup shapeGroup) {
         super(shapeGroup);
     }
 
     @Override
     public void draw(Rendering rendering) {
-        rendering.setEditionDialog(this);
-        rendering.showEditionDialog(this.getPosition());
+        rendering.drawEditionDialog(this, this.getPosition());
     }
 
     @Override

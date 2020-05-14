@@ -8,8 +8,8 @@ import javafx.scene.control.SpinnerValueFactory;
 import ui.ApplicationI;
 
 public class RectangleEditJFx extends EditDialogJFx {
-    public RectangleEditJFx(RectangleEditionDialog recED, OkButtonJFx okButton, ApplyButtonJFx applyButton, CancelButtonJFx cancelButton) {
-        super(okButton, applyButton, cancelButton);
+    public RectangleEditJFx(RectangleEditionDialog recED) {
+        super();
         super.addColorToGridPane(recED);
         super.addPositionToGridPane(recED);
         super.addRotationToGridPane(recED);

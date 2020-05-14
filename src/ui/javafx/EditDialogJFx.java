@@ -1,13 +1,10 @@
 package ui.javafx;
 
-import editor.edition.GroupeEditionDialog;
+import editor.edition.GroupEditionDialog;
 import editor.edition.ShapeEditionDialog;
 import editor.shapes.Shape;
 import javafx.geometry.Insets;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -18,19 +15,15 @@ import ui.Mediator;
 public class EditDialogJFx extends GridPane implements DialogBox {
     private Mediator mediator;
 
-    public EditDialogJFx(OkButtonJFx okButton, ApplyButtonJFx applyButton, CancelButtonJFx cancelButton){
+
+    public EditDialogJFx(){
         super();
-        //Setting size for the pane
         this.setMinSize(500, 200);
-        //Setting the padding
         this.setPadding(new Insets(10, 10, 10, 10));
         //Setting the vertical and horizontal gaps between the columns
         this.setVgap(5);
         this.setHgap(5);
-
-        this.add(okButton, 2, 6);
-        this.add(applyButton, 3, 6);
-        this.add(cancelButton, 4, 6);
+        this.setButtons();
     }
 
     @Override
@@ -43,9 +36,23 @@ public class EditDialogJFx extends GridPane implements DialogBox {
         return "EditDialog";
     }
 
+    private void setButtons() {
+        Button okButton = new Button("OK");
+        okButton.setOnAction(actionEvent -> mediator.applyAndQuitEdit());
+        this.add(okButton, 2, 6);
+
+        Button applyButton = new Button("Apply");
+        applyButton.setOnAction(actionEvent -> mediator.applyEdit());
+        this.add(applyButton, 3, 6);
+
+        Button cancelButton = new Button("Cancel");
+        cancelButton.setOnAction(actionEvent -> mediator.cancelEdit());
+        this.add(cancelButton, 4, 6);
+    }
+
     void addColorToGridPane(ShapeEditionDialog shapeED) {
         final editor.utils.Color originalColor;
-        if (shapeED instanceof GroupeEditionDialog)
+        if (shapeED instanceof GroupEditionDialog)
             originalColor = new editor.utils.Color(0, 0, 0, 0);
         else
             originalColor = shapeED.getTarget().getColor();

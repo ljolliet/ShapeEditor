@@ -77,7 +77,7 @@ public class RootJFx extends Group implements Component {
             }
             else if (shape != null) {
                 mediator.selectShape(shape);
-                mediator.showEditionDialog(shape, new Point2D(event.getScreenX(), event.getScreenY()));
+                mediator.showMenu(shape, new Point2D(event.getScreenX(), event.getScreenY()));
 
             }
         }
