@@ -1,4 +1,4 @@
-package ui.javafx;
+package ui.component.javafx.area;
 
 import editor.core.Editor;
 import editor.shapes.ShapeI;
@@ -6,7 +6,7 @@ import editor.utils.Point2D;
 import javafx.scene.Group;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import ui.Component;
+import ui.component.Component;
 import ui.Mediator;
 
 import java.util.ArrayList;

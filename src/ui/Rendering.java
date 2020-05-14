@@ -23,5 +23,4 @@ public interface Rendering extends Mediator {
     void drawEditionDialog(EditionDialogI groupED, Point2D position);
     void hideEditionDialog();
 
-
 }

@@ -1,4 +1,4 @@
-package ui.javafx;
+package ui.component.javafx.dialog;
 
 import editor.edition.PolygonEditionDialog;
 import editor.shapes.Shape;

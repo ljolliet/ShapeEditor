@@ -1,4 +1,4 @@
-package ui.javafx;
+package ui.component.javafx;
 
 import editor.core.Editor;
 import editor.edition.EditionDialogI;
@@ -21,16 +21,28 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import ui.ApplicationI;
-import ui.Component;
+import ui.component.Component;
 import ui.Rendering;
+import ui.component.javafx.area.RootJFx;
+import ui.component.javafx.area.ToolbarJFx;
+import ui.component.javafx.area.TrashJFx;
+import ui.component.javafx.buttons.ButtonJFx;
+import ui.component.javafx.dialog.EditDialogJFx;
+import ui.component.javafx.dialog.GroupEditJFx;
+import ui.component.javafx.dialog.PolygonEditJFx;
+import ui.component.javafx.dialog.RectangleEditJFx;
+import ui.component.javafx.layouts.*;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static ui.ApplicationI.SCENE_HEIGHT;
+import static ui.ApplicationI.SCENE_WIDTH;
 
-public class JFxRendering implements Rendering {
+
+public class RenderingJFx implements Rendering {
 
     private ToolbarJFx toolbar;
     private int toolbarRowCount;
@@ -55,8 +67,15 @@ public class JFxRendering implements Rendering {
     private Group shadowGroup;
     private Point2D shadowShapeThreshold;
 
+    private OptionLayoutJFx optionLayout;
+    private Scene scene;
+    private WindowLayoutJFx windowLayout;
+    private Stage primaryStage;
+    private EditorLayoutJFx editorLayout;
+    private ToolbarRootJFx toolbarRoot;
 
-    public JFxRendering() {
+
+    public RenderingJFx() {
         //init toolbar
         this.fromToolbar = false;
         this.toolbarRowCount = 0;
@@ -69,9 +88,23 @@ public class JFxRendering implements Rendering {
         switch (component.getName()) {
             case "Toolbar":
                 toolbar = (ToolbarJFx) component;
+                toolbarRoot.setCenter(toolbar);
+                break;
+            case "ToolbarRoot":
+                this.toolbarRoot = (ToolbarRootJFx) component;
+                this.toolbarRoot.setCenter(toolbar);
+                this.editorLayout.getChildren().add(toolbarRoot);
+                break;
+            case "Trash":
+                this.toolbarRoot.setTrashBottom((TrashJFx)component);
                 break;
             case "Root":
                 root = (RootJFx) component;
+                editorLayout.getChildren().add(root);
+                Canvas canvas = new Canvas();
+                canvas.setWidth(SCENE_WIDTH);
+                canvas.setHeight(SCENE_HEIGHT);
+                root.getChildren().add(canvas);
                 break;
             case "WindowPane":
                 windowPane = (WindowPaneJFx) component;
@@ -79,25 +112,32 @@ public class JFxRendering implements Rendering {
                 break;
             case "EditDialog":
                 editDialog = (EditDialogJFx) component;
+                break;
+            case "OptionLayout":
+                optionLayout = (OptionLayoutJFx)component;
+                windowLayout.getChildren().add(optionLayout);
+                break;
+            case "UndoButton" :
+            case "RedoButton" :
+            case "SaveButton" :
+            case "OpenButton" :
+                optionLayout.getChildren().add((ButtonJFx)component);
+                break;
+            case "WindowLayout":
+                this.windowLayout = (WindowLayoutJFx) component;
+                this.registerComponent(new WindowPaneJFx(windowLayout));
+                this.scene = new Scene(windowPane);
+                this.primaryStage.setScene(scene);
+                break;
+            case "EditorLayout" :
+                this.editorLayout = (EditorLayoutJFx) component;
+                this.windowLayout.getChildren().add(editorLayout);
+                break;
         }
     }
 
-
-    private void initShadowShape() {
-        shadowShapeThreshold = new Point2D(0, 0);
-
-        shadowGroup = new Group(new Canvas(ApplicationI.WINDOW_WIDTH, ApplicationI.WINDOW_HEIGHT));
-        // The group is completely transparent to mouse events
-        shadowGroup.setMouseTransparent(true);
-        windowPane.getChildren().add(shadowGroup);
-    }
-
-    private void initEditor() {
-        // Remove all shapes of the scene and of the toolbar
-        root.getChildren().removeIf(child -> !(child instanceof Canvas));
-        toolbar.getChildren().clear();
-        toolbar.getRowConstraints().clear();
-        toolbarRowCount = 0;
+    public void registerStage(Stage s){
+        this.primaryStage = s;
     }
 
     @Override
@@ -115,20 +155,6 @@ public class JFxRendering implements Rendering {
             s.drawInToolbar(this);
 
         drawSelectionFrame();
-    }
-
-    private void drawSelectionFrame() {
-        SelectionRectangle s = (SelectionRectangle) Editor.getInstance().getSelectionShape();
-
-        if(s.isOn()) {
-            javafx.scene.shape.Rectangle selectionFrame = new javafx.scene.shape.Rectangle(s.getWidth(), s.getHeight());
-            selectionFrame.setStroke(Color.DARKRED);
-            selectionFrame.setFill(Color.TRANSPARENT);
-            selectionFrame.setX(s.getPosition().x);
-            selectionFrame.setY(s.getPosition().y);
-
-            root.getChildren().add(selectionFrame);
-        }
     }
 
     @Override
@@ -198,57 +224,6 @@ public class JFxRendering implements Rendering {
         contextMenu.hide();
     }
 
-    private void addEditToDialog(){
-        final MenuItem edit = new MenuItem("Edit");
-        edit.setOnAction(event -> {
-            editStage.setTitle("Edition");
-            editStage.setScene(new Scene(editDialog));
-            editStage.showAndWait();
-        });
-        contextMenu.getItems().add(edit);
-    }
-
-    private void addGroupEditToDialog(){
-        final MenuItem edit = new MenuItem("Edit");
-        edit.setOnAction(event -> {
-            editStage.setTitle("Group Edition");
-            editStage.setScene(new Scene(editDialog));
-            editStage.showAndWait();
-        });
-        contextMenu.getItems().add(edit);
-    }
-
-    ///////////////////////////
-    //     Create shapes     //
-    ///////////////////////////
-
-    private Object getShadowShape(Rectangle r) {
-        r = new Rectangle(r.getWidth(), r.getHeight(), r.getBorderRadius(), new Point2D(0, 0),
-                        r.getColor(), r.getRotationCenter(), r.getRotation());
-
-         return new Group(ShapeBuilderJFx.createSceneRectangle(r));
-    }
-
-    private Object getShadowShape(Polygon p) {
-        p = new Polygon(p.getNbSides(), p.getSideLength(), new Point2D(0, 0),
-                p.getColor(), p.getRotationCenter(), p.getRotation());
-
-        return new Group(ShapeBuilderJFx.createScenePolygon(p));
-    }
-
-    private Object getShadowShape(ShapeGroup g) {
-        Group grp = new Group();
-
-        for (ShapeI shape: g.getChildren()) {
-            Group JFxGroup = (Group) getShadowShape(shape);
-            JFxGroup.setTranslateX(shape.getPosition().x - g.getPosition().x);
-            JFxGroup.setTranslateY(shape.getPosition().y - g.getPosition().y);
-            grp.getChildren().add(JFxGroup);
-        }
-
-        return grp;
-    }
-
 
     @Override
     public void undo() {
@@ -274,7 +249,7 @@ public class JFxRendering implements Rendering {
         }
         fileChooser.setInitialDirectory(saveDir);
 
-        File file = fileChooser.showSaveDialog(null);//TODO put primary Stage
+        File file = fileChooser.showSaveDialog(this.primaryStage);
         Editor.getInstance().saveScene(file);
     }
 
@@ -289,7 +264,7 @@ public class JFxRendering implements Rendering {
         }
         fileChooser.setInitialDirectory(saveDir);
 
-        File file = fileChooser.showOpenDialog(null);   //TODO put primary stage
+        File file = fileChooser.showOpenDialog(this.primaryStage);
         Editor.getInstance().restoreScene(file);
     }
 
@@ -492,5 +467,86 @@ public class JFxRendering implements Rendering {
     public void applyAndQuitEdit() {
         dialogED.applyEdition();
         editStage.close();
+    }
+
+    private void addEditToDialog(){
+        final MenuItem edit = new MenuItem("Edit");
+        edit.setOnAction(event -> {
+            editStage.setTitle("Edition");
+            editStage.setScene(new Scene(editDialog));
+            editStage.showAndWait();
+        });
+        contextMenu.getItems().add(edit);
+    }
+
+    private void addGroupEditToDialog(){
+        final MenuItem edit = new MenuItem("Edit");
+        edit.setOnAction(event -> {
+            editStage.setTitle("Group Edition");
+            editStage.setScene(new Scene(editDialog));
+            editStage.showAndWait();
+        });
+        contextMenu.getItems().add(edit);
+    }
+    private void initShadowShape() {
+        shadowShapeThreshold = new Point2D(0, 0);
+
+        shadowGroup = new Group(new Canvas(ApplicationI.WINDOW_WIDTH, ApplicationI.WINDOW_HEIGHT));
+        // The group is completely transparent to mouse events
+        shadowGroup.setMouseTransparent(true);
+        windowPane.getChildren().add(shadowGroup);
+    }
+
+    private void initEditor() {
+        // Remove all shapes of the scene and of the toolbar
+        root.getChildren().removeIf(child -> !(child instanceof Canvas));
+        toolbar.getChildren().clear();
+        toolbar.getRowConstraints().clear();
+        toolbarRowCount = 0;
+    }
+
+    private void drawSelectionFrame() {
+        SelectionRectangle s = (SelectionRectangle) Editor.getInstance().getSelectionShape();
+
+        if(s.isOn()) {
+            javafx.scene.shape.Rectangle selectionFrame = new javafx.scene.shape.Rectangle(s.getWidth(), s.getHeight());
+            selectionFrame.setStroke(Color.DARKRED);
+            selectionFrame.setFill(Color.TRANSPARENT);
+            selectionFrame.setX(s.getPosition().x);
+            selectionFrame.setY(s.getPosition().y);
+
+            root.getChildren().add(selectionFrame);
+        }
+    }
+
+    ///////////////////////////
+    //     Create shapes     //
+    ///////////////////////////
+
+    private Object getShadowShape(Rectangle r) {
+        r = new Rectangle(r.getWidth(), r.getHeight(), r.getBorderRadius(), new Point2D(0, 0),
+                r.getColor(), r.getRotationCenter(), r.getRotation());
+
+        return new Group(ShapeBuilderJFx.createSceneRectangle(r));
+    }
+
+    private Object getShadowShape(Polygon p) {
+        p = new Polygon(p.getNbSides(), p.getSideLength(), new Point2D(0, 0),
+                p.getColor(), p.getRotationCenter(), p.getRotation());
+
+        return new Group(ShapeBuilderJFx.createScenePolygon(p));
+    }
+
+    private Object getShadowShape(ShapeGroup g) {
+        Group grp = new Group();
+
+        for (ShapeI shape: g.getChildren()) {
+            Group JFxGroup = (Group) getShadowShape(shape);
+            JFxGroup.setTranslateX(shape.getPosition().x - g.getPosition().x);
+            JFxGroup.setTranslateY(shape.getPosition().y - g.getPosition().y);
+            grp.getChildren().add(JFxGroup);
+        }
+
+        return grp;
     }
 }

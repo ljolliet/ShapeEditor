@@ -1,10 +1,10 @@
-package ui.javafx;
+package ui.component.javafx.layouts;
 
 import editor.utils.Point2D;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
-import ui.Component;
+import ui.component.Component;
 import ui.Mediator;
 
 public class WindowPaneJFx extends StackPane implements Component {

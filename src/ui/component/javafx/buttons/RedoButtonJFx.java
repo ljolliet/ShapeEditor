@@ -1,4 +1,4 @@
-package ui.javafx;
+package ui.component.javafx.buttons;
 
 public class RedoButtonJFx extends ButtonJFx {
 

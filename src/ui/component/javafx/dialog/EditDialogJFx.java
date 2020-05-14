@@ -1,4 +1,4 @@
-package ui.javafx;
+package ui.component.javafx.dialog;
 
 import editor.edition.GroupEditionDialog;
 import editor.edition.ShapeEditionDialog;
@@ -9,7 +9,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import ui.ApplicationI;
-import ui.DialogBox;
+import ui.component.DialogBox;
 import ui.Mediator;
 
 public class EditDialogJFx extends GridPane implements DialogBox {

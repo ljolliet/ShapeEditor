@@ -1,17 +1,17 @@
-package ui.javafx;
+package ui.component.javafx.area;
 
 import editor.core.Editor;
 import editor.shapes.ShapeI;
-import javafx.scene.Cursor;
-import javafx.scene.Group;
-import javafx.scene.Node;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import ui.ApplicationI;
-import ui.Component;
-import ui.DragAndDropArea;
+import ui.component.Component;
 import ui.Mediator;
+
+import static ui.ApplicationI.TOOLBAR_SPACING;
 
 public class ToolbarJFx extends GridPane implements Component {
 
@@ -21,6 +21,8 @@ public class ToolbarJFx extends GridPane implements Component {
         super();
         this.setOnDragDetected(this::onDragDetected);
         this.setOnMouseDragReleased(this::setOnMouseDragReleased);
+        this.setPadding(new Insets(TOOLBAR_SPACING));
+        this.setAlignment(Pos.BASELINE_CENTER);
     }
 
     private void onDragDetected(MouseEvent event) {

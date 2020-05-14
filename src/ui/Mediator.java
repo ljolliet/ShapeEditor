@@ -2,6 +2,7 @@ package ui;
 
 import editor.shapes.ShapeI;
 import editor.utils.Point2D;
+import ui.component.Component;
 
 import java.util.List;
 
@@ -37,8 +38,7 @@ public interface Mediator {
 
     // Shadow shape
     void moveShadowShape(Point2D coords);
-
     void clearShadowShape();
-    void clearEditorActions();
 
+    void clearEditorActions();
 }

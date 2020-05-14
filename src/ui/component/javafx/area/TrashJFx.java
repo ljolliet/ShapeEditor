@@ -1,11 +1,11 @@
-package ui.javafx;
+package ui.component.javafx.area;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import ui.ApplicationI;
-import ui.Component;
+import ui.component.Component;
 import ui.Mediator;
 
 public class TrashJFx extends ImageView implements Component {

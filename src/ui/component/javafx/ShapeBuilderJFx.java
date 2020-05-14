@@ -1,4 +1,4 @@
-package ui.javafx;
+package ui.component.javafx;
 
 import editor.core.Editor;
 import editor.shapes.Polygon;

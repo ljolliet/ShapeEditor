@@ -1,9 +1,9 @@
-package ui.javafx;
+package ui.component.javafx.buttons;
 
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import ui.Button;
+import ui.component.Button;
 import ui.Mediator;
 
 import static ui.ApplicationI.OPTION_HEIGHT;
