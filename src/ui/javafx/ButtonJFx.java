@@ -10,7 +10,7 @@ import static ui.ApplicationI.OPTION_HEIGHT;
 
 
 public abstract class ButtonJFx extends javafx.scene.control.Button implements Button {
-    Mediator mediator;
+    public Mediator mediator;
 
     public ButtonJFx(String s, String imageSrc) {
         super(s);

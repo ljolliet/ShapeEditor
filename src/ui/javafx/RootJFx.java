@@ -10,6 +10,7 @@ import ui.Component;
 import ui.Mediator;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RootJFx extends Group implements Component {
 
@@ -69,13 +70,16 @@ public class RootJFx extends Group implements Component {
         }
         // Right click
         else if (event.getButton() == MouseButton.SECONDARY) {
-            if (Editor.getInstance().getScene().getSelectedShapes().size() > 1) {
-                // TODO : not a group but a list of shape
-                // mediator.showGroupEditionDialog(new Point2D(event.getScreenX(), event.getScreenY()));
+            // Click on a selection
+            List<ShapeI> shapes = Editor.getInstance().getScene().getSelectedShapes();
+            if (shapes.size() > 1) {
+                mediator.showContextMenu(shapes, new Point2D(event.getScreenX(), event.getScreenY()));
+                    //TODO : not a group but a list of shape //mediator.showGroupEditionDialog(new Point2D(event.getScreenX(), event.getScreenY()))
             }
             else if (shape != null) {
                 mediator.selectShape(shape);
                 mediator.showEditionDialog(shape, new Point2D(event.getScreenX(), event.getScreenY()));
+
             }
         }
     }
@@ -104,18 +108,20 @@ public class RootJFx extends Group implements Component {
 
     private void onMouseReleased(MouseEvent event) {
         // If there is a selection action
-        if (Editor.getInstance().getSelectionShape().isOn()) {
-            ArrayList<ShapeI> selectedShapes = new ArrayList<>();
+        if (event.getButton() == MouseButton.PRIMARY) {
+            if (Editor.getInstance().getSelectionShape().isOn()) {
+                ArrayList<ShapeI> selectedShapes = new ArrayList<>();
 
-            // Add all selected shapes in array
-            for (ShapeI shape : Editor.getInstance().getScene().getShapes())
-                if (shape.contained(Editor.getInstance().getSelectionShape()))
-                    selectedShapes.add(shape);
-            mediator.stopSelection(selectedShapes);
+                // Add all selected shapes in array
+                for (ShapeI shape : Editor.getInstance().getScene().getShapes())
+                    if (shape.contained(Editor.getInstance().getSelectionShape()))
+                        selectedShapes.add(shape);
+                mediator.stopSelection(selectedShapes);
+            }
+
+            Editor.getInstance().setShapeDragged(null);
+            Editor.getInstance().getRendering().drawEditor();
         }
-
-        Editor.getInstance().setShapeDragged(null);
-        Editor.getInstance().getRendering().drawEditor();
     }
 
     @Override

@@ -2,6 +2,7 @@ package editor.edition;
 
 import editor.shapes.Polygon;
 import editor.utils.Point2D;
+import javafx.scene.control.ContextMenu;
 import ui.Rendering;
 
 public class PolygonEditionDialog extends ShapeEditionDialog {
@@ -27,6 +28,11 @@ public class PolygonEditionDialog extends ShapeEditionDialog {
 
     public Polygon getTarget() {
         return (Polygon)super.getTarget();
+    }
+
+    @Override
+    public void setEditionDialog(ContextMenu contextMenu) {
+
     }
 
 }

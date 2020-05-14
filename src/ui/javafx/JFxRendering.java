@@ -1,6 +1,7 @@
 package ui.javafx;
 
 import editor.core.Editor;
+import editor.edition.*;
 import editor.edition.EditionDialogI;
 import editor.edition.PolygonEditionDialog;
 import editor.edition.RectangleEditionDialog;
@@ -16,7 +17,6 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
@@ -43,10 +43,28 @@ public class JFxRendering implements Rendering {
     private WindowPaneJFx windowPane;
 
     /* Edition */
+    private EditionDialogI dialogED;
     private ContextMenu contextMenu;
     private Stage editStage;
-    private GridPane editGridPane;
     private Scene editScene;
+
+    private EditDialogJFx editDialog;
+
+    private ColorPickerJFx colorPicker;
+    private PosXSpinnerJFx posXSpinner;
+    private PosYSpinnerJFx posYSpinner;
+    private RotationSpinnerJFx rotationSpinner;
+
+    private WidthSpinnerJFx widthSpinner;
+    private HeightSpinnerJFx heightSpinner;
+    private BorderRadiusSpinnerJFx borderRadiusSpinner;
+
+    private SideLenghtSpinnexJFx sideLenghtSpinner;
+    private NbSideSpinnerJFx nbSideSpinner;
+
+    private CancelButtonJFx cancelButton;
+    private OkButtonJFx okButton;
+    private ApplyButtonJFx applyButton;
 
     /* Drag & drop */
     private boolean fromToolbar;
@@ -70,9 +88,26 @@ public class JFxRendering implements Rendering {
 
     private void initEdition() {
         this.contextMenu = new ContextMenu();
-        this.editGridPane = new GridPane();
         this.editStage = new Stage();
-        this.editScene = new Scene(editGridPane);
+
+        this.editDialog = new EditDialogJFx();
+        this.editScene = new Scene(editDialog);
+
+        this.posXSpinner = new PosXSpinnerJFx();
+        this.posYSpinner = new PosYSpinnerJFx();
+        this.colorPicker = new ColorPickerJFx();
+        this.rotationSpinner = new RotationSpinnerJFx();
+
+        this.widthSpinner = new WidthSpinnerJFx();
+        this.heightSpinner = new HeightSpinnerJFx();
+        this.borderRadiusSpinner = new BorderRadiusSpinnerJFx();
+
+        this.sideLenghtSpinner = new SideLenghtSpinnexJFx();
+        this.nbSideSpinner = new NbSideSpinnerJFx();
+
+        this.cancelButton = new CancelButtonJFx();
+        this.okButton = new OkButtonJFx();
+        this.applyButton = new ApplyButtonJFx();
     }
 
     private void initShadowShape() {
@@ -177,24 +212,28 @@ public class JFxRendering implements Rendering {
         addPositionToGridPane(shapeED);
         addRotationToGridPane(shapeED);
     }
+
     @Override
     public void setEditionDialog(RectangleEditionDialog recED) {
+        contextMenu.getItems().clear();
+        addEditToDialog(recED);
         addWidthToGridPane(recED);
         addHeightToGridPane(recED);
         addBorderRadiusGridPane(recED);
-        addEditToDialog(recED);
     }
 
     @Override
     public void setEditionDialog(PolygonEditionDialog polED) {
+        contextMenu.getItems().clear();
+        addEditToDialog(polED);
         addSideLenghtGridPane(polED);
         addNbSideGridPane(polED);
-        addEditToDialog(polED);
     }
 
     @Override
-    public void setEditionDialog(ShapeGroup polED) {
-
+    public void setEditionDialog(GroupeEditionDialog groupED) {
+        contextMenu.getItems().clear();
+        addEditToDialog(groupED);
     }
 
     @Override
@@ -208,66 +247,40 @@ public class JFxRendering implements Rendering {
     }
 
     private void addEditToDialog(RectangleEditionDialog recED){
-        contextMenu.getItems().clear();
         final MenuItem edit = new MenuItem("Edit");
         edit.setOnAction(event -> setRectangleDialog(recED));
         contextMenu.getItems().add(edit);
     }
 
-    private void addGroupToDialog(){
-        contextMenu.getItems().clear();
-        MenuItem groupShape = new MenuItem("Group");
-        Editor editor = Editor.getInstance();
-        groupShape.setOnAction(e -> {
-            Shape group = new ShapeGroup();
-            for(ShapeI s : editor.getScene().getSelectedShapes()){
-                group.addShape(s);
-                editor.removeShapeFromScene((Shape) s);
-            }
-            editor.addShapeToScene(group);
-        });
-        contextMenu.getItems().add(groupShape);
-
-    }
-
     private void addEditToDialog(PolygonEditionDialog polED){
-        contextMenu.getItems().clear();
         final MenuItem edit = new MenuItem("Edit");
         edit.setOnAction(event -> setPolygonDialog(polED));
         contextMenu.getItems().add(edit);
     }
 
+    private void addEditToDialog(GroupeEditionDialog groupED){
+        final MenuItem edit = new MenuItem("Edit");
+        edit.setOnAction(event -> setGroupDialog(groupED));
+        contextMenu.getItems().add(edit);
+    }
+
     private void setGridPane(ShapeEditionDialog shapeED){
         //Setting size for the pane
-        editGridPane.setMinSize(500, 200);
+        editDialog.setMinSize(500, 200);
         //Setting the padding
-        editGridPane.setPadding(new Insets(10, 10, 10, 10));
+        editDialog.setPadding(new Insets(10, 10, 10, 10));
         //Setting the vertical and horizontal gaps between the columns
-        editGridPane.setVgap(5);
-        editGridPane.setHgap(5);
+        editDialog.setVgap(5);
+        editDialog.setHgap(5);
 
-        Button buttonOK = new Button("OK");
-        buttonOK.setOnAction(actionEvent -> {
-            shapeED.applyEdition();
-            editStage.close();
-        });
-        Button buttonApply = new Button("Apply");
-        buttonApply.setOnAction(actionEvent -> {
-            shapeED.applyEdition();
-        });
-        Button buttonCancel = new Button("Cancel");
-        buttonCancel.setOnAction(actionEvent -> {
-            editStage.close();
-        });
-
-        editGridPane.add(buttonOK, 2, 6);
-        editGridPane.add(buttonApply, 3, 6);
-        editGridPane.add(buttonCancel, 4, 6);
+        editDialog.add(okButton, 2, 6);
+        editDialog.add(applyButton, 3, 6);
+        editDialog.add(cancelButton, 4, 6);
     }
 
     @Override
     public void setRectangleDialog(RectangleEditionDialog recED){
-        editGridPane.getChildren().clear();
+        editDialog.getChildren().clear();
         setGridPane(recED);
         setEditionDialog((ShapeEditionDialog)recED);
         setEditionDialog(recED);
@@ -280,7 +293,7 @@ public class JFxRendering implements Rendering {
 
     @Override
     public void setPolygonDialog(PolygonEditionDialog polED){
-        editGridPane.getChildren().clear();
+        editDialog.getChildren().clear();
         setGridPane(polED);
         setEditionDialog((ShapeEditionDialog)polED);
         setEditionDialog(polED);
@@ -291,65 +304,73 @@ public class JFxRendering implements Rendering {
         editStage.showAndWait();
     }
 
-    @Override
-    public void showGroupDialog(Point2D position) {
-        addGroupToDialog();
-        this.showEditionDialog(position);
+
+    public void setGroupDialog(GroupeEditionDialog groupED) {
+        editDialog.getChildren().clear();
+        setGridPane((groupED));
+        setEditionDialog((ShapeEditionDialog) groupED);
+        setEditionDialog((groupED));
+
+        //Show gridpane
+        editStage.setTitle("Group Edition");
+        editStage.setScene(editScene);
+        editStage.showAndWait();
     }
 
     ///////////////////////////
     //         Shape         //
     ///////////////////////////
     private void addColorToGridPane(ShapeEditionDialog shapeED) {
-        final editor.utils.Color originalColor = shapeED.getTarget().getColor();
-        final ColorPicker colorPicker = new ColorPicker(Color.rgb(originalColor.r, originalColor.g, originalColor.b));
+        final editor.utils.Color originalColor;
+        if(shapeED instanceof GroupeEditionDialog)
+            originalColor = new editor.utils.Color(0,0,0,0);
+        else
+            originalColor = shapeED.getTarget().getColor();
+        colorPicker.setValue(Color.rgb(originalColor.r, originalColor.g, originalColor.b));
         colorPicker.setOnAction(event -> {
             editor.utils.Color c = colorFromJFxColor(colorPicker.getValue());
             shapeED.color = c;
         });
         final Label label = new Label("Color");
-        editGridPane.add(label, 0, 0);
-        editGridPane.add(colorPicker, 1, 0);
+        editDialog.add(label, 0, 0);
+        editDialog.add(colorPicker, 1, 0);
     }
 
     private void addPositionToGridPane(ShapeEditionDialog shapeED) {
-        final Spinner<Double> spinnerX = new Spinner<>();
-        spinnerX.setMaxWidth(75);
-        spinnerX.setEditable(true);
+        posXSpinner.setMaxWidth(75);
+        posXSpinner.setEditable(true);
         final double initialValueX = shapeED.getTarget().getPosition().x;
         final double maxValueX = ApplicationI.SCENE_WIDTH;
-        spinnerX.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0., maxValueX, initialValueX));
-        spinnerX.valueProperty().addListener((obs, oldValue, newValue) ->
+        posXSpinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0., maxValueX, initialValueX));
+        posXSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
                 shapeED.posX = newValue);
 
-        final Spinner<Double> spinnerY = new Spinner<>();
-        spinnerY.setMaxWidth(75);
-        spinnerY.setEditable(true);
+        posYSpinner.setMaxWidth(75);
+        posYSpinner.setEditable(true);
         final double initialValueY = shapeED.getTarget().getPosition().y;
         final double maxValueY = ApplicationI.SCENE_WIDTH;
-        spinnerY.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0., maxValueY, initialValueY));
-        spinnerX.valueProperty().addListener((obs, oldValue, newValue) ->
+        posYSpinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0., maxValueY, initialValueY));
+        posYSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
                 shapeED.posY = newValue);
 
         HBox h = new HBox();
         h.setSpacing(10.);
-        h.getChildren().addAll(spinnerX, spinnerY);
+        h.getChildren().addAll(posXSpinner, posYSpinner);
         final Label label = new Label("Position");
-        editGridPane.add(label, 0, 1);
-        editGridPane.add(h, 1, 1);
+        editDialog.add(label, 0, 1);
+        editDialog.add(h, 1, 1);
 
     }
 
     private void addRotationToGridPane(ShapeEditionDialog shapeED) {
-        final Spinner<Double> spinner = new Spinner<>();
-        spinner.setEditable(true);
+        rotationSpinner.setEditable(true);
         final double initialValue = shapeED.getTarget().getRotation();
-        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(Shape.MIN_ROTATION, Shape.MAX_ROTATION, initialValue));
-        spinner.valueProperty().addListener((obs, oldValue, newValue) ->
+        rotationSpinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(Shape.MIN_ROTATION, Shape.MAX_ROTATION, initialValue));
+        rotationSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
                 shapeED.rotation = newValue);
         final Label label = new Label("Rotation");
-        editGridPane.add(label, 0, 2);
-        editGridPane.add(spinner, 1, 2);
+        editDialog.add(label, 0, 2);
+        editDialog.add(rotationSpinner, 1, 2);
     }
 
     ///////////////////////////
@@ -357,41 +378,38 @@ public class JFxRendering implements Rendering {
     ///////////////////////////
 
     private void addWidthToGridPane(RectangleEditionDialog recED) {
-        final Spinner<Double> spinner = new Spinner<>();
-        spinner.setEditable(true);
+        widthSpinner.setEditable(true);
         final double initialValue = recED.getTarget().getWidth();
         final double maxValue = ApplicationI.SCENE_WIDTH - recED.getTarget().getPosition().x;
-        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(ShapeI.MIN_SIZE, maxValue, initialValue));
-        spinner.valueProperty().addListener((obs, oldValue, newValue) ->
+        widthSpinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(ShapeI.MIN_SIZE, maxValue, initialValue));
+        widthSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
                 recED.width = newValue);
         final Label label = new Label("Width");
-        editGridPane.add(label, 0, 3);
-        editGridPane.add(spinner, 1, 3);
+        editDialog.add(label, 0, 3);
+        editDialog.add(widthSpinner, 1, 3);
     }
 
     private void addHeightToGridPane(RectangleEditionDialog recED){
-        final Spinner<Double> spinner = new Spinner<>();
-        spinner.setEditable(true);
+        heightSpinner.setEditable(true);
         final double initialValue = recED.getTarget().getHeight();
         final double maxValue = ApplicationI.SCENE_HEIGHT - recED.getTarget().getPosition().y;
-        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(ShapeI.MIN_SIZE, maxValue, initialValue));
-        spinner.valueProperty().addListener((obs, oldValue, newValue) ->
+        heightSpinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(ShapeI.MIN_SIZE, maxValue, initialValue));
+        heightSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
                 recED.height = newValue);
         final Label label = new Label("Height");
-        editGridPane.add(label, 0, 4);
-        editGridPane.add(spinner, 1, 4);
+        editDialog.add(label, 0, 4);
+        editDialog.add(heightSpinner, 1, 4);
     }
 
     private void addBorderRadiusGridPane(RectangleEditionDialog recED) {
-        final Spinner<Integer> spinner = new Spinner<>();
-        spinner.setEditable(true);
+        borderRadiusSpinner.setEditable(true);
         final int initialValue = recED.getTarget().getBorderRadius();
-        spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(ShapeI.MIN_RADIUS, ShapeI.MAX_RADIUS, initialValue));
-        spinner.valueProperty().addListener((obs, oldValue, newValue) ->
+        borderRadiusSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(ShapeI.MIN_RADIUS, ShapeI.MAX_RADIUS, initialValue));
+        borderRadiusSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
                 recED.borderRadius = newValue);
         final Label label = new Label("Border Radius");
-        editGridPane.add(label, 0, 5);
-        editGridPane.add(spinner,1, 5);
+        editDialog.add(label, 0, 5);
+        editDialog.add(borderRadiusSpinner,1, 5);
     }
 
     ///////////////////////////
@@ -399,27 +417,25 @@ public class JFxRendering implements Rendering {
     ///////////////////////////
 
     private void addSideLenghtGridPane(PolygonEditionDialog polED) {
-        final Spinner<Double> spinner = new Spinner<>();
-        spinner.setEditable(true);
+        sideLenghtSpinner.setEditable(true);
         final double initialValue = polED.getTarget().getSideLength();
-        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(Shape.MIN_RADIUS, Shape.MAX_RADIUS, initialValue));
-        spinner.valueProperty().addListener((obs, oldValue, newValue) ->
+        sideLenghtSpinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(Shape.MIN_RADIUS, Shape.MAX_RADIUS, initialValue));
+        sideLenghtSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
                 polED.sideLength = newValue);
         final Label label = new Label("Side length");
-        editGridPane.add(label, 0, 3);
-        editGridPane.add(spinner,1, 3);
+        editDialog.add(label, 0, 3);
+        editDialog.add(sideLenghtSpinner,1, 3);
     }
 
     private void addNbSideGridPane(PolygonEditionDialog polED){
-        final Spinner<Integer> spinner = new Spinner<>();
-        spinner.setEditable(true);
+        nbSideSpinner.setEditable(true);
         final int initialValue = polED.getTarget().getNbSides();
-        spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(Shape.MIN_RADIUS, Shape.MAX_RADIUS, initialValue));
-        spinner.valueProperty().addListener((obs, oldValue, newValue) ->
+        nbSideSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(Shape.MIN_RADIUS, Shape.MAX_RADIUS, initialValue));
+        nbSideSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
                 polED.nbSides = newValue);
         final Label label = new Label("Sides number");
-        editGridPane.add(label, 0, 4);
-        editGridPane.add(spinner,1, 4);
+        editDialog.add(label, 0, 4);
+        editDialog.add(nbSideSpinner,1, 4);
     }
 
     private editor.utils.Color colorFromJFxColor(Color value) {
@@ -474,6 +490,8 @@ public class JFxRendering implements Rendering {
                 windowPane = (WindowPaneJFx) component;
                 this.initShadowShape();
                 break;
+            case "editDialog":
+                editDialog = (EditDialogJFx) component;
         }
     }
 
@@ -650,17 +668,46 @@ public class JFxRendering implements Rendering {
     @Override
     public void showEditionDialog(ShapeI shape, Point2D coords) {
         // Create edition dialog
-        EditionDialogI ed = shape.createEditionDialog();
-        ed.setPosition(coords);
+        dialogED = shape.createEditionDialog();
+        this.registerComponent(posXSpinner);
+        this.registerComponent(posYSpinner);
+        this.registerComponent(colorPicker);
+        this.registerComponent(rotationSpinner);
+
+        this.registerComponent(widthSpinner);
+        this.registerComponent(heightSpinner);
+        this.registerComponent(borderRadiusSpinner);
+
+        this.registerComponent(sideLenghtSpinner);
+        this.registerComponent(nbSideSpinner);
+
+        this.registerComponent(applyButton);
+        this.registerComponent(okButton);
+        this.registerComponent(cancelButton);
+
+        dialogED.setPosition(coords);
         // Draw it
-        ed.draw(this);
+        dialogED.draw(this);
     }
 
     @Override
-    public void showGroupEditionDialog(Point2D point) {
-        // TODO
+    public void showContextMenu(List<ShapeI> shapes, Point2D coords) {
+        contextMenu.getItems().clear();
+        final MenuItem group = new MenuItem("Group");
+        group.setOnAction(event -> createGroup(shapes));
+        contextMenu.getItems().add(group);
+        this.showEditionDialog(coords);
     }
 
+    private void createGroup(List<ShapeI> shapes){
+        ShapeGroup group = new ShapeGroup();
+        for(ShapeI s : shapes){
+            Editor.getInstance().getScene().getSelectedShapes().remove(s);
+            Editor.getInstance().getScene().removeShape((Shape) s);
+            group.addShape(s);
+        }
+        Editor.getInstance().getScene().addShape(group);
+    }
     @Override
     public void moveShadowShape(Point2D coords) {
         if (shadowShape != null) {
@@ -690,5 +737,21 @@ public class JFxRendering implements Rendering {
         //setSelectedShapes(new ArrayList<>());
 
         hideEditionDialog();
+    }
+
+    @Override
+    public void cancelEdit() {
+        editStage.close();
+    }
+
+    @Override
+    public void applyEdit() {
+        dialogED.applyEdition();
+    }
+
+    @Override
+    public void applyAndQuitEdit() {
+        dialogED.applyEdition();
+        editStage.close();
     }
 }

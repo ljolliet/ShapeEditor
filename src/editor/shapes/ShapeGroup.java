@@ -20,6 +20,12 @@ public class ShapeGroup extends Shape {
         shapes = new HashSet<>();
     }
 
+    public ShapeGroup(List<ShapeI> shapes){
+        for(ShapeI s : shapes)
+            this.shapes.add(s);
+    }
+
+
     @Override
     public void addShape(ShapeI s) {
         shapes.add(s);
@@ -157,10 +163,13 @@ public class ShapeGroup extends Shape {
         notifyObservers();
     }
 
-    /*@Override
+    @Override
     public void setAllValues(Point2D position, Color color, double rotation) {
-        //TODO
-    }*/
+        this.setPosition(position);
+        this.setColor(color);
+        this.setRotation(rotation);
+    }
+
 
     @Override
     public Point2D getPosition() {

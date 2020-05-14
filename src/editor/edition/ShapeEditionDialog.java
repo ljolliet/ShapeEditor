@@ -3,6 +3,7 @@ package editor.edition;
 import editor.shapes.ShapeI;
 import editor.utils.Color;
 import editor.utils.Point2D;
+import javafx.scene.control.ContextMenu;
 import ui.Rendering;
 
 public class ShapeEditionDialog implements  EditionDialogI{
@@ -43,7 +44,7 @@ public class ShapeEditionDialog implements  EditionDialogI{
 
     @Override
     public void applyEdition() {
-        //TODO
+        this.getTarget().setAllValues(new Point2D(posX, posY), color, rotation);
     }
 
     public void setColor(Color c){
@@ -62,5 +63,11 @@ public class ShapeEditionDialog implements  EditionDialogI{
     public void setPositionY(double y){
         double x = this.target.getPosition().x;
         this.target.setPosition(new Point2D(x, y));
+    }
+
+    @Override
+    public void setEditionDialog(ContextMenu contextMenu) {
+
+
     }
 }

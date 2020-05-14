@@ -1,5 +1,6 @@
 package ui;
 
+import editor.edition.GroupeEditionDialog;
 import editor.shapes.Polygon;
 import editor.shapes.Rectangle;
 import editor.shapes.ShapeGroup;
@@ -23,15 +24,15 @@ public interface Rendering extends Mediator {
     Object getShadowShape(ShapeI shape);
 
     void setEditionDialog(ShapeEditionDialog shapeED);
-    void setEditionDialog(ShapeGroup polED);
+    void setEditionDialog(GroupeEditionDialog groupED);
     void setEditionDialog(PolygonEditionDialog polED);
     void setEditionDialog(RectangleEditionDialog recED);
 
     void showEditionDialog(Point2D position);
-    void showGroupDialog(Point2D position);
     void hideEditionDialog();
 
     void setRectangleDialog(RectangleEditionDialog recED);
     void setPolygonDialog(PolygonEditionDialog polED);
+
 
 }
