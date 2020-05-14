@@ -3,13 +3,8 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import ui.ApplicationI;
 import ui.component.javafx.RenderingJFx;
-import ui.component.javafx.area.RootJFx;
-import ui.component.javafx.area.ToolbarJFx;
-import ui.component.javafx.area.TrashJFx;
-import ui.component.javafx.buttons.OpenButtonJFx;
-import ui.component.javafx.buttons.RedoButtonJFx;
-import ui.component.javafx.buttons.SaveButtonJFx;
-import ui.component.javafx.buttons.UndoButtonJFx;
+import ui.component.javafx.area.*;
+import ui.component.javafx.buttons.*;
 import ui.component.javafx.layouts.EditorLayoutJFx;
 import ui.component.javafx.layouts.OptionLayoutJFx;
 import ui.component.javafx.layouts.ToolbarRootJFx;
@@ -58,20 +53,15 @@ public class JavaFXApp extends Application implements ApplicationI {
 
         // Editor layout
         rendering.registerComponent(new EditorLayoutJFx());
-
-        //Toolbar root
+        //Toolbar
         rendering.registerComponent(new ToolbarRootJFx());
-        // Toolbar
         rendering.registerComponent(new ToolbarJFx());
-        // Trash
         rendering.registerComponent(new TrashJFx());
 
-        // Scene layout
-        rendering.registerComponent(new RootJFx());
+        // Scene
+        rendering.registerComponent(new SceneJFx());
 
-        // Draw editor
         rendering.drawEditor();
-
         primaryStage.show();
     }
 

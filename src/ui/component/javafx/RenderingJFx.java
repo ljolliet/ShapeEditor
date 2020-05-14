@@ -23,7 +23,7 @@ import javafx.stage.Stage;
 import ui.ApplicationI;
 import ui.component.Component;
 import ui.Rendering;
-import ui.component.javafx.area.RootJFx;
+import ui.component.javafx.area.SceneJFx;
 import ui.component.javafx.area.ToolbarJFx;
 import ui.component.javafx.area.TrashJFx;
 import ui.component.javafx.buttons.ButtonJFx;
@@ -48,7 +48,7 @@ public class RenderingJFx implements Rendering {
     private int toolbarRowCount;
     private RowConstraints rowConstraints;
 
-    private RootJFx root;
+    private SceneJFx root;
 
     private WindowPaneJFx windowPane;
 
@@ -99,7 +99,7 @@ public class RenderingJFx implements Rendering {
                 this.toolbarRoot.setTrashBottom((TrashJFx)component);
                 break;
             case "Root":
-                root = (RootJFx) component;
+                root = (SceneJFx) component;
                 editorLayout.getChildren().add(root);
                 Canvas canvas = new Canvas();
                 canvas.setWidth(SCENE_WIDTH);

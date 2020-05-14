@@ -12,11 +12,11 @@ import ui.Mediator;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RootJFx extends Group implements Component {
+public class SceneJFx extends Group implements Component {
 
     private Mediator mediator;
 
-    public RootJFx(){
+    public SceneJFx(){
         super();
         this.setOnMousePressed(this::onMousePressed);
         this.setOnDragDetected(this::onDragDetected);
