@@ -36,7 +36,7 @@ public class JSONExportVisitor implements EditorVisitor, ExportManager {
         sb.append(START_SYMBOL);
         this.addField(TOOLBAR_TOKEN);
         sb.append(ARRAY_START_SYMBOL);
-        for(ShapeI s : toolbar.getShapes()) {
+        for(Shape s : toolbar.getShapes()) {
             if(!start)
                 sb.append(SEPARATOR_TOKEN);
             else
@@ -57,7 +57,7 @@ public class JSONExportVisitor implements EditorVisitor, ExportManager {
         sb.append(START_SYMBOL);
         this.addField(SCENE_TOKEN);
         sb.append(ARRAY_START_SYMBOL);
-        for(ShapeI s : scene.getShapes()) {
+        for(Shape s : scene.getShapes()) {
             if(!start)
                 sb.append(SEPARATOR_TOKEN);
             else
@@ -75,7 +75,7 @@ public class JSONExportVisitor implements EditorVisitor, ExportManager {
         sb.append(START_SYMBOL);
         this.addField(GROUP_TOKEN);
         sb.append(ARRAY_START_SYMBOL);
-        for(ShapeI s : g.getChildren()) {
+        for(Shape s : g.getChildren()) {
             if(!start)
                 sb.append(SEPARATOR_TOKEN);
             else

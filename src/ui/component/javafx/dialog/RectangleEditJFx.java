@@ -1,7 +1,7 @@
 package ui.component.javafx.dialog;
 
 import editor.edition.RectangleEditionDialog;
-import editor.shapes.ShapeI;
+import editor.shapes.Shape;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -23,7 +23,7 @@ public class RectangleEditJFx extends EditDialogJFx {
         widthSpinner.setEditable(true);
         final double initialValue = recED.getTarget().getWidth();
         final double maxValue = ApplicationI.SCENE_WIDTH - recED.getTarget().getPosition().x;
-        widthSpinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(ShapeI.MIN_SIZE, maxValue, initialValue));
+        widthSpinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(Shape.MIN_SIZE, maxValue, initialValue));
         widthSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
                 recED.width = newValue);
         final Label label = new Label("Width");
@@ -36,7 +36,7 @@ public class RectangleEditJFx extends EditDialogJFx {
         heightSpinner.setEditable(true);
         final double initialValue = recED.getTarget().getHeight();
         final double maxValue = ApplicationI.SCENE_HEIGHT - recED.getTarget().getPosition().y;
-        heightSpinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(ShapeI.MIN_SIZE, maxValue, initialValue));
+        heightSpinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(Shape.MIN_SIZE, maxValue, initialValue));
         heightSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
                 recED.height = newValue);
         final Label label = new Label("Height");
@@ -48,7 +48,7 @@ public class RectangleEditJFx extends EditDialogJFx {
         Spinner<Integer> borderRadiusSpinner = new Spinner<>();
         borderRadiusSpinner.setEditable(true);
         final int initialValue = recED.getTarget().getBorderRadius();
-        borderRadiusSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(ShapeI.MIN_RADIUS, ShapeI.MAX_RADIUS, initialValue));
+        borderRadiusSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(Shape.MIN_RADIUS, Shape.MAX_RADIUS, initialValue));
         borderRadiusSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
                 recED.borderRadius = newValue);
         final Label label = new Label("Border Radius");

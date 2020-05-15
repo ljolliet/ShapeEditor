@@ -60,7 +60,7 @@ public class IOTests {
         Editor e = Editor.getInstance();
         File f = new File(".test.json");
         //Scene
-        e.getScene().addShape((Shape) ShapeFactory.makeHexagon());
+        e.getScene().addShape(ShapeFactory.makeHexagon());
         List<Shape> shapesBeforeSave = e.getScene().getShapes();
         e.saveScene(f);
         e.getScene().setShapes(new ArrayList<>()); // erase data in scene
@@ -89,7 +89,7 @@ public class IOTests {
         File f = new File(".test.json");
         //toolbar
         e.getToolbar().addShape(ShapeFactory.makeRectangle());
-        List<ShapeI> toolbarBefore = e.getToolbar().getShapes();
+        List<Shape> toolbarBefore = e.getToolbar().getShapes();
         //save
         ExportManager exportManager = e.getExportVisitor();
         exportManager.saveToolbar(f);
@@ -103,8 +103,8 @@ public class IOTests {
 
         // cannot check if shapes are equals because save/load change the identity
         int lastShape = toolbarBefore.size()-1;
-        ShapeI shapeBefore = toolbarBefore.get(lastShape);
-        ShapeI shapeAfter =  e.getToolbar().getShapes().get(lastShape);
+        Shape shapeBefore = toolbarBefore.get(lastShape);
+        Shape shapeAfter =  e.getToolbar().getShapes().get(lastShape);
         assert shapeAfter instanceof Rectangle;
         assert shapeBefore instanceof Rectangle;
         assertEquals(shapeAfter.getPosition(), shapeBefore.getPosition());
@@ -137,7 +137,7 @@ public class IOTests {
         e.getToolbar().checkInitialised();
         assertEquals(2, e.getToolbar().getShapes().size());
         boolean containsPolygon = false, containsRectangle = false;
-        for(ShapeI s : e.getToolbar().getShapes()) {
+        for(Shape s : e.getToolbar().getShapes()) {
             if (s instanceof Polygon)
                 containsPolygon = true;
             else if (s instanceof Rectangle)

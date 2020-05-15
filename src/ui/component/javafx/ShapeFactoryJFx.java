@@ -4,7 +4,7 @@ import editor.core.Editor;
 import editor.shapes.Polygon;
 import editor.shapes.Rectangle;
 import editor.shapes.ShapeGroup;
-import editor.shapes.ShapeI;
+import editor.shapes.Shape;
 import editor.utils.Point2D;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
@@ -25,7 +25,7 @@ public class ShapeFactoryJFx {
         rectangle.setFill(color);
 
         // Add stroke if selected
-        for(ShapeI s : editor.getScene().getSelectedShapes()){
+        for(Shape s : editor.getScene().getSelectedShapes()){
             if(s.equals(r) || s.containsChild(r)){
                 rectangle.setStroke(color.darker());
             }
@@ -70,7 +70,7 @@ public class ShapeFactoryJFx {
         polygon.setFill(color);
 
         // Add stroke if selected
-        for(ShapeI s : editor.getScene().getSelectedShapes()){
+        for(Shape s : editor.getScene().getSelectedShapes()){
             if(s.equals(p) || s.containsChild(p)){
                 polygon.setStroke(color.darker());
             }
@@ -147,7 +147,7 @@ public class ShapeFactoryJFx {
     public static Group createToolbarGroup(ShapeGroup group, double ratio) {
         Group jfxGroup = new Group();
 
-        for (ShapeI shape: group.getChildren()) {
+        for (Shape shape: group.getChildren()) {
             Group jfxShape = new Group();
             boolean isGroup = false;
 

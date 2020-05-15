@@ -1,6 +1,6 @@
 package editor.edition;
 
-import editor.shapes.ShapeI;
+import editor.shapes.Shape;
 import editor.utils.Color;
 import editor.utils.Point2D;
 import javafx.scene.control.ContextMenu;
@@ -12,9 +12,9 @@ public class ShapeEditionDialog implements  EditionDialogI{
     public double posY;
     public Color color;
     public double rotation;
-    private final ShapeI target;
+    private final Shape target;
 
-    public ShapeEditionDialog(ShapeI shape) {
+    public ShapeEditionDialog(Shape shape) {
         this.target = shape;
         this.posX = shape.getPosition().x;
         this.posY = shape.getPosition().y;
@@ -38,7 +38,7 @@ public class ShapeEditionDialog implements  EditionDialogI{
     }
 
     @Override
-    public ShapeI getTarget(){
+    public Shape getTarget(){
         return this.target;
     }
 

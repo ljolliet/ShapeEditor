@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Toolbar {
 
-    List<ShapeI> shapes;
+    List<Shape> shapes;
 
     public Toolbar() {
         this.shapes = new ArrayList<>();
@@ -28,23 +28,23 @@ public class Toolbar {
         addShape(group2);
     }
 
-    public void addShape(ShapeI shape) {
+    public void addShape(Shape shape) {
         shapes.add(shape);
     }
 
-    public void removeShape(ShapeI shape) {
+    public void removeShape(Shape shape) {
         shapes.remove(shape);
     }
 
-    public List<ShapeI> getShapes() {
+    public List<Shape> getShapes() {
         return shapes;
     }
 
-    public void setShapes(List<ShapeI> shapes) {
+    public void setShapes(List<Shape> shapes) {
         this.shapes = shapes;
     }
 
-    public boolean contains(ShapeI shape) {
+    public boolean contains(Shape shape) {
         return this.shapes.contains(shape);
     }
 
@@ -54,7 +54,7 @@ public class Toolbar {
 
     public void checkInitialised() {
         boolean containsRectangle = false, containsPolygon = false;
-        for(ShapeI s: shapes)
+        for(Shape s: shapes)
             if(s instanceof Rectangle)
                 containsRectangle = true;
             else if(s instanceof Polygon)

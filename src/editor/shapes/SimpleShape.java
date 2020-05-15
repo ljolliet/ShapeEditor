@@ -1,16 +1,20 @@
 package editor.shapes;
 
+import editor.observer.Observer;
 import editor.utils.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
-public abstract class SimpleShape extends Shape {
+public abstract class SimpleShape implements Shape {
     private Point2D position;
 
     private Color color;
     private Point2D rotationCenter;
     private double rotation;
     private Vec2D translation;
+    private Set<Observer> observers = new HashSet();
+
 
     public SimpleShape(Point2D position, Color color, Point2D rotationCenter, double rotation) {
         this.position = position;
@@ -29,33 +33,40 @@ public abstract class SimpleShape extends Shape {
     }
 
     @Override
-    public Set<ShapeI> getChildren() {
+    public Set<Shape> getChildren() {
         return null;
     }
 
     @Override
-    public void setChildren(Set<ShapeI> shapes) {
+    public void setChildren(Set<Shape> shapes) {
         throw new ShapeException("A simple shape has no children");
     }
 
     @Override
-    public boolean containsChild(ShapeI s) {
+    public boolean containsChild(Shape s) {
         return false;
     }
 
     @Override
-    public void addShape(ShapeI s) {
+    public void addShape(Shape s) {
         throw new ShapeException("Cannot add a shape to a SimpleShape");
     }
 
     @Override
-    public void removeShape(ShapeI s) {
+    public void removeShape(Shape s) {
         throw new ShapeException("Cannot remove a shape to a SimpleShape");
     }
 
     @Override
-    public ShapeI clone() {
-        return super.clone();
+    public Shape clone() {
+        try {
+            Shape clone =  (Shape) super.clone();
+            clone.removeObservers();
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
@@ -127,5 +138,27 @@ public abstract class SimpleShape extends Shape {
         this.color = color;
         this.rotation = rotation;
         notifyObservers();
+    }
+
+    @Override
+    public void addObserver(Observer observer) {
+        this.observers.add(observer);
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+        this.observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers() {
+        Set<Observer> copy = new HashSet<>(this.observers);
+        for (Observer o : copy)
+            o.update();
+    }
+
+    @Override
+    public void removeObservers() {
+        this.observers = new HashSet<>();
     }
 }

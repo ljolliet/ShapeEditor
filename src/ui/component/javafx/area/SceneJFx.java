@@ -1,7 +1,7 @@
 package ui.component.javafx.area;
 
 import editor.core.Editor;
-import editor.shapes.ShapeI;
+import editor.shapes.Shape;
 import editor.utils.Point2D;
 import javafx.scene.Group;
 import javafx.scene.input.MouseButton;
@@ -28,11 +28,11 @@ public class SceneJFx extends Group implements DragAndDropArea {
     private void onMousePressed(MouseEvent event) {
         mediator.clearEditorActions();
 
-        ShapeI shape = null;
+        Shape shape = null;
         Point2D coords = new Point2D(event.getX(), event.getY());
 
         // Look if the mouse is on an existing shape
-        for (ShapeI s : Editor.getInstance().getScene().getShapes()) {
+        for (Shape s : Editor.getInstance().getScene().getShapes()) {
             if (s.contains(coords)) { // Found
                 shape = s;
                 break;
@@ -48,7 +48,7 @@ public class SceneJFx extends Group implements DragAndDropArea {
                     // Look if the clicked shape is contained
                     // into the selected shapes
                     boolean here = false;
-                    for (ShapeI s: Editor.getInstance().getScene().getSelectedShapes())
+                    for (Shape s: Editor.getInstance().getScene().getSelectedShapes())
                         if (shape.equals(s) || s.containsChild(shape)) {
                             here = true;
                             break;
@@ -71,7 +71,7 @@ public class SceneJFx extends Group implements DragAndDropArea {
         // Right click
         else if (event.getButton() == MouseButton.SECONDARY) {
             // Click on a selection
-            List<ShapeI> shapes = Editor.getInstance().getScene().getSelectedShapes();
+            List<Shape> shapes = Editor.getInstance().getScene().getSelectedShapes();
             if (shape != null) {
                 mediator.selectShape(shape);
                 if (shapes.size() > 1)
@@ -108,10 +108,10 @@ public class SceneJFx extends Group implements DragAndDropArea {
         // If there is a selection action
         if (event.getButton() == MouseButton.PRIMARY) {
             if (Editor.getInstance().getSelectionShape().isOn()) {
-                ArrayList<ShapeI> selectedShapes = new ArrayList<>();
+                ArrayList<Shape> selectedShapes = new ArrayList<>();
 
                 // Add all selected shapes in array
-                for (ShapeI shape : Editor.getInstance().getScene().getShapes())
+                for (Shape shape : Editor.getInstance().getScene().getShapes())
                     if (shape.contained(Editor.getInstance().getSelectionShape()))
                         selectedShapes.add(shape);
                 mediator.stopSelection(selectedShapes);

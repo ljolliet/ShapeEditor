@@ -26,19 +26,11 @@ public abstract class Observable implements ObservableI {
 
     @Override
     public void removeObservers() {
-        this.observers.clear();
-    }
-
-    protected void setObservers(Set<Observer> observers) {
-        this.observers = observers;
+        this.observers = new HashSet<>();
     }
 
     public Set<Observer> getObservers(){
         return this.observers;
-    }
-
-    public void clearObservers(){
-        this.observers.clear();
     }
 }
 

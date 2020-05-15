@@ -1,6 +1,6 @@
 package ui;
 
-import editor.shapes.ShapeI;
+import editor.shapes.Shape;
 import editor.utils.Point2D;
 import ui.component.Component;
 
@@ -16,22 +16,22 @@ public interface Mediator {
     void open();
 
     // Drag & drop
-    void dragFromToolbar(ShapeI shape);
+    void dragFromToolbar(Shape shape);
     void dragFromScene(Point2D position);
     void dropInToolbar();
     void dropInScene(Point2D position);
     void dropInTrash();
 
     // Selection
-    void selectShape(ShapeI shape);
-    void toggleSelectedShape(ShapeI shape);
+    void selectShape(Shape shape);
+    void toggleSelectedShape(Shape shape);
     void startSelection(Point2D startPoint);
     void moveSelection(Point2D point);
-    void stopSelection(List<ShapeI> shapes);
+    void stopSelection(List<Shape> shapes);
 
     // Edition dialog
-    void showMenu(ShapeI shape, Point2D position);
-    void showContextMenu(List<ShapeI> shapes, Point2D position);
+    void showMenu(Shape shape, Point2D position);
+    void showContextMenu(List<Shape> shapes, Point2D position);
     void cancelEdit();
     void applyEdit();
     void applyAndQuitEdit();

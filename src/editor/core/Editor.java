@@ -29,7 +29,7 @@ public class Editor extends Observable implements Originator {
     private final SelectionShape selectionShape;
     private Rendering rendering;
     private Observer observer;
-    private ShapeI shapeDragged;
+    private Shape shapeDragged;
     private ExportManager exportVisitor;
     private ImportManager importManager;
 
@@ -65,12 +65,12 @@ public class Editor extends Observable implements Originator {
         notifyObservers();
     }
 
-    public void addShapeToToolbar(ShapeI shape) {
+    public void addShapeToToolbar(Shape shape) {
         this.toolbar.addShape(shape);
         notifyObservers();
     }
 
-    public void removeShapeFromToolbar(ShapeI s) {
+    public void removeShapeFromToolbar(Shape s) {
         this.toolbar.removeShape(s);
         notifyObservers();
     }
@@ -78,19 +78,19 @@ public class Editor extends Observable implements Originator {
     public void deGroup(Shape group) {
         scene.removeShape(group);
         scene.clearSelectedShapes();
-        for(ShapeI child : group.getChildren()){
-            scene.addShape((Shape) child);
-            ((Shape) child).addObserver(observer);
+        for(Shape child : group.getChildren()){
+            scene.addShape(child);
+            child.addObserver(observer);
         }
         notifyObservers();
     }
 
-    public void createGroup(List<ShapeI> shapes) {
+    public void createGroup(List<Shape> shapes) {
         scene.clearSelectedShapes();
         ShapeGroup group = new ShapeGroup();
-        for(ShapeI s : shapes){
-            scene.removeShape((Shape) s);
-            ((Shape) s).removeObservers();
+        for(Shape s : shapes){
+            scene.removeShape(s);
+            s.removeObservers();
             group.addShape(s);
         }
         group.addObserver(observer);
@@ -190,7 +190,7 @@ public class Editor extends Observable implements Originator {
         return this.rendering;
     }
 
-    public ShapeI getShapeDragged() {
+    public Shape getShapeDragged() {
         return shapeDragged;
     }
 
@@ -202,15 +202,15 @@ public class Editor extends Observable implements Originator {
         return importManager;
     }
 
-    public void setShapeDragged(ShapeI shapeDragged) {
+    public void setShapeDragged(Shape shapeDragged) {
         this.shapeDragged = shapeDragged;
     }
 
-    public boolean toolbarContains(ShapeI shape) {
+    public boolean toolbarContains(Shape shape) {
         return this.toolbar.contains(shape);
     }
 
-    public boolean sceneContains(Shape  shape) {
+    public boolean sceneContains(Shape shape) {
         return this.scene.contains(shape);
     }
 
@@ -222,7 +222,7 @@ public class Editor extends Observable implements Originator {
         return this.observer;
     }
 
-    public void setSceneSelectedShapes(List<ShapeI> shapes) {
+    public void setSceneSelectedShapes(List<Shape> shapes) {
         scene.setSelectedShapes(shapes);
     }
 

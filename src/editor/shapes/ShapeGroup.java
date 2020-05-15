@@ -1,73 +1,80 @@
 package editor.shapes;
 
 import editor.core.EditorVisitor;
+import editor.edition.EditionDialogI;
 import editor.edition.GroupEditionDialog;
+import editor.observer.Observer;
 import editor.utils.Color;
 import editor.utils.Point2D;
 import editor.utils.SelectionShape;
 import editor.utils.Vec2D;
 import ui.ApplicationI;
-import editor.edition.EditionDialogI;
 import ui.Rendering;
 
 import java.util.*;
 
-public class ShapeGroup extends Shape {
+public class ShapeGroup implements Shape {
 
-    private Set<ShapeI> shapes;
+    private Set<Shape> shapes;
 
     private Color color = null;
     private double rotation = -1;
     private Point2D rotationCenter = null;
     private Vec2D translation = null;
+    private Set<Observer> observers = new HashSet<>();
 
     public ShapeGroup(){
         shapes = new HashSet<>();
     }
 
     @Override
-    public void addShape(ShapeI s) {
+    public void addShape(Shape s) {
         shapes.add(s);
     }
 
     @Override
-    public void removeShape(ShapeI s) {
+    public void removeShape(Shape s) {
         shapes.remove(s);
     }
 
     @Override
-    public Set<ShapeI> getChildren() {
+    public Set<Shape> getChildren() {
         return new HashSet<>(shapes);
     }
 
     @Override
-    public void setChildren(Set<ShapeI> shapes) {
+    public void setChildren(Set<Shape> shapes) {
         this.shapes = shapes;
     }
 
     @Override
-    public boolean containsChild(ShapeI s) {
-        for(ShapeI c : this.shapes)
+    public boolean containsChild(Shape s) {
+        for(Shape c : this.shapes)
             if(c.equals(s) || c.containsChild(s))
                 return true;
         return false;
     }
 
     @Override
-    public ShapeI clone() {
-        ShapeI c = super.clone();
+    public Shape clone() {
+        try {
+            Shape clone = (Shape) super.clone();
+            clone.removeObservers();
+            clone.setChildren(new HashSet<>());
+            for (Shape shape: this.getChildren()) {
+                clone.addShape(shape.clone());
+            }
 
-        // Add a copy of each child
-        c.setChildren(new HashSet<>());
-        for (ShapeI shape: this.getChildren())
-            c.addShape(shape.clone());
-
-        return c;
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
     public void drawInScene(Rendering rendering) {
-        for(ShapeI s : shapes)
+        for(Shape s : shapes)
             s.drawInScene(rendering);
     }
 
@@ -81,7 +88,7 @@ public class ShapeGroup extends Shape {
      */
     @Override
     public boolean contains(Point2D position) {
-        for(ShapeI child : shapes)
+        for(Shape child : shapes)
             if(child.contains(position))
                 return true;
         return false;
@@ -92,7 +99,7 @@ public class ShapeGroup extends Shape {
      */
     @Override
     public boolean contained(SelectionShape s) {
-        for(ShapeI child : shapes)
+        for(Shape child : shapes)
             if(!child.contained(s))
                 return false;
         return true;
@@ -102,7 +109,7 @@ public class ShapeGroup extends Shape {
     public Point2D[] getPoints() {
         List<Point2D> points = new ArrayList<>();
 
-        for (ShapeI s: shapes)
+        for (Shape s: shapes)
             points.addAll(Arrays.asList(s.getPoints()));
 
         Point2D[] pointsArray = new Point2D[points.size()];
@@ -125,7 +132,7 @@ public class ShapeGroup extends Shape {
         double deltaY = y - position.y;
 
         // Set new position for all children
-        for (ShapeI s: shapes) {
+        for (Shape s: shapes) {
             s.setPosition(new Point2D(
                     s.getPosition().x + deltaX,
                     s.getPosition().y + deltaY
@@ -138,7 +145,7 @@ public class ShapeGroup extends Shape {
     public void setColor(Color color) {
         this.color = color;
 
-        for (ShapeI s: shapes)
+        for (Shape s: shapes)
             s.setColor(color);
         notifyObservers();
     }
@@ -147,7 +154,7 @@ public class ShapeGroup extends Shape {
     public void setRotation(double angle) {
         this.rotation = angle;
 
-        for (ShapeI s: shapes)
+        for (Shape s: shapes)
             s.setRotation(angle);
         notifyObservers();
     }
@@ -156,7 +163,7 @@ public class ShapeGroup extends Shape {
     public void setRotationCenter(Point2D pos) {
         this.rotationCenter = pos;
 
-        for (ShapeI s: shapes)
+        for (Shape s: shapes)
             s.setRotationCenter(pos);
         notifyObservers();
     }
@@ -165,7 +172,7 @@ public class ShapeGroup extends Shape {
     public void setTranslation(Vec2D translation) {
         this.translation = translation;
 
-        for (ShapeI s: shapes)
+        for (Shape s: shapes)
             s.setTranslation(translation);
         notifyObservers();
     }
@@ -183,7 +190,7 @@ public class ShapeGroup extends Shape {
         double minX = ApplicationI.SCENE_WIDTH;
         double minY = ApplicationI.SCENE_HEIGHT;
 
-        for (ShapeI s: shapes) {
+        for (Shape s: shapes) {
             for (Point2D point: s.getPoints()) {
                 minX = Math.min(minX, point.x);
                 minY = Math.min(minY, point.y);
@@ -197,7 +204,7 @@ public class ShapeGroup extends Shape {
         double maxX = 0;
         double minX = ApplicationI.SCENE_WIDTH;
 
-        for (ShapeI s: shapes) {
+        for (Shape s: shapes) {
             for (Point2D point : s.getPoints()) {
                 minX = Math.min(minX, point.x);
                 maxX = Math.max(maxX, point.x);
@@ -211,7 +218,7 @@ public class ShapeGroup extends Shape {
         double maxY = 0;
         double minY = ApplicationI.SCENE_HEIGHT;
 
-        for (ShapeI s: shapes) {
+        for (Shape s: shapes) {
             for (Point2D point : s.getPoints()) {
                 minY = Math.min(minY, point.y);
                 maxY = Math.max(maxY, point.y);
@@ -249,5 +256,27 @@ public class ShapeGroup extends Shape {
     @Override
     public void accept(EditorVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public void addObserver(Observer observer) {
+        this.observers.add(observer);
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+        this.observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers() {
+        Set<Observer> copy = new HashSet<>(this.observers);
+        for (Observer o : copy)
+            o.update();
+    }
+
+    @Override
+    public void removeObservers() {
+        this.observers = new HashSet<>();
     }
 }

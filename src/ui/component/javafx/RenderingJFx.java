@@ -141,9 +141,9 @@ public class RenderingJFx implements Rendering {
     public void drawEditor() {
         Editor editor = Editor.getInstance();
         this.initEditor();
-        for (ShapeI s: editor.getScene().getShapes())
+        for (Shape s: editor.getScene().getShapes())
             s.drawInScene(this);
-        for (ShapeI s: editor.getToolbar().getShapes())
+        for (Shape s: editor.getToolbar().getShapes())
             s.drawInToolbar(this);
         drawSelectionFrame();
     }
@@ -238,7 +238,7 @@ public class RenderingJFx implements Rendering {
     }
 
     @Override
-    public void dragFromToolbar(ShapeI shape) {
+    public void dragFromToolbar(Shape shape) {
         // Shadow shape
         shadowShape = (Group) getShadowShape(shape);
         shadowGroup.getChildren().add(shadowShape);
@@ -253,12 +253,12 @@ public class RenderingJFx implements Rendering {
     @Override
     public void dragFromScene(Point2D position) {
         Editor editor = Editor.getInstance();
-        ShapeI shape;
+        Shape shape;
 
         // Drag multi shapes
         if (editor.getScene().getSelectedShapes().size() > 1) {
             shape = new ShapeGroup();
-            for (ShapeI s: editor.getScene().getSelectedShapes())
+            for (Shape s: editor.getScene().getSelectedShapes())
                 shape.addShape(s);
         }
         // Drag one shape
@@ -285,7 +285,7 @@ public class RenderingJFx implements Rendering {
 
         if (!fromToolbar) {
             // Clone the shape and paste it to the toolbar
-            ShapeI newShape = editor.getShapeDragged().clone();
+            Shape newShape = editor.getShapeDragged().clone();
             editor.addShapeToToolbar(newShape);
         }
 
@@ -298,9 +298,9 @@ public class RenderingJFx implements Rendering {
         // If from toolbar --> clone the shape
         if (fromToolbar) {
             // Clone the shape and paste it to the scene
-            ShapeI newShape = editor.getShapeDragged().clone();
+            Shape newShape = editor.getShapeDragged().clone();
             newShape.setPosition(position);
-            editor.addShapeToScene((Shape) newShape);
+            editor.addShapeToScene(newShape);
         }
         // Else --> update position
         else {
@@ -314,16 +314,16 @@ public class RenderingJFx implements Rendering {
     @Override
     public void dropInTrash() {
         Editor editor = Editor.getInstance();
-        ShapeI shape = editor.getShapeDragged();
+        Shape shape = editor.getShapeDragged();
 
         if (shape != null) {
             if (editor.toolbarContains(shape)) { // From toolbar
                 editor.removeShapeFromToolbar(shape);
             }
             else { // From scene
-                for (ShapeI s: editor.getScene().getSelectedShapes())
-                    if (editor.sceneContains((Shape) s))
-                        editor.removeShapeFromScene((Shape) s);
+                for (Shape s: editor.getScene().getSelectedShapes())
+                    if (editor.sceneContains(s))
+                        editor.removeShapeFromScene(s);
                     else
                         throw new EditorManagementException("Trying to delete an unknown shape");
             }
@@ -335,14 +335,14 @@ public class RenderingJFx implements Rendering {
     }
 
     @Override
-    public void selectShape(ShapeI shape) {
-        List<ShapeI> list = new ArrayList<>();
+    public void selectShape(Shape shape) {
+        List<Shape> list = new ArrayList<>();
         list.add(shape);
         Editor.getInstance().setSceneSelectedShapes(list);
     }
 
-    public void toggleSelectedShape(ShapeI shape) {
-        List<ShapeI> list = Editor.getInstance().getScene().getSelectedShapes();
+    public void toggleSelectedShape(Shape shape) {
+        List<Shape> list = Editor.getInstance().getScene().getSelectedShapes();
 
         // Toggle
         if (list.contains(shape))
@@ -353,7 +353,7 @@ public class RenderingJFx implements Rendering {
         Editor.getInstance().setSceneSelectedShapes(list);
     }
 
-    public void setSelectedShapes(List<ShapeI> shapes) {
+    public void setSelectedShapes(List<Shape> shapes) {
         Editor.getInstance().setSceneSelectedShapes(shapes);
     }
 
@@ -370,14 +370,14 @@ public class RenderingJFx implements Rendering {
     }
 
     @Override
-    public void stopSelection(List<ShapeI> shapes) {
+    public void stopSelection(List<Shape> shapes) {
         Editor.getInstance().getSelectionShape().setOn(false);
         setSelectedShapes(shapes);
         drawEditor();
     }
 
     @Override
-    public void showMenu(ShapeI shape, Point2D position) {
+    public void showMenu(Shape shape, Point2D position) {
         contextMenu.getItems().clear();
         if(shape instanceof ShapeGroup)
             addGroupEditToDialog(shape);
@@ -390,7 +390,7 @@ public class RenderingJFx implements Rendering {
     }
 
     @Override
-    public void showContextMenu(List<ShapeI> shapes, Point2D position) {
+    public void showContextMenu(List<Shape> shapes, Point2D position) {
         contextMenu.getItems().clear();
         final MenuItem group = new MenuItem("Group");
         group.setOnAction(event -> Editor.getInstance().createGroup(shapes));
@@ -408,7 +408,7 @@ public class RenderingJFx implements Rendering {
         contextMenu.getItems().add(edit);
     }
 
-    private void addGroupEditToDialog(ShapeI shape){
+    private void addGroupEditToDialog(Shape shape){
         final MenuItem edit = new MenuItem("Edit");
         edit.setOnAction(event -> {
             editStage.setTitle("Group Edition");
@@ -416,7 +416,7 @@ public class RenderingJFx implements Rendering {
             editStage.showAndWait();
         });
         final MenuItem ungroup = new MenuItem("De-group");
-        ungroup.setOnAction(event -> Editor.getInstance().deGroup((Shape)shape));
+        ungroup.setOnAction(event -> Editor.getInstance().deGroup(shape));
         contextMenu.getItems().add(edit);
         contextMenu.getItems().add(ungroup);
     }
@@ -500,7 +500,7 @@ public class RenderingJFx implements Rendering {
     //     Create shapes     //
     ///////////////////////////
 
-    private Object getShadowShape(ShapeI shape) {
+    private Object getShadowShape(Shape shape) {
         if (shape instanceof Rectangle)
             return getShadowShape((Rectangle) shape);
         if (shape instanceof Polygon)
@@ -528,7 +528,7 @@ public class RenderingJFx implements Rendering {
     private Object getShadowShape(ShapeGroup g) {
         Group grp = new Group();
 
-        for (ShapeI shape: g.getChildren()) {
+        for (Shape shape: g.getChildren()) {
             Group JFxGroup = (Group) getShadowShape(shape);
             JFxGroup.setTranslateX(shape.getPosition().x - g.getPosition().x);
             JFxGroup.setTranslateY(shape.getPosition().y - g.getPosition().y);

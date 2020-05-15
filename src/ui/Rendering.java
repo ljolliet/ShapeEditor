@@ -4,7 +4,6 @@ import editor.edition.EditionDialogI;
 import editor.shapes.Polygon;
 import editor.shapes.Rectangle;
 import editor.shapes.ShapeGroup;
-import editor.shapes.ShapeI;
 import editor.utils.Point2D;
 
 public interface Rendering extends Mediator {
