@@ -72,12 +72,12 @@ public class SceneJFx extends Group implements Component {
         else if (event.getButton() == MouseButton.SECONDARY) {
             // Click on a selection
             List<ShapeI> shapes = Editor.getInstance().getScene().getSelectedShapes();
-            if (shapes.size() > 1) {
-                mediator.showContextMenu(shapes, new Point2D(event.getScreenX(), event.getScreenY()));
-            }
-            else if (shape != null) {
+            if (shape != null) {
                 mediator.selectShape(shape);
-                mediator.showMenu(shape, new Point2D(event.getScreenX(), event.getScreenY()));
+                if (shapes.size() > 1)
+                    mediator.showContextMenu(shapes, new Point2D(event.getScreenX(), event.getScreenY()));
+                else
+                    mediator.showMenu(shape, new Point2D(event.getScreenX(), event.getScreenY()));
             }
         }
     }
