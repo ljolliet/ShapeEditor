@@ -6,13 +6,13 @@ import editor.utils.Point2D;
 import javafx.scene.Group;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import ui.component.Component;
 import ui.Mediator;
+import ui.component.DragAndDropArea;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SceneJFx extends Group implements Component {
+public class SceneJFx extends Group implements DragAndDropArea {
 
     private Mediator mediator;
 

@@ -8,12 +8,12 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import ui.ApplicationI;
-import ui.component.Component;
 import ui.Mediator;
+import ui.component.DragAndDropArea;
 
 import static ui.ApplicationI.TOOLBAR_SPACING;
 
-public class ToolbarJFx extends GridPane implements Component {
+public class ToolbarJFx extends GridPane implements DragAndDropArea {
 
     private Mediator mediator;
 

@@ -4,10 +4,10 @@ import editor.utils.Point2D;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
-import ui.component.Component;
 import ui.Mediator;
+import ui.component.DragAndDropArea;
 
-public class WindowPaneJFx extends StackPane implements Component {
+public class WindowPaneJFx extends StackPane implements DragAndDropArea {
 
     private Mediator mediator;
 

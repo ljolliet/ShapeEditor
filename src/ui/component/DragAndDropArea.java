@@ -1,4 +1,4 @@
 package ui.component;
 
-public interface DragAndDropArea extends Component{
+public interface DragAndDropArea extends Component {
 }
