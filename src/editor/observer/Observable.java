@@ -24,6 +24,11 @@ public abstract class Observable implements ObservableI {
             o.update();
     }
 
+    @Override
+    public void removeObservers() {
+        this.observers.clear();
+    }
+
     protected void setObservers(Set<Observer> observers) {
         this.observers = observers;
     }

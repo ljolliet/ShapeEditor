@@ -444,8 +444,10 @@ public class RenderingJFx implements Rendering {
         for(ShapeI s : shapes){
             Editor.getInstance().getScene().getSelectedShapes().remove(s);
             Editor.getInstance().getScene().removeShape((Shape) s);
+            ((Shape) s).removeObservers();
             group.addShape(s);
         }
+        group.addObserver(Editor.getInstance().getObserver());
         Editor.getInstance().getScene().addShape(group);
     }
 
@@ -455,6 +457,7 @@ public class RenderingJFx implements Rendering {
         scene.clearSelectedShapes();
         for(ShapeI child : group.getChildren()){
             Editor.getInstance().getScene().addShape((Shape) child);
+            ((Shape) child).addObserver(Editor.getInstance().getObserver());
         }
     }
 
