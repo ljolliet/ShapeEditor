@@ -221,10 +221,6 @@ public class ShapeGroup extends Shape {
         return maxY - minY;
     }
 
-    /*
-     * TODO Write all getters
-     */
-
     @Override
     public Color getColor() {
         return this.color;

@@ -380,12 +380,11 @@ public class RenderingJFx implements Rendering {
         contextMenu.getItems().clear();
         if(shape instanceof ShapeGroup)
             addGroupEditToDialog(shape);
-        else {
+        else
             addEditToDialog();
-            dialogED = shape.createEditionDialog();
-            dialogED.setPosition(position);
-            dialogED.draw(this);
-        }
+        dialogED = shape.createEditionDialog();
+        dialogED.setPosition(position);
+        dialogED.draw(this);
         contextMenu.show(this.root, position.x, position.y);
     }
 

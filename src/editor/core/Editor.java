@@ -93,7 +93,7 @@ public class Editor extends Observable implements Originator {
             ((Shape) s).removeObservers();
             group.addShape(s);
         }
-        group.addObserver(Editor.getInstance().getObserver());
+        group.addObserver(observer);
         scene.addShape(group);
         notifyObservers();
     }
