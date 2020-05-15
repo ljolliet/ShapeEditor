@@ -251,9 +251,19 @@ public class RenderingJFx implements Rendering {
 
     @Override
     public void dragFromScene(Point2D position) {
-        ShapeI shape = new ShapeGroup();
-        for (ShapeI s: Editor.getInstance().getScene().getSelectedShapes())
-            shape.addShape(s);
+        Editor editor = Editor.getInstance();
+        ShapeI shape;
+
+        // Drag multi shapes
+        if (editor.getScene().getSelectedShapes().size() > 1) {
+            shape = new ShapeGroup();
+            for (ShapeI s: editor.getScene().getSelectedShapes())
+                shape.addShape(s);
+        }
+        // Drag one shape
+        else {
+            shape = editor.getScene().getSelectedShapes().get(0);
+        }
 
         // Shadow shape
         shadowShape = (Group) getShadowShape(shape);
@@ -265,7 +275,7 @@ public class RenderingJFx implements Rendering {
 
         this.fromToolbar = false;
         windowPane.setCursor(Cursor.CLOSED_HAND);
-        Editor.getInstance().setShapeDragged(shape);
+        editor.setShapeDragged(shape);
     }
 
     @Override
