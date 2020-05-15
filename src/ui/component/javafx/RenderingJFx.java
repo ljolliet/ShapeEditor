@@ -44,19 +44,15 @@ import static ui.ApplicationI.SCENE_WIDTH;
 
 public class RenderingJFx implements Rendering {
 
+    private SceneJFx root;
     private ToolbarJFx toolbar;
     private int toolbarRowCount;
-    private RowConstraints rowConstraints;
-
-    private SceneJFx root;
-
-    private WindowPaneJFx windowPane;
+    private final RowConstraints rowConstraints;
 
     /* Edition */
+    private final ContextMenu contextMenu = new ContextMenu();
+    private final Stage editStage = new Stage();
     private EditionDialogI dialogED;
-    private ContextMenu contextMenu = new ContextMenu();
-    private Stage editStage = new Stage();
-
     private EditDialogJFx editDialog;
 
     /* Drag & drop */
@@ -67,11 +63,12 @@ public class RenderingJFx implements Rendering {
     private Group shadowGroup;
     private Point2D shadowShapeThreshold;
 
-    private OptionLayoutJFx optionLayout;
-    private Scene scene;
-    private WindowLayoutJFx windowLayout;
+    /* Layout */
     private Stage primaryStage;
+    private WindowPaneJFx windowPane;
+    private WindowLayoutJFx windowLayout;
     private EditorLayoutJFx editorLayout;
+    private OptionLayoutJFx optionLayout;
     private ToolbarRootJFx toolbarRoot;
 
 
@@ -126,8 +123,7 @@ public class RenderingJFx implements Rendering {
             case "WindowLayout":
                 this.windowLayout = (WindowLayoutJFx) component;
                 this.registerComponent(new WindowPaneJFx(windowLayout));
-                this.scene = new Scene(windowPane);
-                this.primaryStage.setScene(scene);
+                this.primaryStage.setScene(new Scene(windowPane));
                 break;
             case "EditorLayout" :
                 this.editorLayout = (EditorLayoutJFx) component;
@@ -143,28 +139,22 @@ public class RenderingJFx implements Rendering {
     @Override
     public void drawEditor() {
         Editor editor = Editor.getInstance();
-        // Clear shapes
         this.initEditor();
-
-        // Draw scene
         for (ShapeI s: editor.getScene().getShapes())
             s.drawInScene(this);
-
-        // Draw toolbar
         for (ShapeI s: editor.getToolbar().getShapes())
             s.drawInToolbar(this);
-
         drawSelectionFrame();
     }
 
     @Override
     public void drawInScene(Rectangle r) {
-        root.getChildren().add(ShapeBuilderJFx.createSceneRectangle(r));
+        root.getChildren().add(ShapeFactoryJFx.createSceneRectangle(r));
     }
 
     @Override
     public void drawInScene(Polygon p) {
-        root.getChildren().add(ShapeBuilderJFx.createScenePolygon(p));
+        root.getChildren().add(ShapeFactoryJFx.createScenePolygon(p));
     }
 
     @Override
@@ -173,7 +163,7 @@ public class RenderingJFx implements Rendering {
         double ratio = ApplicationI.TOOLBAR_CELL_HEIGHT / max;
 
         toolbar.getRowConstraints().add(toolbarRowCount, rowConstraints);
-        toolbar.addRow(toolbarRowCount++, ShapeBuilderJFx.createToolbarRectangle(r, ratio));
+        toolbar.addRow(toolbarRowCount++, ShapeFactoryJFx.createToolbarRectangle(r, ratio));
     }
 
     @Override
@@ -181,7 +171,7 @@ public class RenderingJFx implements Rendering {
         double radius = ApplicationI.TOOLBAR_CELL_HEIGHT / 2d;
 
         toolbar.getRowConstraints().add(toolbarRowCount, rowConstraints);
-        toolbar.addRow(toolbarRowCount++, ShapeBuilderJFx.createToolbarPolygon(p, radius));
+        toolbar.addRow(toolbarRowCount++, ShapeFactoryJFx.createToolbarPolygon(p, radius));
     }
 
     @Override
@@ -190,7 +180,7 @@ public class RenderingJFx implements Rendering {
         double ratio = ApplicationI.TOOLBAR_CELL_HEIGHT / max;
 
         toolbar.getRowConstraints().add(toolbarRowCount, rowConstraints);
-        toolbar.addRow(toolbarRowCount++, ShapeBuilderJFx.createToolbarGroup(group, ratio));
+        toolbar.addRow(toolbarRowCount++, ShapeFactoryJFx.createToolbarGroup(group, ratio));
     }
 
     @Override
@@ -207,7 +197,7 @@ public class RenderingJFx implements Rendering {
 
 
     @Override
-    public void drawEditionDialog(EditionDialogI shapeED, Point2D position) {
+    public void setEditionDialog(EditionDialogI shapeED, Point2D position) {
         if(shapeED instanceof RectangleEditionDialog)
             this.registerComponent(new RectangleEditJFx((RectangleEditionDialog) shapeED));
         else if(shapeED instanceof PolygonEditionDialog)
@@ -215,13 +205,6 @@ public class RenderingJFx implements Rendering {
         else if(shapeED instanceof GroupEditionDialog)
             this.registerComponent(new GroupEditJFx((GroupEditionDialog) shapeED));
     }
-
-
-    @Override
-    public void hideEditionDialog(){
-        contextMenu.hide();
-    }
-
 
     @Override
     public void undo() {
@@ -411,7 +394,7 @@ public class RenderingJFx implements Rendering {
     public void showContextMenu(List<ShapeI> shapes, Point2D position) {
         contextMenu.getItems().clear();
         final MenuItem group = new MenuItem("Group");
-        group.setOnAction(event -> createGroup(shapes));
+        group.setOnAction(event -> Editor.getInstance().createGroup(shapes));
         contextMenu.getItems().add(group);
         contextMenu.show(this.root, position.x, position.y);
     }
@@ -433,32 +416,10 @@ public class RenderingJFx implements Rendering {
             editStage.setScene(new Scene(editDialog));
             editStage.showAndWait();
         });
-        final MenuItem ungroup = new MenuItem("Ungroup");
-        ungroup.setOnAction(event -> ungroupShape(shape));
+        final MenuItem ungroup = new MenuItem("De-group");
+        ungroup.setOnAction(event -> Editor.getInstance().deGroup((Shape)shape));
         contextMenu.getItems().add(edit);
         contextMenu.getItems().add(ungroup);
-    }
-
-    private void createGroup(List<ShapeI> shapes){
-        ShapeGroup group = new ShapeGroup();
-        for(ShapeI s : shapes){
-            Editor.getInstance().getScene().getSelectedShapes().remove(s);
-            Editor.getInstance().getScene().removeShape((Shape) s);
-            ((Shape) s).removeObservers();
-            group.addShape(s);
-        }
-        group.addObserver(Editor.getInstance().getObserver());
-        Editor.getInstance().getScene().addShape(group);
-    }
-
-    private void ungroupShape(ShapeI group) {
-        editor.core.Scene scene = Editor.getInstance().getScene();
-        scene.removeShape((Shape) group);
-        scene.clearSelectedShapes();
-        for(ShapeI child : group.getChildren()){
-            Editor.getInstance().getScene().addShape((Shape) child);
-            ((Shape) child).addObserver(Editor.getInstance().getObserver());
-        }
     }
 
     @Override
@@ -486,10 +447,9 @@ public class RenderingJFx implements Rendering {
 
     @Override
     public void clearEditorActions() {
-        //Editor.getInstance().getSelectionShape().setOn(false);
+        //Editor.getInstance().getSelectionShape().setOn(false); //TODO remove ?
         //setSelectedShapes(new ArrayList<>());
-
-        hideEditionDialog();
+        contextMenu.hide();
     }
 
     @Override
@@ -547,14 +507,14 @@ public class RenderingJFx implements Rendering {
         r = new Rectangle(r.getWidth(), r.getHeight(), r.getBorderRadius(), new Point2D(0, 0),
                 r.getColor(), r.getRotationCenter(), r.getRotation());
 
-        return new Group(ShapeBuilderJFx.createSceneRectangle(r));
+        return new Group(ShapeFactoryJFx.createSceneRectangle(r));
     }
 
     private Object getShadowShape(Polygon p) {
         p = new Polygon(p.getNbSides(), p.getSideLength(), new Point2D(0, 0),
                 p.getColor(), p.getRotationCenter(), p.getRotation());
 
-        return new Group(ShapeBuilderJFx.createScenePolygon(p));
+        return new Group(ShapeFactoryJFx.createScenePolygon(p));
     }
 
     private Object getShadowShape(ShapeGroup g) {

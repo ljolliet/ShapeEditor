@@ -75,6 +75,29 @@ public class Editor extends Observable implements Originator {
         notifyObservers();
     }
 
+    public void deGroup(Shape group) {
+        scene.removeShape(group);
+        scene.clearSelectedShapes();
+        for(ShapeI child : group.getChildren()){
+            scene.addShape((Shape) child);
+            ((Shape) child).addObserver(observer);
+        }
+        notifyObservers();
+    }
+
+    public void createGroup(List<ShapeI> shapes) {
+        scene.clearSelectedShapes();
+        ShapeGroup group = new ShapeGroup();
+        for(ShapeI s : shapes){
+            scene.removeShape((Shape) s);
+            ((Shape) s).removeObservers();
+            group.addShape(s);
+        }
+        group.addObserver(Editor.getInstance().getObserver());
+        scene.addShape(group);
+        notifyObservers();
+    }
+
     @Override
     public Memento saveToMemento(){
         String state = "";
@@ -202,4 +225,5 @@ public class Editor extends Observable implements Originator {
     public void setSceneSelectedShapes(List<ShapeI> shapes) {
         scene.setSelectedShapes(shapes);
     }
+
 }

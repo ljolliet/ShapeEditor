@@ -18,7 +18,7 @@ public class RectangleEditionDialog extends ShapeEditionDialog {
 
     @Override
     public void draw(Rendering rendering) {
-        rendering.drawEditionDialog(this, this.getPosition());
+        rendering.setEditionDialog(this, this.getPosition());
     }
 
     public Rectangle getTarget() {

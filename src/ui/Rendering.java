@@ -20,7 +20,5 @@ public interface Rendering extends Mediator {
 
     Object getShadowShape(ShapeI shape);
 
-    void drawEditionDialog(EditionDialogI groupED, Point2D position);
-    void hideEditionDialog();
-
+    void setEditionDialog(EditionDialogI groupED, Point2D position);
 }

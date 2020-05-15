@@ -10,9 +10,9 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 
-public class ShapeBuilderJFx {
+public class ShapeFactoryJFx {
 
-    private ShapeBuilderJFx() {}
+    private ShapeFactoryJFx() {}
 
     //TODO try to refacto
     public static javafx.scene.shape.Rectangle createSceneRectangle(Rectangle r) {
