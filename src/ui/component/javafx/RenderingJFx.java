@@ -184,19 +184,6 @@ public class RenderingJFx implements Rendering {
     }
 
     @Override
-    public Object getShadowShape(ShapeI shape) {
-        if (shape instanceof Rectangle)
-            return getShadowShape((Rectangle) shape);
-        if (shape instanceof Polygon)
-            return getShadowShape((Polygon) shape);
-        if (shape instanceof ShapeGroup)
-            return getShadowShape((ShapeGroup) shape);
-
-        return null;
-    }
-
-
-    @Override
     public void setEditionDialog(EditionDialogI shapeED, Point2D position) {
         if(shapeED instanceof RectangleEditionDialog)
             this.registerComponent(new RectangleEditJFx((RectangleEditionDialog) shapeED));
@@ -285,9 +272,11 @@ public class RenderingJFx implements Rendering {
     public void dropInToolbar() {
         Editor editor = Editor.getInstance();
 
-        // Clone the shape and paste it to the toolbar
-        ShapeI newShape = editor.getShapeDragged().clone();
-        editor.addShapeToToolbar(newShape);
+        if (!fromToolbar) {
+            // Clone the shape and paste it to the toolbar
+            ShapeI newShape = editor.getShapeDragged().clone();
+            editor.addShapeToToolbar(newShape);
+        }
 
         editor.setShapeDragged(null);
     }
@@ -447,8 +436,6 @@ public class RenderingJFx implements Rendering {
 
     @Override
     public void clearEditorActions() {
-        //Editor.getInstance().getSelectionShape().setOn(false); //TODO remove ?
-        //setSelectedShapes(new ArrayList<>());
         contextMenu.hide();
     }
 
@@ -502,6 +489,17 @@ public class RenderingJFx implements Rendering {
     ///////////////////////////
     //     Create shapes     //
     ///////////////////////////
+
+    private Object getShadowShape(ShapeI shape) {
+        if (shape instanceof Rectangle)
+            return getShadowShape((Rectangle) shape);
+        if (shape instanceof Polygon)
+            return getShadowShape((Polygon) shape);
+        if (shape instanceof ShapeGroup)
+            return getShadowShape((ShapeGroup) shape);
+
+        return null;
+    }
 
     private Object getShadowShape(Rectangle r) {
         r = new Rectangle(r.getWidth(), r.getHeight(), r.getBorderRadius(), new Point2D(0, 0),
