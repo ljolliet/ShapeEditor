@@ -16,6 +16,11 @@ public class ShapeGroup extends Shape {
 
     private Set<ShapeI> shapes;
 
+    private Color color = null;
+    private double rotation = -1;
+    private Point2D rotationCenter = null;
+    private Vec2D translation = null;
+
     public ShapeGroup(){
         shapes = new HashSet<>();
     }
@@ -131,6 +136,8 @@ public class ShapeGroup extends Shape {
 
     @Override
     public void setColor(Color color) {
+        this.color = color;
+
         for (ShapeI s: shapes)
             s.setColor(color);
         notifyObservers();
@@ -138,6 +145,8 @@ public class ShapeGroup extends Shape {
 
     @Override
     public void setRotation(double angle) {
+        this.rotation = angle;
+
         for (ShapeI s: shapes)
             s.setRotation(angle);
         notifyObservers();
@@ -145,6 +154,8 @@ public class ShapeGroup extends Shape {
 
     @Override
     public void setRotationCenter(Point2D pos) {
+        this.rotationCenter = pos;
+
         for (ShapeI s: shapes)
             s.setRotationCenter(pos);
         notifyObservers();
@@ -152,6 +163,8 @@ public class ShapeGroup extends Shape {
 
     @Override
     public void setTranslation(Vec2D translation) {
+        this.translation = translation;
+
         for (ShapeI s: shapes)
             s.setTranslation(translation);
         notifyObservers();
@@ -214,22 +227,22 @@ public class ShapeGroup extends Shape {
 
     @Override
     public Color getColor() {
-        return null;
+        return this.color;
     }
 
     @Override
     public double getRotation() {
-        return 0;
+        return this.rotation;
     }
 
     @Override
     public Point2D getRotationCenter() {
-        return null;
+        return this.rotationCenter;
     }
 
     @Override
     public Vec2D getTranslation() {
-        return null;
+        return this.translation;
     }
 
     @Override
