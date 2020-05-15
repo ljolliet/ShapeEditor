@@ -1,4 +1,4 @@
-package ui.component.javafx.layouts;
+package ui.component.javafx.area;
 
 import editor.utils.Point2D;
 import javafx.scene.Node;

@@ -26,6 +26,7 @@ import ui.Rendering;
 import ui.component.javafx.area.SceneJFx;
 import ui.component.javafx.area.ToolbarJFx;
 import ui.component.javafx.area.TrashJFx;
+import ui.component.javafx.area.WindowPaneJFx;
 import ui.component.javafx.buttons.ButtonJFx;
 import ui.component.javafx.dialog.EditDialogJFx;
 import ui.component.javafx.dialog.GroupEditJFx;
