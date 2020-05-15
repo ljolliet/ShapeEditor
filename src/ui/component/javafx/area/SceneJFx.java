@@ -78,7 +78,6 @@ public class SceneJFx extends Group implements Component {
             else if (shape != null) {
                 mediator.selectShape(shape);
                 mediator.showMenu(shape, new Point2D(event.getScreenX(), event.getScreenY()));
-
             }
         }
     }
@@ -130,6 +129,6 @@ public class SceneJFx extends Group implements Component {
 
     @Override
     public String getName() {
-        return "Root";
+        return "Scene";
     }
 }

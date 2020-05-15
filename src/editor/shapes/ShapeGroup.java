@@ -20,12 +20,6 @@ public class ShapeGroup extends Shape {
         shapes = new HashSet<>();
     }
 
-    public ShapeGroup(List<ShapeI> shapes){
-        for(ShapeI s : shapes)
-            this.shapes.add(s);
-    }
-
-
     @Override
     public void addShape(ShapeI s) {
         shapes.add(s);

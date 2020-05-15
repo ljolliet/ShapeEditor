@@ -98,7 +98,7 @@ public class RenderingJFx implements Rendering {
             case "Trash":
                 this.toolbarRoot.setTrashBottom((TrashJFx)component);
                 break;
-            case "Root":
+            case "Scene":
                 root = (SceneJFx) component;
                 editorLayout.getChildren().add(root);
                 Canvas canvas = new Canvas();
@@ -214,8 +214,6 @@ public class RenderingJFx implements Rendering {
             this.registerComponent(new PolygonEditJFx((PolygonEditionDialog) shapeED));
         else if(shapeED instanceof GroupEditionDialog)
             this.registerComponent(new GroupEditJFx((GroupEditionDialog) shapeED));
-
-        contextMenu.show(this.root, position.x, position.y);
     }
 
 
@@ -282,7 +280,7 @@ public class RenderingJFx implements Rendering {
     }
 
     @Override
-    public void dragFromScene(Point2D coords) {
+    public void dragFromScene(Point2D position) {
         ShapeI shape = new ShapeGroup();
         for (ShapeI s: Editor.getInstance().getScene().getSelectedShapes())
             shape.addShape(s);
@@ -292,8 +290,8 @@ public class RenderingJFx implements Rendering {
         shadowGroup.getChildren().add(shadowShape);
         shadowGroup.toFront();
         shadowShape.setVisible(false);
-        this.shadowShapeThreshold = new Point2D(shape.getPosition().x - coords.x,
-                shape.getPosition().y - coords.y);
+        this.shadowShapeThreshold = new Point2D(shape.getPosition().x - position.x,
+                shape.getPosition().y - position.y);
 
         this.fromToolbar = false;
         windowPane.setCursor(Cursor.CLOSED_HAND);
@@ -312,19 +310,19 @@ public class RenderingJFx implements Rendering {
     }
 
     @Override
-    public void dropInScene(Point2D coords) {
+    public void dropInScene(Point2D position) {
         Editor editor = Editor.getInstance();
         // If from toolbar --> clone the shape
         if (fromToolbar) {
             // Clone the shape and paste it to the scene
             ShapeI newShape = editor.getShapeDragged().clone();
-            newShape.setPosition(coords);
+            newShape.setPosition(position);
             editor.addShapeToScene((Shape) newShape);
         }
         // Else --> update position
         else {
-            editor.getShapeDragged().setPosition(new Point2D(coords.x + shadowShapeThreshold.x,
-                    coords.y + shadowShapeThreshold.y));
+            editor.getShapeDragged().setPosition(new Point2D(position.x + shadowShapeThreshold.x,
+                    position.y + shadowShapeThreshold.y));
         }
 
         editor.setShapeDragged(null);
@@ -396,21 +394,49 @@ public class RenderingJFx implements Rendering {
     }
 
     @Override
-    public void showMenu(ShapeI shape, Point2D coords) {
+    public void showMenu(ShapeI shape, Point2D position) {
         contextMenu.getItems().clear();
-        addEditToDialog();
-        dialogED = shape.createEditionDialog();
-        dialogED.setPosition(coords);
-        dialogED.draw(this);
+        if(shape instanceof ShapeGroup)
+            addGroupEditToDialog(shape);
+        else {
+            addEditToDialog();
+            dialogED = shape.createEditionDialog();
+            dialogED.setPosition(position);
+            dialogED.draw(this);
+        }
+        contextMenu.show(this.root, position.x, position.y);
     }
 
     @Override
-    public void showContextMenu(List<ShapeI> shapes, Point2D coords) {
+    public void showContextMenu(List<ShapeI> shapes, Point2D position) {
         contextMenu.getItems().clear();
         final MenuItem group = new MenuItem("Group");
         group.setOnAction(event -> createGroup(shapes));
         contextMenu.getItems().add(group);
-        //this.showEditionDialog(coords); TODO
+        contextMenu.show(this.root, position.x, position.y);
+    }
+
+    private void addEditToDialog(){
+        final MenuItem edit = new MenuItem("Edit");
+        edit.setOnAction(event -> {
+            editStage.setTitle("Edition");
+            editStage.setScene(new Scene(editDialog));
+            editStage.showAndWait();
+        });
+        contextMenu.getItems().add(edit);
+    }
+
+    private void addGroupEditToDialog(ShapeI shape){
+        final MenuItem edit = new MenuItem("Edit");
+        edit.setOnAction(event -> {
+            editStage.setTitle("Group Edition");
+            editStage.setScene(new Scene(editDialog));
+            editStage.showAndWait();
+        });
+        final MenuItem ungroup = new MenuItem("Ungroup");
+        ungroup.setOnAction(event -> ungroupShape(shape));
+        contextMenu.getItems().add(edit);
+        contextMenu.getItems().add(ungroup);
     }
 
     private void createGroup(List<ShapeI> shapes){
@@ -422,14 +448,24 @@ public class RenderingJFx implements Rendering {
         }
         Editor.getInstance().getScene().addShape(group);
     }
+
+    private void ungroupShape(ShapeI group) {
+        editor.core.Scene scene = Editor.getInstance().getScene();
+        scene.removeShape((Shape) group);
+        scene.clearSelectedShapes();
+        for(ShapeI child : group.getChildren()){
+            Editor.getInstance().getScene().addShape((Shape) child);
+        }
+    }
+
     @Override
-    public void moveShadowShape(Point2D coords) {
+    public void moveShadowShape(Point2D position) {
         if (shadowShape != null) {
             if (!shadowShape.isVisible())
                 shadowShape.setVisible(true);
 
-            shadowShape.setTranslateX(coords.x + shadowShapeThreshold.x);
-            shadowShape.setTranslateY(coords.y + shadowShapeThreshold.y);
+            shadowShape.setTranslateX(position.x + shadowShapeThreshold.x);
+            shadowShape.setTranslateY(position.y + shadowShapeThreshold.y);
         }
     }
 
@@ -469,25 +505,6 @@ public class RenderingJFx implements Rendering {
         editStage.close();
     }
 
-    private void addEditToDialog(){
-        final MenuItem edit = new MenuItem("Edit");
-        edit.setOnAction(event -> {
-            editStage.setTitle("Edition");
-            editStage.setScene(new Scene(editDialog));
-            editStage.showAndWait();
-        });
-        contextMenu.getItems().add(edit);
-    }
-
-    private void addGroupEditToDialog(){
-        final MenuItem edit = new MenuItem("Edit");
-        edit.setOnAction(event -> {
-            editStage.setTitle("Group Edition");
-            editStage.setScene(new Scene(editDialog));
-            editStage.showAndWait();
-        });
-        contextMenu.getItems().add(edit);
-    }
     private void initShadowShape() {
         shadowShapeThreshold = new Point2D(0, 0);
 

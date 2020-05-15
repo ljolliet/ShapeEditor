@@ -27,10 +27,11 @@ public class Scene implements Serializable {
 
     public void setSelectedShapes(List<ShapeI> shapes){
         this.selectedShapes = shapes;
-        /*for(Shape s : shapes){
-            s.setSelectedShape();
-        }*/
     }
+    public void clearSelectedShapes() {
+        this.selectedShapes.clear();
+    }
+
     public List<Shape> getShapes() {
         return new ArrayList<>(shapes);
     }
@@ -50,4 +51,6 @@ public class Scene implements Serializable {
     public void accept(EditorVisitor v) {
         v.visit(this);
     }
+
+
 }
