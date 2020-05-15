@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Caretaker{
 
-    private final int sizeLimit;
+    public final int sizeLimit;
     private final List<Memento> mementoHistory;
     private int currentMementoIndex = -1;
 

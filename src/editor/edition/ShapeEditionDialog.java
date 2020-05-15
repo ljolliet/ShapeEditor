@@ -24,7 +24,7 @@ public class ShapeEditionDialog implements  EditionDialogI{
 
     @Override
     public void draw(Rendering rendering) {
-        //TODO
+        rendering.setEditionDialog(this, this.getPosition());
     }
 
     @Override
