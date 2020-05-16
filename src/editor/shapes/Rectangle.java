@@ -31,10 +31,29 @@ public class Rectangle extends SimpleShape {
         rendering.drawInToolbar(this);
     }
 
+    // Thanks to https://stackoverflow.com/a/53907763/11256750 for computing rotation
     @Override
     public boolean contains(Point2D position) {
-        return  getPosition().x <= position.x && position.x <= getPosition().x + width
-                && getPosition().y <= position.y && position.y <= getPosition().y + height;
+        // Rotate around rotation center by -angle
+        double sin = Math.sin(Math.toRadians(-getRotation()));
+        double cos = Math.cos(Math.toRadians(-getRotation()));
+
+        // Set origin to rotation center
+        Point2D newPoint = new Point2D(position.x - (getRotationCenter().x + getPosition().x),
+                position.y - (getRotationCenter().y + getPosition().y));
+
+        // Rotate
+        newPoint = new Point2D(newPoint.x * cos - newPoint.y * sin,
+                newPoint.x * sin + newPoint.y * cos);
+
+        // Put origin back
+        newPoint = new Point2D(newPoint.x + (getRotationCenter().x + getPosition().x),
+                newPoint.y + (getRotationCenter().y + getPosition().y));
+
+        return  getPosition().x + getTranslation().width <= newPoint.x &&
+                newPoint.x <= getPosition().x + getTranslation().width + width &&
+                getPosition().y + getTranslation().height <= newPoint.y &&
+                newPoint.y <= getPosition().y + getTranslation().height + height;
     }
     
 
