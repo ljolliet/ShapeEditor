@@ -10,6 +10,7 @@ import editor.shapes.*;
 import editor.utils.EditorManagementException;
 import editor.utils.Point2D;
 import editor.utils.SelectionRectangle;
+import editor.utils.Vec2D;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -512,15 +513,19 @@ public class RenderingJFx implements Rendering {
     }
 
     private Group getShadowShape(Rectangle r) {
+        Vec2D translation = r.getTranslation();
         r = new Rectangle(r.getWidth(), r.getHeight(), r.getBorderRadius(), new Point2D(0, 0),
                 r.getColor(), r.getRotationCenter(), r.getRotation());
+        r.setTranslation(translation);
 
         return new Group(ShapeFactoryJFx.createSceneRectangle(r));
     }
 
     private Group getShadowShape(Polygon p) {
+        Vec2D translation = p.getTranslation();
         p = new Polygon(p.getNbSides(), p.getSideLength(), new Point2D(0, 0),
                 p.getColor(), p.getRotationCenter(), p.getRotation());
+        p.setTranslation(translation);
 
         return new Group(ShapeFactoryJFx.createScenePolygon(p));
     }

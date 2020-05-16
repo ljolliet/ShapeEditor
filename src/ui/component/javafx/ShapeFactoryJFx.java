@@ -14,7 +14,7 @@ public class ShapeFactoryJFx {
 
     private ShapeFactoryJFx() {}
 
-    //TODO try to refacto
+    //TODO try to refactor
     public static javafx.scene.shape.Rectangle createSceneRectangle(Rectangle r) {
         Editor editor = Editor.getInstance();
 
