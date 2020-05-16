@@ -3,6 +3,7 @@ package editor.shapes;
 import editor.core.EditorVisitor;
 import editor.edition.EditionDialogI;
 import editor.edition.GroupEditionDialog;
+import editor.observer.Observable;
 import editor.observer.Observer;
 import editor.utils.Color;
 import editor.utils.Point2D;
@@ -13,7 +14,7 @@ import ui.Rendering;
 
 import java.util.*;
 
-public class ShapeGroup implements Shape {
+public class ShapeGroup extends Observable implements Shape {
 
     private Set<Shape> shapes;
 
@@ -256,27 +257,5 @@ public class ShapeGroup implements Shape {
     @Override
     public void accept(EditorVisitor visitor) {
         visitor.visit(this);
-    }
-
-    @Override
-    public void addObserver(Observer observer) {
-        this.observers.add(observer);
-    }
-
-    @Override
-    public void removeObserver(Observer observer) {
-        this.observers.remove(observer);
-    }
-
-    @Override
-    public void notifyObservers() {
-        Set<Observer> copy = new HashSet<>(this.observers);
-        for (Observer o : copy)
-            o.update();
-    }
-
-    @Override
-    public void removeObservers() {
-        this.observers = new HashSet<>();
     }
 }

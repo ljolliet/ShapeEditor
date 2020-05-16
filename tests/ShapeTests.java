@@ -16,7 +16,7 @@ public class ShapeTests {
 
         Shape s2 = ShapeFactory.makeHexagon();
         Shape cloneS2 = s2.clone();
-        //assertNotSame(s2.getObservers(), cloneS2.getObservers()); TODO
+        assertNotSame(s2.getObservers(), cloneS2.getObservers());
         assertEquals(s1.getPosition(), cloneS1.getPosition());
 
 

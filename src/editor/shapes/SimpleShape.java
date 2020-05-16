@@ -1,12 +1,13 @@
 package editor.shapes;
 
+import editor.observer.Observable;
 import editor.observer.Observer;
 import editor.utils.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class SimpleShape implements Shape {
+public abstract class SimpleShape extends Observable implements Shape {
     private Point2D position;
 
     private Color color;
@@ -138,27 +139,5 @@ public abstract class SimpleShape implements Shape {
         this.color = color;
         this.rotation = rotation;
         notifyObservers();
-    }
-
-    @Override
-    public void addObserver(Observer observer) {
-        this.observers.add(observer);
-    }
-
-    @Override
-    public void removeObserver(Observer observer) {
-        this.observers.remove(observer);
-    }
-
-    @Override
-    public void notifyObservers() {
-        Set<Observer> copy = new HashSet<>(this.observers);
-        for (Observer o : copy)
-            o.update();
-    }
-
-    @Override
-    public void removeObservers() {
-        this.observers = new HashSet<>();
     }
 }
