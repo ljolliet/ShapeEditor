@@ -240,7 +240,7 @@ public class RenderingJFx implements Rendering {
     @Override
     public void dragFromToolbar(Shape shape) {
         // Shadow shape
-        shadowShape = (Group) getShadowShape(shape);
+        shadowShape = getShadowShape(shape);
         shadowGroup.getChildren().add(shadowShape);
         shadowGroup.toFront();
         shadowShape.setVisible(false);
@@ -267,7 +267,7 @@ public class RenderingJFx implements Rendering {
         }
 
         // Shadow shape
-        shadowShape = (Group) getShadowShape(shape);
+        shadowShape = getShadowShape(shape);
         shadowGroup.getChildren().add(shadowShape);
         shadowGroup.toFront();
         shadowShape.setVisible(false);
@@ -500,7 +500,7 @@ public class RenderingJFx implements Rendering {
     //     Create shapes     //
     ///////////////////////////
 
-    private Object getShadowShape(Shape shape) {
+    private Group getShadowShape(Shape shape) {
         if (shape instanceof Rectangle)
             return getShadowShape((Rectangle) shape);
         if (shape instanceof Polygon)
@@ -511,25 +511,25 @@ public class RenderingJFx implements Rendering {
         return null;
     }
 
-    private Object getShadowShape(Rectangle r) {
+    private Group getShadowShape(Rectangle r) {
         r = new Rectangle(r.getWidth(), r.getHeight(), r.getBorderRadius(), new Point2D(0, 0),
                 r.getColor(), r.getRotationCenter(), r.getRotation());
 
         return new Group(ShapeFactoryJFx.createSceneRectangle(r));
     }
 
-    private Object getShadowShape(Polygon p) {
+    private Group getShadowShape(Polygon p) {
         p = new Polygon(p.getNbSides(), p.getSideLength(), new Point2D(0, 0),
                 p.getColor(), p.getRotationCenter(), p.getRotation());
 
         return new Group(ShapeFactoryJFx.createScenePolygon(p));
     }
 
-    private Object getShadowShape(ShapeGroup g) {
+    private Group getShadowShape(ShapeGroup g) {
         Group grp = new Group();
 
         for (Shape shape: g.getChildren()) {
-            Group JFxGroup = (Group) getShadowShape(shape);
+            Group JFxGroup = getShadowShape(shape);
             JFxGroup.setTranslateX(shape.getPosition().x - g.getPosition().x);
             JFxGroup.setTranslateY(shape.getPosition().y - g.getPosition().y);
             grp.getChildren().add(JFxGroup);
