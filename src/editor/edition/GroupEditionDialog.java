@@ -18,7 +18,7 @@ public class GroupEditionDialog extends ShapeEditionDialog {
 
     @Override
     public void applyEdition() {
-        this.getTarget().setAllValues(new Point2D(this.posX, this.posY), this.color, this.rotation);
+        this.getTarget().setAllValues(new Point2D(this.posX, this.posY), this.color, this.rotation, this.translation, this.rotationCenter);
     }
 
     public ShapeGroup getTarget(){

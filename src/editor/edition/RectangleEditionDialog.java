@@ -2,6 +2,7 @@ package editor.edition;
 
 import editor.shapes.Rectangle;
 import editor.utils.Point2D;
+import editor.utils.Vec2D;
 import ui.Rendering;
 
 public class RectangleEditionDialog extends ShapeEditionDialog {
@@ -28,7 +29,12 @@ public class RectangleEditionDialog extends ShapeEditionDialog {
 
     @Override
     public void applyEdition(){
-        this.getTarget().setAllRectangleValues(this.width, this.height, this.borderRadius, new Point2D(this.posX, this.posY), this.color, this.rotation);
+        this.getTarget().setAllRectangleValues(this.width, this.height, this.borderRadius,
+                new Point2D(this.posX, this.posY),
+                this.color,
+                this.rotation,
+                new Vec2D(transWidth, transHeight),
+                new Point2D(rotateCenterX, rotateCenterY));
     }
 
 }

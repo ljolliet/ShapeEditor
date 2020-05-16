@@ -4,6 +4,7 @@ import editor.edition.RectangleEditionDialog;
 import editor.core.EditorVisitor;
 import editor.utils.Color;
 import editor.utils.Point2D;
+import editor.utils.Vec2D;
 import ui.ApplicationI;
 import editor.edition.EditionDialogI;
 import ui.Rendering;
@@ -78,25 +79,31 @@ public class Rectangle extends SimpleShape {
     }
 
     public void setWidth(double width) {
-        this.width = width;
-        notifyObservers();
+        if(this.width != width) {
+            this.width = width;
+            notifyObservers();
+        }
     }
 
     public void setHeight(double height) {
-        this.height = height;
-        notifyObservers();
+        if(this.height != height) {
+            this.height = height;
+            notifyObservers();
+        }
     }
 
     public void setBorderRadius(int borderRadius) {
-        this.borderRadius = borderRadius;
-        notifyObservers();
+        if(this.borderRadius != borderRadius) {
+            this.borderRadius = borderRadius;
+            notifyObservers();
+        }
     }
 
 
-    public void setAllRectangleValues(double width, double height, int borderRadius, Point2D position, Color color, double rotation){
+    public void setAllRectangleValues(double width, double height, int borderRadius, Point2D position, Color color, double rotation, Vec2D translation, Point2D rotationCenter){
         this.width = width;
         this.height = height;
         this.borderRadius = borderRadius;
-        this.setAllValues(position,color,rotation);
+        this.setAllValues(position,color,rotation, translation, rotationCenter);
     }
 }

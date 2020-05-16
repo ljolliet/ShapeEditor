@@ -5,6 +5,7 @@ import editor.edition.PolygonEditionDialog;
 import editor.core.EditorVisitor;
 import editor.utils.Color;
 import editor.utils.Point2D;
+import editor.utils.Vec2D;
 import ui.ApplicationI;
 import ui.Rendering;
 
@@ -70,15 +71,19 @@ public class Polygon extends SimpleShape {
     }
 
     public void setSideLength(double sideLength) {
-        this.sideLength = sideLength;
-        computeRadius();
-        notifyObservers();
+        if(this.sideLength != sideLength) {
+            this.sideLength = sideLength;
+            computeRadius();
+            notifyObservers();
+        }
     }
 
     public void setNbSides(int nbsides){
-        this.nbSides = nbsides;
-        computeRadius();
-        notifyObservers();
+        if(this.nbSides != nbSides) {
+            this.nbSides = nbsides;
+            computeRadius();
+            notifyObservers();
+        }
     }
 
     @Override
@@ -111,10 +116,10 @@ public class Polygon extends SimpleShape {
         return radius;
     }
 
-    public void setAllPolygonValues(int nbSides, double sideLength, Point2D position, Color color, double rotation) {
+    public void setAllPolygonValues(int nbSides, double sideLength, Point2D position, Color color, double rotation, Vec2D translation, Point2D rotationCenter) {
         this.nbSides = nbSides;
         this.sideLength = sideLength;
         computeRadius();
-        this.setAllValues(position, color, rotation);
+        this.setAllValues(position, color, rotation, translation, rotationCenter);
     }
 }

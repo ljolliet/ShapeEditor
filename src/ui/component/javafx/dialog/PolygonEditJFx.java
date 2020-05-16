@@ -13,6 +13,8 @@ public class PolygonEditJFx extends EditDialogJFx {
         super.addColorToGridPane(polED);
         super.addPositionToGridPane(polED);
         super.addRotationToGridPane(polED);
+        super.addTranslationToGridPane(polED);
+        super.addRotationCenterToGridPane(polED);
         addSideLenghtGridPane(polED);
         addNbSideGridPane(polED);
     }
@@ -25,8 +27,8 @@ public class PolygonEditJFx extends EditDialogJFx {
         sideLenghtSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
                 polED.sideLength = newValue);
         final Label label = new Label("Side length");
-        this.add(label, 0, 3);
-        this.add(sideLenghtSpinner,1, 3);
+        this.add(label, 0, 5);
+        this.add(sideLenghtSpinner,1, 5);
     }
 
     void addNbSideGridPane(PolygonEditionDialog polED){
@@ -37,8 +39,8 @@ public class PolygonEditJFx extends EditDialogJFx {
         nbSideSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
                 polED.nbSides = newValue);
         final Label label = new Label("Sides number");
-        this.add(label, 0, 4);
-        this.add(nbSideSpinner,1, 4);
+        this.add(label, 0, 6);
+        this.add(nbSideSpinner,1, 6);
     }
 
 }

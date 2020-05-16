@@ -80,32 +80,43 @@ public abstract class SimpleShape extends Observable implements Shape {
 
     @Override
     public void setPosition(Point2D pos) {
-        this.position = pos;
-        notifyObservers();
+        if(this.position != pos) {
+            this.position = pos;
+            notifyObservers();
+        }
     }
 
     @Override
     public void setColor(Color color) {
-        this.color = color;
-        notifyObservers();
+        if(this.color != color) {
+            this.color = color;
+            notifyObservers();
+        }
     }
 
     @Override
     public void setRotation(double angle) {
-        this.rotation = angle;
-        notifyObservers();
+        if(this.rotation != angle) {
+            this.rotation = angle;
+            notifyObservers();
+        }
     }
 
     @Override
     public void setRotationCenter(Point2D pos) {
-        this.rotationCenter = pos;
-        notifyObservers();
+        if(this.rotationCenter != pos) {
+            this.rotationCenter = pos;
+            notifyObservers();
+        }
+
     }
 
     @Override
     public void setTranslation(Vec2D translation) {
-        this.translation = translation;
-        notifyObservers();
+        if(this.translation != translation) {
+            this.translation = translation;
+            notifyObservers();
+        }
     }
 
     @Override
@@ -134,10 +145,14 @@ public abstract class SimpleShape extends Observable implements Shape {
     }
 
     @Override
-    public void setAllValues(Point2D position, Color color, double rotation){
-        this.position = position;
-        this.color = color;
-        this.rotation = rotation;
-        notifyObservers();
+    public void setAllValues(Point2D position, Color color, double rotation, Vec2D translation, Point2D rotationCenter){
+        if(this.position != position || this.color != color || this.rotation != rotation || this.translation != translation || this.rotationCenter != rotationCenter) {
+            this.position = position;
+            this.color = color;
+            this.rotation = rotation;
+            this.translation = translation;
+            this.rotationCenter = rotationCenter;
+            notifyObservers();
+        }
     }
 }

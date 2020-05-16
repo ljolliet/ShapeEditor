@@ -8,5 +8,7 @@ public class GroupEditJFx extends EditDialogJFx {
         super.addColorToGridPane(groupED);
         super.addPositionToGridPane(groupED);
         super.addRotationToGridPane(groupED);
+        super.addTranslationToGridPane(groupED);
+        super.addRotationCenterToGridPane(groupED);
     }
 }

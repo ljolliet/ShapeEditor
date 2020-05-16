@@ -145,44 +145,56 @@ public class ShapeGroup extends Observable implements Shape {
     @Override
     public void setColor(Color color) {
         this.color = color;
-
-        for (Shape s: shapes)
-            s.setColor(color);
-        notifyObservers();
+        if(this.color != null)
+        {
+            for (Shape s : shapes)
+                s.setColor(color);
+            notifyObservers();
+        }
     }
 
     @Override
     public void setRotation(double angle) {
-        this.rotation = angle;
-
-        for (Shape s: shapes)
-            s.setRotation(angle);
-        notifyObservers();
+        if(angle != -1)
+        {
+            this.rotation = angle;
+            notifyObservers();
+        }
     }
 
     @Override
     public void setRotationCenter(Point2D pos) {
-        this.rotationCenter = pos;
+        if(pos != null)
+        {
+            this.rotationCenter = pos;
+            for(Shape s : shapes)
+                s.setRotationCenter(this.rotationCenter);
+            notifyObservers();
+        }
 
-        for (Shape s: shapes)
+        /*for (Shape s: shapes)
             s.setRotationCenter(pos);
-        notifyObservers();
+        notifyObservers();*/
     }
 
     @Override
     public void setTranslation(Vec2D translation) {
-        this.translation = translation;
-
-        for (Shape s: shapes)
-            s.setTranslation(translation);
-        notifyObservers();
+        if(translation != null)
+        {
+            this.translation = translation;
+            for(Shape s : shapes)
+                s.setTranslation(this.translation);
+            notifyObservers();
+        }
     }
 
     @Override
-    public void setAllValues(Point2D position, Color color, double rotation) {
+    public void setAllValues(Point2D position, Color color, double rotation, Vec2D translation, Point2D rotationCenter) {
         this.setPosition(position);
         this.setColor(color);
         this.setRotation(rotation);
+        this.setTranslation(translation);
+        this.setRotationCenter(rotationCenter);
     }
 
 

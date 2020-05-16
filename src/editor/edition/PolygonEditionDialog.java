@@ -2,6 +2,7 @@ package editor.edition;
 
 import editor.shapes.Polygon;
 import editor.utils.Point2D;
+import editor.utils.Vec2D;
 import javafx.scene.control.ContextMenu;
 import ui.Rendering;
 
@@ -22,7 +23,12 @@ public class PolygonEditionDialog extends ShapeEditionDialog {
 
     @Override
     public void applyEdition(){
-        this.getTarget().setAllPolygonValues(this.nbSides, this.sideLength, new Point2D(this.posX, this.posY), this.color, this.rotation);
+        this.getTarget().setAllPolygonValues(this.nbSides, this.sideLength,
+                new Point2D(this.posX, this.posY),
+                this.color,
+                this.rotation,
+                new Vec2D(transWidth, transHeight),
+                new Point2D(rotateCenterX, rotateCenterY));
     }
 
     public Polygon getTarget() {
