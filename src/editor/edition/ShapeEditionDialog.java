@@ -38,7 +38,12 @@ public class ShapeEditionDialog implements EditionDialogI {
 
     @Override
     public void applyEdition() {
-        this.getTarget().setAllValues(position, color, rotation, translation, rotationCenter);
+        this.getTarget().setAllValues(
+                this.getPosition(),
+                this.getColor(),
+                this.getRotation(),
+                this.getTranslation(),
+                this.getRotationCenter());
     }
 
     @Override
