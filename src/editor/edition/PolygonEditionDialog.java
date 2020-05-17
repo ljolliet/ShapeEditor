@@ -7,8 +7,8 @@ import javafx.scene.control.ContextMenu;
 import ui.Rendering;
 
 public class PolygonEditionDialog extends ShapeEditionDialog {
-    public int nbSides;
-    public double sideLength;
+    private int nbSides;
+    private double sideLength;
 
     public PolygonEditionDialog(Polygon polygon) {
         super(polygon);
@@ -24,17 +24,17 @@ public class PolygonEditionDialog extends ShapeEditionDialog {
     @Override
     public void applyEdition(){
         this.getTarget().setAllPolygonValues(
-                this.nbSides,
-                this.sideLength,
-                this.getPosition(),
-                this.getColor(),
-                this.getRotation(),
-                this.getTranslation(),
-                this.getRotationCenter());
+                this.getNbSides(),
+                this.getSideLength(),
+                super.getPosition(),
+                super.getColor(),
+                super.getRotation(),
+                super.getTranslation(),
+                super.getRotationCenter());
     }
 
     public Polygon getTarget() {
-        return (Polygon)super.getTarget();
+        return (Polygon) super.getTarget();
     }
 
     @Override
@@ -42,4 +42,19 @@ public class PolygonEditionDialog extends ShapeEditionDialog {
 
     }
 
+    public void setNbSides(int nbSides) {
+        this.nbSides = nbSides;
+    }
+
+    public void setSideLength(double sideLength) {
+        this.sideLength = sideLength;
+    }
+
+    public int getNbSides() {
+        return this.nbSides;
+    }
+
+    public double getSideLength() {
+        return this.sideLength;
+    }
 }

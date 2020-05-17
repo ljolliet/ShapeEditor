@@ -15,29 +15,35 @@ public class PolygonEditJFx extends EditDialogJFx {
         super.addRotationToGridPane(polED);
         super.addTranslationToGridPane(polED);
         super.addRotationCenterToGridPane(polED);
-        addSideLenghtGridPane(polED);
-        addNbSideGridPane(polED);
+        this.addSideLenghtGridPane(polED);
+        this.addNbSideGridPane(polED);
     }
 
     void addSideLenghtGridPane(PolygonEditionDialog polED) {
-        Spinner<Double> sideLenghtSpinner = new Spinner();
-        sideLenghtSpinner.setEditable(true);
+        Spinner<Double> sideLengthSpinner = new Spinner<>();
+        sideLengthSpinner.setEditable(true);
+
         final double initialValue = polED.getTarget().getSideLength();
-        sideLenghtSpinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(Shape.MIN_RADIUS, Shape.MAX_RADIUS, initialValue));
-        sideLenghtSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
-                polED.sideLength = newValue);
+        sideLengthSpinner.setValueFactory(
+                new SpinnerValueFactory.DoubleSpinnerValueFactory(Shape.MIN_RADIUS, Shape.MAX_RADIUS, initialValue));
+        sideLengthSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
+                polED.setSideLength(newValue));
+
         final Label label = new Label("Side length");
         this.add(label, 0, 5);
-        this.add(sideLenghtSpinner,1, 5);
+        this.add(sideLengthSpinner,1, 5);
     }
 
     void addNbSideGridPane(PolygonEditionDialog polED){
-        Spinner<Integer> nbSideSpinner = new Spinner();
+        Spinner<Integer> nbSideSpinner = new Spinner<>();
         nbSideSpinner.setEditable(true);
+
         final int initialValue = polED.getTarget().getNbSides();
-        nbSideSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(Shape.MIN_RADIUS, Shape.MAX_RADIUS, initialValue));
+        nbSideSpinner.setValueFactory(
+                new SpinnerValueFactory.IntegerSpinnerValueFactory(Shape.MIN_RADIUS, Shape.MAX_RADIUS, initialValue));
         nbSideSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
-                polED.nbSides = newValue);
+                polED.setNbSides(newValue));
+
         final Label label = new Label("Sides number");
         this.add(label, 0, 6);
         this.add(nbSideSpinner,1, 6);
