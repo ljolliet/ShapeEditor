@@ -22,7 +22,6 @@ public class ShapeGroup extends Observable implements Shape {
     private double rotation = -1;
     private Point2D rotationCenter = null;
     private Vec2D translation = null;
-    private Set<Observer> observers = new HashSet<>();
 
     public ShapeGroup(){
         shapes = new HashSet<>();

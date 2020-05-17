@@ -14,8 +14,6 @@ public abstract class SimpleShape extends Observable implements Shape {
     private Point2D rotationCenter;
     private double rotation;
     private Vec2D translation;
-    private Set<Observer> observers = new HashSet();
-
 
     public SimpleShape(Point2D position, Color color, Point2D rotationCenter, double rotation) {
         this.position = position;
@@ -146,7 +144,7 @@ public abstract class SimpleShape extends Observable implements Shape {
 
     @Override
     public void setAllValues(Point2D position, Color color, double rotation, Vec2D translation, Point2D rotationCenter){
-        if(this.position != position || this.color != color || this.rotation != rotation || this.translation != translation || this.rotationCenter != rotationCenter) {
+        if (this.position != position || this.color != color || this.rotation != rotation || this.translation != translation || this.rotationCenter != rotationCenter) {
             this.position = position;
             this.color = color;
             this.rotation = rotation;
