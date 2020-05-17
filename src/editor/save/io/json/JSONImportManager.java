@@ -39,7 +39,6 @@ public class JSONImportManager implements ImportManager {
     }
 
 
-    //TODO refactor
     public void restoreFromString(String data) {
         JSONParser parser = new JSONParser();
         try {
@@ -52,7 +51,7 @@ public class JSONImportManager implements ImportManager {
                 List<Shape> shapes = new ArrayList<>();
                 this.getShapes(scene, shapes);
                 for (Shape s : shapes)
-                    s.addObserver(Editor.getInstance().getObserver());  //TODO : better way ?
+                    s.addObserver(Editor.getInstance().getObserver());
                 Editor.getInstance().getScene().setShapes(shapes);
             }
             if(toolbar != null){
