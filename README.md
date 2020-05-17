@@ -20,7 +20,7 @@ This editor embeds the following  features :
 - Automatic toolbar save and load
 
 We added some other features :
-- Delete selected shapes
+- Delete or add to toolbar selected shapes (without being a group originally)
 - Edit a group
 - Safety on toolbar save/load (if there is no more rectangle or polygon, a new instance will be added automatically)
  
