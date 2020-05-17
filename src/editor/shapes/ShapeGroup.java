@@ -144,9 +144,8 @@ public class ShapeGroup extends Observable implements Shape {
 
     @Override
     public void setColor(Color color) {
-        this.color = color;
-        if(this.color != null)
-        {
+        if (color != null) {
+            this.color = color;
             for (Shape s : shapes)
                 s.setColor(color);
             notifyObservers();
@@ -155,32 +154,27 @@ public class ShapeGroup extends Observable implements Shape {
 
     @Override
     public void setRotation(double angle) {
-        if(angle != -1)
-        {
+        if (angle > -1) {
             this.rotation = angle;
+            for (Shape s: shapes)
+                s.setRotation(angle);
             notifyObservers();
         }
     }
 
     @Override
     public void setRotationCenter(Point2D pos) {
-        if(pos != null)
-        {
+        if (pos != null) {
             this.rotationCenter = pos;
             for(Shape s : shapes)
                 s.setRotationCenter(this.rotationCenter);
             notifyObservers();
         }
-
-        /*for (Shape s: shapes)
-            s.setRotationCenter(pos);
-        notifyObservers();*/
     }
 
     @Override
     public void setTranslation(Vec2D translation) {
-        if(translation != null)
-        {
+        if (translation != null) {
             this.translation = translation;
             for(Shape s : shapes)
                 s.setTranslation(this.translation);

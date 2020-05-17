@@ -186,7 +186,7 @@ public class RenderingJFx implements Rendering {
     }
 
     @Override
-    public void setEditionDialog(EditionDialogI shapeED, Point2D position) {
+    public void setEditionDialog(EditionDialogI shapeED) {
         if(shapeED instanceof RectangleEditionDialog)
             this.registerComponent(new RectangleEditJFx((RectangleEditionDialog) shapeED));
         else if(shapeED instanceof PolygonEditionDialog)

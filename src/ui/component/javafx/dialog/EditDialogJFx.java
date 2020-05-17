@@ -1,6 +1,5 @@
 package ui.component.javafx.dialog;
 
-import editor.edition.GroupEditionDialog;
 import editor.edition.ShapeEditionDialog;
 import editor.shapes.Shape;
 import javafx.geometry.Insets;
@@ -14,7 +13,6 @@ import ui.Mediator;
 
 public class EditDialogJFx extends GridPane implements DialogBox {
     private Mediator mediator;
-
 
     public EditDialogJFx(){
         super();
@@ -51,42 +49,44 @@ public class EditDialogJFx extends GridPane implements DialogBox {
     }
 
     void addColorToGridPane(ShapeEditionDialog shapeED) {
-        final editor.utils.Color originalColor ;;
-        if (shapeED.getTarget().getColor() == null)
+        editor.utils.Color originalColor;
+
+        originalColor = shapeED.getTarget().getColor();
+        if (originalColor == null)
             originalColor = new editor.utils.Color(0, 0, 0, 0);
-        else
-            originalColor = shapeED.getTarget().getColor();
+
         ColorPicker colorPicker = new ColorPicker();
         colorPicker.setValue(Color.rgb(originalColor.r, originalColor.g, originalColor.b));
-        colorPicker.setOnAction(event -> {
-            editor.utils.Color c = colorFromJFxColor(colorPicker.getValue());
-            shapeED.color = c;
-        });
+        colorPicker.setOnAction(event ->
+            shapeED.color = colorFromJFxColor(colorPicker.getValue()));
+
         final Label label = new Label("Color");
         this.add(label, 0, 0);
         this.add(colorPicker, 1, 0);
     }
     void addPositionToGridPane(ShapeEditionDialog shapeED) {
-        Spinner<Double> posXSpinner = new Spinner();
+        Spinner<Double> posXSpinner = new Spinner<>();
         posXSpinner.setMaxWidth(75);
         posXSpinner.setEditable(true);
+
         final double initialValueX = shapeED.getTarget().getPosition().x;
-        final double maxValueX = ApplicationI.SCENE_WIDTH;
-        posXSpinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0., maxValueX, initialValueX));
+        posXSpinner.setValueFactory(
+                new SpinnerValueFactory.DoubleSpinnerValueFactory(0, ApplicationI.SCENE_WIDTH, initialValueX));
         posXSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
                 shapeED.posX = newValue);
 
-        Spinner<Double> posYSpinner = new Spinner();
+        Spinner<Double> posYSpinner = new Spinner<>();
         posYSpinner.setMaxWidth(75);
         posYSpinner.setEditable(true);
+
         final double initialValueY = shapeED.getTarget().getPosition().y;
-        final double maxValueY = ApplicationI.SCENE_WIDTH;
-        posYSpinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0., maxValueY, initialValueY));
+        posYSpinner.setValueFactory(
+                new SpinnerValueFactory.DoubleSpinnerValueFactory(0, ApplicationI.SCENE_HEIGHT, initialValueY));
         posYSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
                 shapeED.posY = newValue);
 
         HBox h = new HBox();
-        h.setSpacing(10.);
+        h.setSpacing(10);
         h.getChildren().addAll(posXSpinner, posYSpinner);
         final Label label = new Label("Position");
         this.add(label, 0, 1);
@@ -94,81 +94,92 @@ public class EditDialogJFx extends GridPane implements DialogBox {
     }
 
     void addRotationToGridPane(ShapeEditionDialog shapeED) {
-        Spinner<Double> rotationSpinner = new Spinner();
+        Spinner<Double> rotationSpinner = new Spinner<>();
         rotationSpinner.setEditable(true);
+
         final double initialValue = shapeED.getTarget().getRotation();
-        rotationSpinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(Shape.MIN_ROTATION, Shape.MAX_ROTATION, initialValue));
+        rotationSpinner.setValueFactory(
+                new SpinnerValueFactory.DoubleSpinnerValueFactory(Shape.MIN_ROTATION, Shape.MAX_ROTATION, initialValue));
         rotationSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
                 shapeED.rotation = newValue);
+
         final Label label = new Label("Rotation");
         this.add(label, 0, 2);
         this.add(rotationSpinner, 1, 2);
     }
 
     void addTranslationToGridPane(ShapeEditionDialog shapeED) {
-        Spinner<Double> transHeightSpinner = new Spinner();
-        transHeightSpinner.setMaxWidth(75);
-        transHeightSpinner.setEditable(true);
-        final double initialValueX;
-        if(shapeED.getRotationCenter() != null)
-            initialValueX = shapeED.getTarget().getTranslation().height;
-        else
-            initialValueX = 0;
-        final double maxValueX = ApplicationI.SCENE_WIDTH;
-        transHeightSpinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0., maxValueX, initialValueX));
-        transHeightSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
-                shapeED.transHeight = newValue);
-
-        Spinner<Double> transWidthSpinner = new Spinner();
+        Spinner<Double> transWidthSpinner = new Spinner<>();
         transWidthSpinner.setMaxWidth(75);
         transWidthSpinner.setEditable(true);
+
+        final double initialValueX;
+        if (shapeED.getTranslation() != null)
+            initialValueX = shapeED.getTarget().getTranslation().width;
+        else
+            initialValueX = 0;
+
+        transWidthSpinner.setValueFactory(
+                new SpinnerValueFactory.DoubleSpinnerValueFactory(0, ApplicationI.SCENE_WIDTH, initialValueX));
+        transWidthSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
+                shapeED.transWidth = newValue);
+
+        Spinner<Double> transHeightSpinner = new Spinner<>();
+        transHeightSpinner.setMaxWidth(75);
+        transHeightSpinner.setEditable(true);
+
         final double initialValueY;
-        if(shapeED.getRotationCenter() != null)
+        if(shapeED.getTranslation() != null)
             initialValueY = shapeED.getTarget().getTranslation().height;
         else
             initialValueY = 0;
-        final double maxValueY = ApplicationI.SCENE_WIDTH;
-        transWidthSpinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0., maxValueY, initialValueY));
-        transWidthSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
+
+        transHeightSpinner.setValueFactory
+                (new SpinnerValueFactory.DoubleSpinnerValueFactory(0, ApplicationI.SCENE_WIDTH, initialValueY));
+        transHeightSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
                 shapeED.transHeight = newValue);
 
         HBox h = new HBox();
-        h.setSpacing(10.);
-        h.getChildren().addAll(transHeightSpinner, transWidthSpinner);
+        h.setSpacing(10);
+        h.getChildren().addAll(transWidthSpinner, transHeightSpinner);
         final Label label = new Label("Translation");
         this.add(label, 0, 3);
         this.add(h, 1, 3);
     }
 
     void addRotationCenterToGridPane(ShapeEditionDialog shapeED) {
-        Spinner<Double> rotateCenterXSpinner = new Spinner();
+        Spinner<Double> rotateCenterXSpinner = new Spinner<>();
         rotateCenterXSpinner.setMaxWidth(75);
         rotateCenterXSpinner.setEditable(true);
+
         final double initialValueX;
         if(shapeED.getRotationCenter() != null)
-            initialValueX = shapeED.getTarget().getTranslation().height;
+            initialValueX = shapeED.getTarget().getRotationCenter().x;
         else
             initialValueX = 0;
-        final double maxValueX = ApplicationI.SCENE_WIDTH;
-        rotateCenterXSpinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0., maxValueX, initialValueX));
+
+        rotateCenterXSpinner.setValueFactory(
+                new SpinnerValueFactory.DoubleSpinnerValueFactory(0, ApplicationI.SCENE_WIDTH, initialValueX));
         rotateCenterXSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
                 shapeED.rotateCenterX = newValue);
 
-        Spinner<Double> rotateCenterYSpinner = new Spinner();
+        Spinner<Double> rotateCenterYSpinner = new Spinner<>();
         rotateCenterYSpinner.setMaxWidth(75);
         rotateCenterYSpinner.setEditable(true);
+
         final double initialValueY;
         if(shapeED.getRotationCenter() != null)
-            initialValueY = shapeED.getTarget().getTranslation().height;
+            initialValueY = shapeED.getTarget().getRotationCenter().y;
         else
             initialValueY = 0;
-        final double maxValueY = ApplicationI.SCENE_WIDTH;
-        rotateCenterYSpinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0., maxValueY, initialValueY));
+
+        rotateCenterYSpinner.setValueFactory(
+                new SpinnerValueFactory.DoubleSpinnerValueFactory(0, ApplicationI.SCENE_HEIGHT, initialValueY));
         rotateCenterYSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
                 shapeED.rotateCenterY = newValue);
 
         HBox h = new HBox();
-        h.setSpacing(10.);
+        h.setSpacing(10);
         h.getChildren().addAll(rotateCenterXSpinner, rotateCenterYSpinner);
         final Label label = new Label("Rotation Center");
         this.add(label, 0, 4);

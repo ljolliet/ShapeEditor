@@ -7,7 +7,7 @@ import editor.utils.Vec2D;
 import javafx.scene.control.ContextMenu;
 import ui.Rendering;
 
-public class ShapeEditionDialog implements EditionDialogI{
+public class ShapeEditionDialog implements EditionDialogI {
     private Point2D position;
     public double posX;
     public double posY;
@@ -38,7 +38,7 @@ public class ShapeEditionDialog implements EditionDialogI{
 
     @Override
     public void draw(Rendering rendering) {
-        rendering.setEditionDialog(this, this.getPosition());
+        rendering.setEditionDialog(this);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class ShapeEditionDialog implements EditionDialogI{
     }
 
     @Override
-    public Shape getTarget(){
+    public Shape getTarget() {
         return this.target;
     }
 
@@ -62,38 +62,37 @@ public class ShapeEditionDialog implements EditionDialogI{
                 new Vec2D(transWidth, transHeight), new Point2D(rotateCenterX, rotateCenterY));
     }
 
-    public void setColor(Color c){
+    public void setColor(Color c) {
         this.target.setColor(c);
     }
 
-    public void setRotation(double value){
+    public void setRotation(double value) {
         this.target.setRotation(value);
     }
 
-    public void setPositionX(double x){
+    public void setPositionX(double x) {
         double y = this.target.getPosition().y;
         this.target.setPosition(new Point2D(x, y));
     }
 
-    public void setPositionY(double y){
+    public void setPositionY(double y) {
         double x = this.target.getPosition().x;
         this.target.setPosition(new Point2D(x, y));
     }
 
-    public void setTranslationHeight(double height){
+    public void setTranslationHeight(double height) {
         double width = this.target.getTranslation().width;
-        this.target.setTranslation(new Vec2D(height, width));
+        this.target.setTranslation(new Vec2D(width, height));
     }
 
-    public void setTranslationWidth(double width){
+    public void setTranslationWidth(double width) {
         double height = this.target.getTranslation().height;
-        this.target.setTranslation(new Vec2D(height, width));
+        this.target.setTranslation(new Vec2D(width, height));
     }
 
 
     @Override
     public void setEditionDialog(ContextMenu contextMenu) {
-
 
     }
 

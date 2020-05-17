@@ -17,5 +17,5 @@ public interface Rendering extends Mediator {
     void drawInToolbar(Polygon polygon);
     void drawInToolbar(ShapeGroup group);
 
-    void setEditionDialog(EditionDialogI groupED, Point2D position);
+    void setEditionDialog(EditionDialogI groupED);
 }
