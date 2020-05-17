@@ -15,11 +15,11 @@ public class PolygonEditJFx extends EditDialogJFx {
         super.addRotationToGridPane(polED);
         super.addTranslationToGridPane(polED);
         super.addRotationCenterToGridPane(polED);
-        this.addSideLenghtGridPane(polED);
+        this.addSideLengthGridPane(polED);
         this.addNbSideGridPane(polED);
     }
 
-    void addSideLenghtGridPane(PolygonEditionDialog polED) {
+    void addSideLengthGridPane(PolygonEditionDialog polED) {
         Spinner<Double> sideLengthSpinner = new Spinner<>();
         sideLengthSpinner.setEditable(true);
 

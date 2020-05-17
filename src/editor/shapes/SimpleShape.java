@@ -143,14 +143,15 @@ public abstract class SimpleShape extends Observable implements Shape {
     }
 
     @Override
-    public void setAllValues(Point2D position, Color color, double rotation, Vec2D translation, Point2D rotationCenter){
-        if (this.position != position || this.color != color || this.rotation != rotation || this.translation != translation || this.rotationCenter != rotationCenter) {
+    public void setAllValues(Point2D position, Color color, double rotation, Vec2D translation, Point2D rotationCenter) {
+        // TODO find a way to notify only if a value has changed
+//        if (this.position != position || this.color != color || this.rotation != rotation || this.translation != translation || this.rotationCenter != rotationCenter) {
             this.position = position;
             this.color = color;
             this.rotation = rotation;
             this.translation = translation;
             this.rotationCenter = rotationCenter;
             notifyObservers();
-        }
+//        }
     }
 }
