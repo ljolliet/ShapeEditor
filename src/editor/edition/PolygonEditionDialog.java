@@ -23,12 +23,14 @@ public class PolygonEditionDialog extends ShapeEditionDialog {
 
     @Override
     public void applyEdition(){
-        this.getTarget().setAllPolygonValues(this.nbSides, this.sideLength,
-                new Point2D(this.posX, this.posY),
-                this.color,
-                this.rotation,
-                new Vec2D(transWidth, transHeight),
-                new Point2D(rotateCenterX, rotateCenterY));
+        this.getTarget().setAllPolygonValues(
+                this.nbSides,
+                this.sideLength,
+                this.getPosition(),
+                this.getColor(),
+                this.getRotation(),
+                this.getTranslation(),
+                this.getRotationCenter());
     }
 
     public Polygon getTarget() {

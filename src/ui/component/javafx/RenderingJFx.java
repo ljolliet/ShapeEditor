@@ -385,7 +385,6 @@ public class RenderingJFx implements Rendering {
         else
             addEditToDialog();
         dialogED = shape.createEditionDialog();
-        dialogED.setPosition(position);
         dialogED.draw(this);
         contextMenu.show(this.root, position.x, position.y);
     }

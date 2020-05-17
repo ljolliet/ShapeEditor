@@ -7,9 +7,7 @@ import ui.Rendering;
 
 public interface EditionDialogI {
     void draw(Rendering rendering);
-    void setEditionDialog(ContextMenu contextMenu);
-    void setPosition(Point2D position);
-    Point2D getPosition();
+    void setEditionDialog(ContextMenu contextMenu); // TODO Remove ?
     Shape getTarget();
     void applyEdition();
 }

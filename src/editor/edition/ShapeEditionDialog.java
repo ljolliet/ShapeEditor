@@ -8,47 +8,27 @@ import javafx.scene.control.ContextMenu;
 import ui.Rendering;
 
 public class ShapeEditionDialog implements EditionDialogI {
-    private Point2D position;
-    public double posX;
-    public double posY;
-    public Color color;
-    public double rotation;
-    public Vec2D translation;
-    public double transHeight;
-    public double transWidth;
-    public Point2D rotationCenter;
-    public double rotateCenterX;
-    public double rotateCenterY;
+
     private final Shape target;
+
+    private Point2D position;
+    private Color color;
+    private double rotation;
+    private Vec2D translation;
+    private Point2D rotationCenter;
 
     public ShapeEditionDialog(Shape shape) {
         this.target = shape;
-        this.posX = shape.getPosition().x;
-        this.posY = shape.getPosition().y;
+        this.position = shape.getPosition();
         this.color = shape.getColor();
         this.rotation = shape.getRotation();
         this.translation = shape.getTranslation();
-        this.transHeight = 0;
-        this.transWidth = 0;
-        if(shape.getRotationCenter() != null) {
-            this.rotateCenterX = shape.getRotationCenter().x;
-            this.rotateCenterY = shape.getRotationCenter().y;
-        }
+        this.rotationCenter = shape.getRotationCenter();
     }
 
     @Override
     public void draw(Rendering rendering) {
         rendering.setEditionDialog(this);
-    }
-
-    @Override
-    public void setPosition(Point2D position) {
-        this.position = position;
-    }
-
-    @Override
-    public Point2D getPosition() {
-        return this.position;
     }
 
     @Override
@@ -58,42 +38,54 @@ public class ShapeEditionDialog implements EditionDialogI {
 
     @Override
     public void applyEdition() {
-        this.getTarget().setAllValues(new Point2D(posX, posY), color, rotation,
-                new Vec2D(transWidth, transHeight), new Point2D(rotateCenterX, rotateCenterY));
+        this.getTarget().setAllValues(position, color, rotation, translation, rotationCenter);
     }
-
-    public void setColor(Color c) {
-        this.target.setColor(c);
-    }
-
-    public void setRotation(double value) {
-        this.target.setRotation(value);
-    }
-
-    public void setPositionX(double x) {
-        double y = this.target.getPosition().y;
-        this.target.setPosition(new Point2D(x, y));
-    }
-
-    public void setPositionY(double y) {
-        double x = this.target.getPosition().x;
-        this.target.setPosition(new Point2D(x, y));
-    }
-
-    public void setTranslationHeight(double height) {
-        double width = this.target.getTranslation().width;
-        this.target.setTranslation(new Vec2D(width, height));
-    }
-
-    public void setTranslationWidth(double width) {
-        double height = this.target.getTranslation().height;
-        this.target.setTranslation(new Vec2D(width, height));
-    }
-
 
     @Override
     public void setEditionDialog(ContextMenu contextMenu) {
 
+    }
+
+    public void setPositionX(double x) {
+        double y = this.position == null ? 0 : this.position.y;
+        this.position = new Point2D(x, y);
+    }
+
+    public void setPositionY(double y) {
+        double x = this.position == null ? 0 : this.position.x;
+        this.position = new Point2D(x, y);
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public void setRotation(double rotation) {
+        this.rotation = rotation;
+    }
+
+    public void setTranslationWidth(double width) {
+        double height = this.translation == null ? 0 : this.translation.height;
+        this.translation = new Vec2D(width, height);
+
+    }
+    public void setTranslationHeight(double height) {
+        double width = this.translation == null ? 0 : this.translation.width;
+        this.translation = new Vec2D(width, height);
+    }
+
+    public void setRotationCenterX(double x) {
+        double y = this.rotationCenter == null ? 0 : this.rotationCenter.y;
+        this.rotationCenter = new Point2D(x, y);
+    }
+
+    public void setRotationCenterY(double y) {
+        double x = this.rotationCenter == null ? 0 : this.rotationCenter.x;
+        this.rotationCenter = new Point2D(x, y);
+    }
+
+    public Point2D getPosition() {
+        return this.position;
     }
 
     public Color getColor() {
@@ -108,15 +100,7 @@ public class ShapeEditionDialog implements EditionDialogI {
         return translation;
     }
 
-    public void setTranslation(Vec2D translation) {
-        this.translation = translation;
-    }
-
     public Point2D getRotationCenter() {
         return rotationCenter;
-    }
-
-    public void setRotationCenter(Point2D rotationCenter) {
-        this.rotationCenter = rotationCenter;
     }
 }

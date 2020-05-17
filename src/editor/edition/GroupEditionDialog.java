@@ -20,11 +20,11 @@ public class GroupEditionDialog extends ShapeEditionDialog {
     @Override
     public void applyEdition() {
         this.getTarget().setAllValues(
-                new Point2D(this.posX, this.posY),
-                this.color,
-                this.rotation,
-                new Vec2D(transWidth, transHeight),
-                new Point2D(rotateCenterX, rotateCenterY));
+                super.getPosition(),
+                super.getColor(),
+                super.getRotation(),
+                super.getTranslation(),
+                super.getRotationCenter());
     }
 
     public ShapeGroup getTarget(){

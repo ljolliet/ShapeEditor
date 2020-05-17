@@ -30,11 +30,11 @@ public class RectangleEditionDialog extends ShapeEditionDialog {
     @Override
     public void applyEdition(){
         this.getTarget().setAllRectangleValues(this.width, this.height, this.borderRadius,
-                new Point2D(this.posX, this.posY),
-                this.color,
-                this.rotation,
-                new Vec2D(transWidth, transHeight),
-                new Point2D(rotateCenterX, rotateCenterY));
+                this.getPosition(),
+                this.getColor(),
+                this.getRotation(),
+                this.getTranslation(),
+                this.getRotationCenter());
     }
 
 }

@@ -58,7 +58,7 @@ public class EditDialogJFx extends GridPane implements DialogBox {
         ColorPicker colorPicker = new ColorPicker();
         colorPicker.setValue(Color.rgb(originalColor.r, originalColor.g, originalColor.b));
         colorPicker.setOnAction(event ->
-            shapeED.color = colorFromJFxColor(colorPicker.getValue()));
+            shapeED.setColor(colorFromJFxColor(colorPicker.getValue())));
 
         final Label label = new Label("Color");
         this.add(label, 0, 0);
@@ -73,7 +73,7 @@ public class EditDialogJFx extends GridPane implements DialogBox {
         posXSpinner.setValueFactory(
                 new SpinnerValueFactory.DoubleSpinnerValueFactory(0, ApplicationI.SCENE_WIDTH, initialValueX));
         posXSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
-                shapeED.posX = newValue);
+                shapeED.setPositionX(newValue));
 
         Spinner<Double> posYSpinner = new Spinner<>();
         posYSpinner.setMaxWidth(75);
@@ -83,7 +83,7 @@ public class EditDialogJFx extends GridPane implements DialogBox {
         posYSpinner.setValueFactory(
                 new SpinnerValueFactory.DoubleSpinnerValueFactory(0, ApplicationI.SCENE_HEIGHT, initialValueY));
         posYSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
-                shapeED.posY = newValue);
+                shapeED.setPositionY(newValue));
 
         HBox h = new HBox();
         h.setSpacing(10);
@@ -101,7 +101,7 @@ public class EditDialogJFx extends GridPane implements DialogBox {
         rotationSpinner.setValueFactory(
                 new SpinnerValueFactory.DoubleSpinnerValueFactory(Shape.MIN_ROTATION, Shape.MAX_ROTATION, initialValue));
         rotationSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
-                shapeED.rotation = newValue);
+                shapeED.setRotation(newValue));
 
         final Label label = new Label("Rotation");
         this.add(label, 0, 2);
@@ -122,7 +122,7 @@ public class EditDialogJFx extends GridPane implements DialogBox {
         transWidthSpinner.setValueFactory(
                 new SpinnerValueFactory.DoubleSpinnerValueFactory(0, ApplicationI.SCENE_WIDTH, initialValueX));
         transWidthSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
-                shapeED.transWidth = newValue);
+                shapeED.setTranslationWidth(newValue));
 
         Spinner<Double> transHeightSpinner = new Spinner<>();
         transHeightSpinner.setMaxWidth(75);
@@ -137,7 +137,7 @@ public class EditDialogJFx extends GridPane implements DialogBox {
         transHeightSpinner.setValueFactory
                 (new SpinnerValueFactory.DoubleSpinnerValueFactory(0, ApplicationI.SCENE_WIDTH, initialValueY));
         transHeightSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
-                shapeED.transHeight = newValue);
+                shapeED.setTranslationHeight(newValue));
 
         HBox h = new HBox();
         h.setSpacing(10);
@@ -161,7 +161,7 @@ public class EditDialogJFx extends GridPane implements DialogBox {
         rotateCenterXSpinner.setValueFactory(
                 new SpinnerValueFactory.DoubleSpinnerValueFactory(0, ApplicationI.SCENE_WIDTH, initialValueX));
         rotateCenterXSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
-                shapeED.rotateCenterX = newValue);
+                shapeED.setRotationCenterX(newValue));
 
         Spinner<Double> rotateCenterYSpinner = new Spinner<>();
         rotateCenterYSpinner.setMaxWidth(75);
@@ -176,7 +176,7 @@ public class EditDialogJFx extends GridPane implements DialogBox {
         rotateCenterYSpinner.setValueFactory(
                 new SpinnerValueFactory.DoubleSpinnerValueFactory(0, ApplicationI.SCENE_HEIGHT, initialValueY));
         rotateCenterYSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
-                shapeED.rotateCenterY = newValue);
+                shapeED.setRotationCenterY(newValue));
 
         HBox h = new HBox();
         h.setSpacing(10);
