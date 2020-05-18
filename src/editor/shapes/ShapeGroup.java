@@ -4,7 +4,6 @@ import editor.core.EditorVisitor;
 import editor.edition.EditionDialogI;
 import editor.edition.GroupEditionDialog;
 import editor.observer.Observable;
-import editor.observer.Observer;
 import editor.utils.Color;
 import editor.utils.Point2D;
 import editor.utils.SelectionShape;
@@ -12,12 +11,15 @@ import editor.utils.Vec2D;
 import ui.ApplicationI;
 import ui.Rendering;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 public class ShapeGroup extends Observable implements Shape {
 
     private Set<Shape> shapes;
 
+    private Point2D position = new Point2D(0, 0);
     private Color color = null;
     private double rotation = -1;
     private Point2D rotationCenter = null;
@@ -30,11 +32,13 @@ public class ShapeGroup extends Observable implements Shape {
     @Override
     public void addShape(Shape s) {
         shapes.add(s);
+        this.position = computePosition();
     }
 
     @Override
     public void removeShape(Shape s) {
         shapes.remove(s);
+        this.position = computePosition();
     }
 
     @Override
@@ -45,6 +49,7 @@ public class ShapeGroup extends Observable implements Shape {
     @Override
     public void setChildren(Set<Shape> shapes) {
         this.shapes = shapes;
+        this.position = computePosition();
     }
 
     @Override
@@ -119,17 +124,16 @@ public class ShapeGroup extends Observable implements Shape {
         return pointsArray;
     }
 
-    @Override
-    public void setPosition(Point2D newPos) {
-        Point2D position = getPosition();
+    private void setPositionWithoutNotify(Point2D newPos) {
+        Point2D oldPosition = computePosition();
 
         // The group cannot be out of bounds
         double x = Math.max(0, Math.min(ApplicationI.SCENE_WIDTH - getWidth(), newPos.x));
         double y = Math.max(0, Math.min(ApplicationI.SCENE_HEIGHT - getHeight(), newPos.y));
 
         // Compute delta
-        double deltaX = x - position.x;
-        double deltaY = y - position.y;
+        double deltaX = x - oldPosition.x;
+        double deltaY = y - oldPosition.y;
 
         // Set new position for all children
         for (Shape s: shapes) {
@@ -138,61 +142,110 @@ public class ShapeGroup extends Observable implements Shape {
                     s.getPosition().y + deltaY
             ));
         }
+
+        this.position = computePosition();
+    }
+
+    @Override
+    public void setPosition(Point2D newPos) {
+        this.setPositionWithoutNotify(newPos);
         notifyObservers();
+    }
+
+    private void setColorWithoutNotify(Color color) {
+        this.color = color;
+        for (Shape s : shapes)
+            s.setColor(color);
     }
 
     @Override
     public void setColor(Color color) {
-        if (color != null) {
-            this.color = color;
-            for (Shape s : shapes)
-                s.setColor(color);
-            notifyObservers();
-        }
+        this.setColorWithoutNotify(color);
+        notifyObservers();
+    }
+
+    private void setRotationWithoutNotify(double angle) {
+        this.rotation = angle;
+        for (Shape s: shapes)
+            s.setRotation(angle);
     }
 
     @Override
     public void setRotation(double angle) {
-        if (angle > -1) {
-            this.rotation = angle;
-            for (Shape s: shapes)
-                s.setRotation(angle);
-            notifyObservers();
-        }
+        this.setRotationWithoutNotify(angle);
+        notifyObservers();
+    }
+
+
+    private void setRotationCenterWithoutNotify(Point2D pos) {
+        this.rotationCenter = pos;
+        for(Shape s : shapes)
+            s.setRotationCenter(this.rotationCenter);
     }
 
     @Override
     public void setRotationCenter(Point2D pos) {
-        if (pos != null) {
-            this.rotationCenter = pos;
-            for(Shape s : shapes)
-                s.setRotationCenter(this.rotationCenter);
-            notifyObservers();
-        }
+        this.setRotationCenterWithoutNotify(pos);
+        notifyObservers();
+    }
+
+    private void setTranslationWithoutNotify(Vec2D translation) {
+        this.translation = translation;
+        for(Shape s : shapes)
+            s.setTranslation(this.translation);
     }
 
     @Override
     public void setTranslation(Vec2D translation) {
-        if (translation != null) {
+        this.setTranslationWithoutNotify(translation);
+        notifyObservers();
+    }
+
+    private void applyChanges() {
+        if (this.position != null)
+            this.setPositionWithoutNotify(this.position);
+        if (this.color != null)
+            this.setColorWithoutNotify(this.color);
+        if (this.rotation >= 0)
+            this.setRotationWithoutNotify(this.rotation);
+        if (this.translation != null)
+            this.setTranslationWithoutNotify(this.translation);
+        if (this.rotationCenter != null)
+            this.setRotationCenterWithoutNotify(this.rotationCenter);
+
+        notifyObservers();
+    }
+
+    @Override
+    public void setAllValues(Point2D position, Color color,
+                             double rotation, Vec2D translation, Point2D rotationCenter) {
+        // Set values only if there are changes
+        // in order to don't notify observers for nothing
+        if (isDifferent(position, color, rotation, translation, rotationCenter)) {
+            this.position = position;
+            this.color = color;
+            this.rotation = rotation;
             this.translation = translation;
-            for(Shape s : shapes)
-                s.setTranslation(this.translation);
-            notifyObservers();
+            this.rotationCenter = rotationCenter;
+
+            this.applyChanges();
         }
     }
 
-    @Override
-    public void setAllValues(Point2D position, Color color, double rotation, Vec2D translation, Point2D rotationCenter) {
-        this.setPosition(position);
-        this.setColor(color);
-        this.setRotation(rotation);
-        this.setTranslation(translation);
-        this.setRotationCenter(rotationCenter);
+    private boolean isDifferent(Point2D position, Color color,
+                                double rotation, Vec2D translation, Point2D rotationCenter) {
+        return (this.position == null && position != null)
+                || (this.position != null && !this.position.equals(position))
+                || (this.color == null && color != null)
+                || (this.color != null && !this.color.equals(color))
+                || this.rotation != rotation
+                || (this.translation == null && translation != null)
+                || (this.translation != null && !this.translation.equals(translation))
+                || (this.rotationCenter == null && rotationCenter != null)
+                || (this.rotationCenter != null && !this.rotationCenter.equals(rotationCenter));
     }
 
-
-    @Override
-    public Point2D getPosition() {
+    private Point2D computePosition() {
         double minX = ApplicationI.SCENE_WIDTH;
         double minY = ApplicationI.SCENE_HEIGHT;
 
@@ -232,6 +285,11 @@ public class ShapeGroup extends Observable implements Shape {
         }
 
         return maxY - minY;
+    }
+
+    @Override
+    public Point2D getPosition() {
+        return this.position;
     }
 
     @Override
