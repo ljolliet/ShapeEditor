@@ -147,9 +147,12 @@ public class ShapeGroup extends Observable implements Shape {
     }
 
     @Override
-    public void setPosition(Point2D newPos) {
-        this.setPositionWithoutNotify(newPos);
-        notifyObservers();
+    public void setPosition(Point2D position) {
+        if ((this.position == null && position != null)
+            || (this.position != null && !this.position.equals(position))) {
+            this.setPositionWithoutNotify(position);
+            notifyObservers();
+        }
     }
 
     private void setColorWithoutNotify(Color color) {
@@ -160,8 +163,11 @@ public class ShapeGroup extends Observable implements Shape {
 
     @Override
     public void setColor(Color color) {
-        this.setColorWithoutNotify(color);
-        notifyObservers();
+        if ((this.color == null && color != null)
+                || (this.color != null && !this.color.equals(color))) {
+            this.setColorWithoutNotify(color);
+            notifyObservers();
+        }
     }
 
     private void setRotationWithoutNotify(double angle) {
@@ -172,8 +178,10 @@ public class ShapeGroup extends Observable implements Shape {
 
     @Override
     public void setRotation(double angle) {
-        this.setRotationWithoutNotify(angle);
-        notifyObservers();
+        if (this.rotation != angle) {
+            this.setRotationWithoutNotify(angle);
+            notifyObservers();
+        }
     }
 
 
@@ -185,8 +193,11 @@ public class ShapeGroup extends Observable implements Shape {
 
     @Override
     public void setRotationCenter(Point2D pos) {
-        this.setRotationCenterWithoutNotify(pos);
-        notifyObservers();
+        if ((this.rotationCenter == null && pos != null)
+                || (this.rotationCenter != null && !this.rotationCenter.equals(pos))) {
+            this.setRotationCenterWithoutNotify(pos);
+            notifyObservers();
+        }
     }
 
     private void setTranslationWithoutNotify(Vec2D translation) {
@@ -197,8 +208,11 @@ public class ShapeGroup extends Observable implements Shape {
 
     @Override
     public void setTranslation(Vec2D translation) {
-        this.setTranslationWithoutNotify(translation);
-        notifyObservers();
+        if ((this.translation == null && translation != null)
+                || (this.translation != null && !this.translation.equals(translation))) {
+            this.setTranslationWithoutNotify(translation);
+            notifyObservers();
+        }
     }
 
     private void applyChanges() {
