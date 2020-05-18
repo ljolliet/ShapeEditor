@@ -12,6 +12,26 @@ public class Point2D implements Serializable {
         this.y = y;
     }
 
+    public Point2D rotateAround(double angle, Point2D rotationCenter) {
+        // Rotate around rotation center by angle
+        double sin = Math.sin(Math.toRadians(angle));
+        double cos = Math.cos(Math.toRadians(angle));
+
+        // Set origin to rotation center
+        Point2D newPoint = new Point2D(this.x - rotationCenter.x, this.y - rotationCenter.y);
+
+        // Rotate
+        newPoint = new Point2D(newPoint.x * cos - newPoint.y * sin,
+                newPoint.x * sin + newPoint.y * cos);
+
+        // Put origin back
+         return new Point2D(newPoint.x + rotationCenter.x, newPoint.y + rotationCenter.y);
+    }
+
+    public Point2D translate(Vec2D translation) {
+        return new Point2D(this.x + translation.width, this.y + translation.height);
+    }
+
     @Override
     public String toString() {
         return "Point2D{" +

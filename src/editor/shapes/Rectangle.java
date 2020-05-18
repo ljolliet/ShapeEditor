@@ -34,21 +34,11 @@ public class Rectangle extends SimpleShape {
     // Thanks to https://stackoverflow.com/a/53907763/11256750 for computing rotation
     @Override
     public boolean contains(Point2D position) {
-        // Rotate around rotation center by -angle
-        double sin = Math.sin(Math.toRadians(-getRotation()));
-        double cos = Math.cos(Math.toRadians(-getRotation()));
-
-        // Set origin to rotation center
-        Point2D newPoint = new Point2D(position.x - (getRotationCenter().x + getPosition().x),
-                position.y - (getRotationCenter().y + getPosition().y));
-
-        // Rotate
-        newPoint = new Point2D(newPoint.x * cos - newPoint.y * sin,
-                newPoint.x * sin + newPoint.y * cos);
-
-        // Put origin back
-        newPoint = new Point2D(newPoint.x + (getRotationCenter().x + getPosition().x),
-                newPoint.y + (getRotationCenter().y + getPosition().y));
+        Point2D rotationCenter = new Point2D(
+                this.getRotationCenter().x + this.getPosition().x + this.getTranslation().width,
+                this.getRotationCenter().y + this.getPosition().y + this.getTranslation().height);
+        // Rotate point
+        Point2D newPoint = position.rotateAround(-this.getRotation(), rotationCenter);
 
         return  getPosition().x + getTranslation().width <= newPoint.x &&
                 newPoint.x <= getPosition().x + getTranslation().width + width &&
@@ -59,12 +49,29 @@ public class Rectangle extends SimpleShape {
 
     @Override
     public Point2D[] getPoints() {
-        return new Point2D[] {
-                new Point2D(getX(), getY()),                           // Top left
-                new Point2D(getX() + width, getY()),                // Top right
-                new Point2D(getX(), getY() + height),               // Bottom left
-                new Point2D(getX() + width, getY() + height)     // Bottom right
-        };
+        Point2D rotationCenter = new Point2D(
+                this.getRotationCenter().x + this.getPosition().x,
+                this.getRotationCenter().y + this.getPosition().y);
+
+        // Compute points
+        Point2D topLeft     = new Point2D(getX(), getY());
+        Point2D topRight    = new Point2D(getX() + width, getY());
+        Point2D bottomLeft  = new Point2D(getX(), getY() + height);
+        Point2D bottomRight = new Point2D(getX() + width, getY() + height);
+
+        // Rotate points
+        topLeft = topLeft.rotateAround(this.getRotation(), rotationCenter);
+        topRight = topRight.rotateAround(this.getRotation(), rotationCenter);
+        bottomLeft = bottomLeft.rotateAround(this.getRotation(), rotationCenter);
+        bottomRight = bottomRight.rotateAround(this.getRotation(), rotationCenter);
+
+        // Translate points
+        topLeft = topLeft.translate(this.getTranslation());
+        topRight = topRight.translate(this.getTranslation());
+        bottomLeft = bottomLeft.translate(this.getTranslation());
+        bottomRight = bottomRight.translate(this.getTranslation());
+
+        return new Point2D[] {topLeft, topRight, bottomLeft, bottomRight};
     }
 
     @Override
