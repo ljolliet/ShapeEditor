@@ -59,24 +59,14 @@ public class Polygon extends SimpleShape {
     // Thanks to https://stackoverflow.com/a/53907763/11256750 for computing rotation
     @Override
     public boolean contains(Point2D position) {
-        // Rotate around rotation center by -angle
-        double sin = Math.sin(Math.toRadians(-getRotation()));
-        double cos = Math.cos(Math.toRadians(-getRotation()));
-
         Point2D newPoint = new Point2D(position.x - getTranslation().width,
                 position.y - getTranslation().height);
 
-        // Set origin to rotation center
-        newPoint = new Point2D(newPoint.x - (getRotationCenter().x + getPosition().x),
-                newPoint.y - (getRotationCenter().y + getPosition().y));
-
-        // Rotate
-        newPoint = new Point2D(newPoint.x * cos - newPoint.y * sin,
-                newPoint.x * sin + newPoint.y * cos);
-
-        // Put origin back
-        newPoint = new Point2D(newPoint.x + (getRotationCenter().x + getPosition().x),
-                newPoint.y + (getRotationCenter().y + getPosition().y));
+        Point2D rotationCenter = new Point2D(
+                this.getRotationCenter().x + this.getPosition().x,
+                this.getRotationCenter().y + this.getPosition().y);
+        // Rotate point
+        newPoint = newPoint.rotateAround(-this.getRotation(), rotationCenter);
 
 
         //inspired by :
