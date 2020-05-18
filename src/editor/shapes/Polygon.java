@@ -1,8 +1,8 @@
 package editor.shapes;
 
+import editor.core.EditorVisitor;
 import editor.edition.EditionDialogI;
 import editor.edition.PolygonEditionDialog;
-import editor.core.EditorVisitor;
 import editor.utils.Color;
 import editor.utils.Point2D;
 import editor.utils.Vec2D;
@@ -26,15 +26,15 @@ public class Polygon extends SimpleShape {
     }
 
     /**
-     * A polygon is composed of points depending on the number of sides,
+     * A polygon is composed of points depending on the number of sides
      * @return A 2D array of points
      */
-    public Point2D[] getPoints(double radius) {
+    public Point2D[] getPoints(Point2D position, double radius, double angle) {
         Point2D[] points = new Point2D[nbSides];
 
         for (int i = 0; i < nbSides; i++) {
-            double x = getX() + radius * Math.cos(2 * Math.PI * i / nbSides); // X
-            double y = getY() + radius * Math.sin(2 * Math.PI * i / nbSides); // Y
+            double x = position.x + radius * Math.cos(2 * Math.PI * i / nbSides + Math.toRadians(angle)); // X
+            double y = position.y + radius * Math.sin(2 * Math.PI * i / nbSides + Math.toRadians(angle)); // Y
             points[i] = new Point2D(x,y);
         }
 
@@ -43,7 +43,8 @@ public class Polygon extends SimpleShape {
 
     @Override
     public Point2D[] getPoints() {
-        return this.getPoints(this.radius);
+        Point2D position = this.getPosition().translate(this.getTranslation());
+        return this.getPoints(position, this.getRadius(), this.getRotation());
     }
 
     @Override
@@ -56,26 +57,15 @@ public class Polygon extends SimpleShape {
         rendering.drawInToolbar(this);
     }
 
-    // Thanks to https://stackoverflow.com/a/53907763/11256750 for computing rotation
     @Override
     public boolean contains(Point2D position) {
-        Point2D newPoint = new Point2D(position.x - getTranslation().width,
-                position.y - getTranslation().height);
-
-        Point2D rotationCenter = new Point2D(
-                this.getRotationCenter().x + this.getPosition().x,
-                this.getRotationCenter().y + this.getPosition().y);
-        // Rotate point
-        newPoint = newPoint.rotateAround(-this.getRotation(), rotationCenter);
-
-
         //inspired by :
         //https://web.archive.org/web/20161108113341/https://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
         boolean result = false;
         Point2D[] points = getPoints();
         for (int i = 0, j = points.length - 1; i < points.length; j = i++)
-            if ((points[i].y > newPoint.y) != (points[j].y > newPoint.y) &&
-                    (newPoint.x < (points[j].x - points[i].x) * (newPoint.y - points[i].y)
+            if ((points[i].y > position.y) != (points[j].y > position.y) &&
+                    (position.x < (points[j].x - points[i].x) * (position.y - points[i].y)
                             / (points[j].y - points[i].y) + points[i].x))
                 result = !result;
 

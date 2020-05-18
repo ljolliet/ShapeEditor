@@ -61,7 +61,7 @@ public class ShapeFactoryJFx {
     public static javafx.scene.shape.Polygon createScenePolygon(Polygon p) {
         Editor editor = Editor.getInstance();
 
-        double[] points = getPolygonPoints(p.getPoints(), p.getNbSides());
+        double[] points = getPolygonPoints(p.getPoints(p.getPosition(), p.getRadius(), 0), p.getNbSides());
         javafx.scene.shape.Polygon polygon = new javafx.scene.shape.Polygon(points);
 
         // Color
@@ -114,7 +114,8 @@ public class ShapeFactoryJFx {
     }
 
     public static javafx.scene.shape.Polygon createToolbarPolygon(Polygon p, double radius) {
-        double[] points = getPolygonPoints(p.getPoints(radius), p.getNbSides(), p.getPosition().x, p.getPosition().y);
+        double[] points = getPolygonPoints(p.getPoints(p.getPosition(), radius, 0),
+                p.getNbSides(), p.getPosition().x, p.getPosition().y);
         javafx.scene.shape.Polygon polygon = new javafx.scene.shape.Polygon(points);
 
         // Color
