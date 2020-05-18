@@ -1,9 +1,6 @@
 package editor.edition;
 
 import editor.shapes.ShapeGroup;
-import editor.utils.Point2D;
-import editor.utils.Vec2D;
-import javafx.scene.control.ContextMenu;
 import ui.Rendering;
 
 public class GroupEditionDialog extends ShapeEditionDialog {
@@ -29,11 +26,6 @@ public class GroupEditionDialog extends ShapeEditionDialog {
 
     public ShapeGroup getTarget(){
         return (ShapeGroup) super.getTarget();
-    }
-
-    @Override
-    public void setEditionDialog(ContextMenu contextMenu) {
-
     }
 
 }

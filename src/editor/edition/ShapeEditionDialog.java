@@ -4,7 +4,6 @@ import editor.shapes.Shape;
 import editor.utils.Color;
 import editor.utils.Point2D;
 import editor.utils.Vec2D;
-import javafx.scene.control.ContextMenu;
 import ui.Rendering;
 
 public class ShapeEditionDialog implements EditionDialogI {
@@ -44,11 +43,6 @@ public class ShapeEditionDialog implements EditionDialogI {
                 this.getRotation(),
                 this.getTranslation(),
                 this.getRotationCenter());
-    }
-
-    @Override
-    public void setEditionDialog(ContextMenu contextMenu) {
-
     }
 
     public void setPositionX(double x) {
