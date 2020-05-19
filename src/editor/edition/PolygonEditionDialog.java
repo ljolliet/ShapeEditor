@@ -23,11 +23,11 @@ public class PolygonEditionDialog extends ShapeEditionDialog {
         this.getTarget().setAllPolygonValues(
                 this.getNbSides(),
                 this.getSideLength(),
-                super.getPosition(),
-                super.getColor(),
-                super.getRotation(),
-                super.getTranslation(),
-                super.getRotationCenter());
+                this.getPosition(),
+                this.getColor(),
+                this.getRotation(),
+                this.getTranslation(),
+                this.getRotationCenter());
     }
 
     public Polygon getTarget() {

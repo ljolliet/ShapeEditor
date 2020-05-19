@@ -3,7 +3,6 @@ import editor.save.io.ExportManager;
 import editor.save.io.ImportManager;
 import editor.save.memento.Caretaker;
 import editor.save.memento.Memento;
-import editor.save.memento.TestMemento;
 import editor.shapes.*;
 import org.junit.Test;
 

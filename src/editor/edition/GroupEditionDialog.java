@@ -17,11 +17,11 @@ public class GroupEditionDialog extends ShapeEditionDialog {
     @Override
     public void applyEdition() {
         this.getTarget().setAllValues(
-                super.getPosition(),
-                super.getColor(),
-                super.getRotation(),
-                super.getTranslation(),
-                super.getRotationCenter());
+                this.getPosition(),
+                this.getColor(),
+                this.getRotation(),
+                this.getTranslation(),
+                this.getRotationCenter());
     }
 
     public ShapeGroup getTarget(){

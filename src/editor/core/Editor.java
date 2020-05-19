@@ -26,12 +26,12 @@ public class Editor extends Observable implements Originator {
     private final Scene scene;
     private final Toolbar toolbar;
     private final Caretaker history;
-    private final SelectionShape selectionShape;
     private Rendering rendering;
-    private Observer observer;
-    private Shape shapeDragged;
     private ExportManager exportVisitor;
     private ImportManager importManager;
+    private Observer observer;
+    private SelectionShape selectionShape;
+    private Shape shapeDragged;
 
     private Editor() {
         this.scene = new Scene();
@@ -103,7 +103,7 @@ public class Editor extends Observable implements Originator {
         String state = "";
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream( baos );
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
             oos.writeObject(new List[]{this.scene.getShapes(), this.toolbar.getShapes()});
             oos.close();
             state =  Base64.getEncoder().encodeToString(baos.toByteArray());
@@ -122,7 +122,7 @@ public class Editor extends Observable implements Originator {
             EditorMemento em = (EditorMemento)m;
             byte[] data = Base64.getDecoder().decode(em.getState());
             ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
-            List list[] = (List[]) ois.readObject();
+            List[] list = (List[]) ois.readObject();
             this.scene.setShapes(list[0]);
             for(Shape s : this.scene.getShapes())
                 s.addObserver(this.observer);
@@ -204,18 +204,6 @@ public class Editor extends Observable implements Originator {
         return importManager;
     }
 
-    public void setShapeDragged(Shape shapeDragged) {
-        this.shapeDragged = shapeDragged;
-    }
-
-    public boolean toolbarContains(Shape shape) {
-        return this.toolbar.contains(shape);
-    }
-
-    public boolean sceneContains(Shape shape) {
-        return this.scene.contains(shape);
-    }
-
     public String getSaveExtension() {
         return this.exportVisitor.getExtension();
     }
@@ -224,8 +212,36 @@ public class Editor extends Observable implements Originator {
         return this.observer;
     }
 
+    public void setExportVisitor(ExportManager exportVisitor) {
+        this.exportVisitor = exportVisitor;
+    }
+
+    public void setImportManager(ImportManager importManager) {
+        this.importManager = importManager;
+    }
+
+    public void setObserver(Observer observer) {
+        this.observer = observer;
+    }
+
+    public void setSelectionShape(SelectionShape selectionShape) {
+        this.selectionShape = selectionShape;
+    }
+
+    public void setShapeDragged(Shape shapeDragged) {
+        this.shapeDragged = shapeDragged;
+    }
+
     public void setSceneSelectedShapes(List<Shape> shapes) {
         scene.setSelectedShapes(shapes);
+    }
+
+    public boolean toolbarContains(Shape shape) {
+        return this.toolbar.contains(shape);
+    }
+
+    public boolean sceneContains(Shape shape) {
+        return this.scene.contains(shape);
     }
 
 }

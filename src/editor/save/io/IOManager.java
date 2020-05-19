@@ -55,7 +55,7 @@ public interface IOManager {
       static String readFile(File file){
             if (file != null) {
                   System.out.println("open file : " + file.getName());
-                  Scanner myReader = null;
+                  Scanner myReader;
                   try {
                         myReader = new Scanner(file);
                         StringBuilder sb = new StringBuilder();
