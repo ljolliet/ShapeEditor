@@ -76,4 +76,8 @@ public class JavaFXApp extends Application implements ApplicationI {
         Editor.getInstance().saveToolbar();
         super.stop();
     }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 }
