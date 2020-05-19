@@ -151,6 +151,8 @@ public class Editor extends Observable implements Originator {
     public void restoreToolbar() {
         this.importManager.restoreToolbar();
         this.toolbar.checkInitialised();
+        history.clear();
+        this.saveToMemento();
     }
 
 
