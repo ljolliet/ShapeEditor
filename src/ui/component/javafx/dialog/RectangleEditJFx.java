@@ -57,7 +57,7 @@ public class RectangleEditJFx extends EditDialogJFx {
         borderRadiusSpinner.setEditable(true);
 
         final int initialValue = recED.getTarget().getBorderRadius();
-        borderRadiusSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(Shape.MIN_RADIUS, Shape.MAX_RADIUS, initialValue));
+        borderRadiusSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(Shape.MIN_BORDER_RADIUS, Shape.MAX_BORDER_RADIUS, initialValue));
         borderRadiusSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
                 recED.setBorderRadius(newValue));
 

@@ -25,7 +25,7 @@ public class PolygonEditJFx extends EditDialogJFx {
 
         final double initialValue = polED.getTarget().getSideLength();
         sideLengthSpinner.setValueFactory(
-                new SpinnerValueFactory.DoubleSpinnerValueFactory(Shape.MIN_RADIUS, Shape.MAX_RADIUS, initialValue));
+                new SpinnerValueFactory.DoubleSpinnerValueFactory(Shape.MIN_SIDE_LENGTH, Shape.MAX_SIDE_LENGTH, initialValue));
         sideLengthSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
                 polED.setSideLength(newValue));
 
@@ -40,7 +40,7 @@ public class PolygonEditJFx extends EditDialogJFx {
 
         final int initialValue = polED.getTarget().getNbSides();
         nbSideSpinner.setValueFactory(
-                new SpinnerValueFactory.IntegerSpinnerValueFactory(Shape.MIN_RADIUS, Shape.MAX_RADIUS, initialValue));
+                new SpinnerValueFactory.IntegerSpinnerValueFactory(Shape.MIN_NB_SIDE, Shape.MAX_NB_SIDE, initialValue));
         nbSideSpinner.valueProperty().addListener((obs, oldValue, newValue) ->
                 polED.setNbSides(newValue));
 

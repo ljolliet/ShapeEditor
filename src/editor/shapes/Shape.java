@@ -16,8 +16,12 @@ public interface Shape extends Cloneable, Serializable, ObservableI {
     double MIN_SIZE = 1.;
     double MAX_ROTATION = 360.;
     double MIN_ROTATION = 0.;
-    int MAX_RADIUS = 50;
-    int MIN_RADIUS = 0;
+    int MAX_SIDE_LENGTH = 100;
+    int MIN_SIDE_LENGTH = 0;
+    int MAX_NB_SIDE = 30;
+    int MIN_NB_SIDE = 3;
+    int MAX_BORDER_RADIUS = 50;
+    int MIN_BORDER_RADIUS = 0;
 
     void addShape(Shape s);
     void removeShape(Shape s);
