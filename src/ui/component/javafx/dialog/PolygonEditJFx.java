@@ -9,17 +9,14 @@ import javafx.scene.control.SpinnerValueFactory;
 public class PolygonEditJFx extends EditDialogJFx {
 
     public PolygonEditJFx(PolygonEditionDialog polED){
-        super();
-        super.addColorToGridPane(polED);
-        super.addPositionToGridPane(polED);
-        super.addRotationToGridPane(polED);
-        super.addTranslationToGridPane(polED);
-        super.addRotationCenterToGridPane(polED);
-        this.addSideLengthGridPane(polED);
-        this.addNbSideGridPane(polED);
+        super(polED);
+        this.addSideLengthGridPane();
+        this.addNbSideGridPane();
+        this.setButtons();
     }
 
-    void addSideLengthGridPane(PolygonEditionDialog polED) {
+    void addSideLengthGridPane() {
+        PolygonEditionDialog polED = (PolygonEditionDialog) editionDialog;
         Spinner<Double> sideLengthSpinner = new Spinner<>();
         sideLengthSpinner.setEditable(true);
 
@@ -30,11 +27,13 @@ public class PolygonEditJFx extends EditDialogJFx {
                 polED.setSideLength(newValue));
 
         final Label label = new Label("Side length");
-        this.add(label, 0, 5);
-        this.add(sideLengthSpinner,1, 5);
+        this.add(label, columnID, rowID);
+        this.add(sideLengthSpinner,columnID + 1, rowID);
+        rowID++;
     }
 
-    void addNbSideGridPane(PolygonEditionDialog polED){
+    void addNbSideGridPane(){
+        PolygonEditionDialog polED = (PolygonEditionDialog) editionDialog;
         Spinner<Integer> nbSideSpinner = new Spinner<>();
         nbSideSpinner.setEditable(true);
 
@@ -45,8 +44,9 @@ public class PolygonEditJFx extends EditDialogJFx {
                 polED.setNbSides(newValue));
 
         final Label label = new Label("Sides number");
-        this.add(label, 0, 6);
-        this.add(nbSideSpinner,1, 6);
+        this.add(label, columnID, rowID);
+        this.add(nbSideSpinner,columnID + 1, rowID);
+        rowID++;
     }
 
 }

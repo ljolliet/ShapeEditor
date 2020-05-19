@@ -10,18 +10,15 @@ import ui.ApplicationI;
 public class RectangleEditJFx extends EditDialogJFx {
 
     public RectangleEditJFx(RectangleEditionDialog recED) {
-        super();
-        super.addColorToGridPane(recED);
-        super.addPositionToGridPane(recED);
-        super.addRotationToGridPane(recED);
-        super.addTranslationToGridPane(recED);
-        super.addRotationCenterToGridPane(recED);
-        this.addWidthToGridPane(recED);
-        this.addHeightToGridPane(recED);
-        this.addBorderRadiusGridPane(recED);
+        super(recED);
+        this.addWidthToGridPane();
+        this.addHeightToGridPane();
+        this.addBorderRadiusGridPane();
+        this.setButtons();
     }
 
-    void addWidthToGridPane(RectangleEditionDialog recED) {
+    void addWidthToGridPane() {
+        RectangleEditionDialog recED = (RectangleEditionDialog) editionDialog;
         Spinner<Double> widthSpinner = new Spinner<>();
         widthSpinner.setEditable(true);
 
@@ -33,11 +30,13 @@ public class RectangleEditJFx extends EditDialogJFx {
                 recED.setWidth(newValue));
 
         final Label label = new Label("Width");
-        this.add(label, 0, 5);
-        this.add(widthSpinner, 1, 5);
+        this.add(label, columnID, rowID);
+        this.add(widthSpinner, columnID + 1, rowID);
+        rowID++;
     }
 
-    void addHeightToGridPane(RectangleEditionDialog recED){
+    void addHeightToGridPane(){
+        RectangleEditionDialog recED = (RectangleEditionDialog) editionDialog;
         Spinner<Double> heightSpinner = new Spinner<>();
         heightSpinner.setEditable(true);
 
@@ -48,11 +47,13 @@ public class RectangleEditJFx extends EditDialogJFx {
                 recED.setHeight(newValue));
 
         final Label label = new Label("Height");
-        this.add(label, 0, 6);
-        this.add(heightSpinner, 1, 6);
+        this.add(label, columnID, rowID);
+        this.add(heightSpinner, columnID + 1, rowID);
+        rowID++;
     }
 
-    void addBorderRadiusGridPane(RectangleEditionDialog recED) {
+    void addBorderRadiusGridPane() {
+        RectangleEditionDialog recED = (RectangleEditionDialog) editionDialog;
         Spinner<Integer> borderRadiusSpinner = new Spinner<>();
         borderRadiusSpinner.setEditable(true);
 
@@ -62,8 +63,9 @@ public class RectangleEditJFx extends EditDialogJFx {
                 recED.setBorderRadius(newValue));
 
         final Label label = new Label("Border Radius");
-        this.add(label, 0, 7);
-        this.add(borderRadiusSpinner,1, 7);
+        this.add(label, columnID, rowID);
+        this.add(borderRadiusSpinner,columnID + 1, rowID);
+        rowID++;
     }
 
 }
