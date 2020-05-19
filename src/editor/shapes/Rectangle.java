@@ -127,11 +127,13 @@ public class Rectangle extends SimpleShape {
         }
     }
 
-
     public void setAllRectangleValues(double width, double height, int borderRadius, Point2D position, Color color, double rotation, Vec2D translation, Point2D rotationCenter){
-        this.width = width;
-        this.height = height;
-        this.borderRadius = borderRadius;
-        this.setAllValues(position,color,rotation, translation, rotationCenter);
+        boolean change = this.setAllValuesWithoutNotify(position, color, rotation, translation, rotationCenter);
+        if(this.width != width || this.height != height || this.borderRadius != borderRadius || change) {
+            this.width = width;
+            this.height = height;
+            this.borderRadius = borderRadius;
+            notifyObservers();
+        }
     }
 }

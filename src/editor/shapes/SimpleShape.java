@@ -1,10 +1,8 @@
 package editor.shapes;
 
 import editor.observer.Observable;
-import editor.observer.Observer;
 import editor.utils.*;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public abstract class SimpleShape extends Observable implements Shape {
@@ -144,14 +142,30 @@ public abstract class SimpleShape extends Observable implements Shape {
 
     @Override
     public void setAllValues(Point2D position, Color color, double rotation, Vec2D translation, Point2D rotationCenter) {
-        // TODO find a way to notify only if a value has changed
-//        if (this.position != position || this.color != color || this.rotation != rotation || this.translation != translation || this.rotationCenter != rotationCenter) {
+        if (this.position != position || this.color != color || this.rotation != rotation || this.translation != translation || this.rotationCenter != rotationCenter) {
             this.position = position;
             this.color = color;
             this.rotation = rotation;
             this.translation = translation;
             this.rotationCenter = rotationCenter;
             notifyObservers();
-//        }
+        }
     }
+
+    public boolean setAllValuesWithoutNotify(Point2D position, Color color, double rotation, Vec2D translation, Point2D rotationCenter) {
+        boolean change = false;
+        if (this.position != position || this.color != color ||
+                this.rotation != rotation || this.translation != translation ||
+                this.rotationCenter != rotationCenter) {
+            change = true;
+        }
+
+        this.position = position;
+        this.color = color;
+        this.rotation = rotation;
+        this.translation = translation;
+        this.rotationCenter = rotationCenter;
+        return change;
+    }
+
 }
