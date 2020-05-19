@@ -154,9 +154,9 @@ public abstract class SimpleShape extends Observable implements Shape {
 
     public boolean setAllValuesWithoutNotify(Point2D position, Color color, double rotation, Vec2D translation, Point2D rotationCenter) {
         boolean change = false;
-        if (this.position != position || this.color != color ||
-                this.rotation != rotation || this.translation != translation ||
-                this.rotationCenter != rotationCenter) {
+        if (!this.position.equals(position) || !this.color.equals(color) ||
+                this.rotation != rotation || !this.translation.equals(translation) ||
+                !this.rotationCenter.equals(rotationCenter)) {
             change = true;
         }
 
