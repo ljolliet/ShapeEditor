@@ -1,31 +1,21 @@
 package editor.core;
 
-import editor.shapes.*;
-import editor.utils.Color;
-import editor.utils.Point2D;
+import editor.shapes.Polygon;
+import editor.shapes.Rectangle;
+import editor.shapes.Shape;
+import editor.shapes.ShapeFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Toolbar {
 
-    List<Shape> shapes;
+    List<Shape> shapes = new ArrayList<>();
 
     public Toolbar() {
-        this.shapes = new ArrayList<>();
-
-        Shape group = new ShapeGroup();
-        Shape group2 = new ShapeGroup();
-        Shape rec1 = new Rectangle(100, 50, 20,  new Point2D(100,100), new Color(55,55,255, 1.), new Point2D(50,25), 0);
-        Shape rec2 = new Rectangle(100, 50, 20,  new Point2D(200,200), new Color(55,255,55, 1.), new Point2D(50,25), 0);
-        Shape pol1 = new Polygon(6, 50,  new Point2D(100,0), new Color(255,55,55, 1.), new Point2D(0,0), 90);
-        group.addShape(rec1);
-        group.addShape(rec2);
-        group2.addShape(pol1);
-        group2.addShape(group);
-
-        checkInitialised();
-        addShape(group2);
+        addShape(ShapeFactory.createSimpleRectangle());
+        addShape(ShapeFactory.createSimpleHexagon());
+        addShape(ShapeFactory.createGroupOfGroup());
     }
 
     public void addShape(Shape shape) {
@@ -60,8 +50,8 @@ public class Toolbar {
             else if(s instanceof Polygon)
                 containsPolygon = true;
         if(!containsRectangle)
-            shapes.add(0, ShapeFactory.makeRectangle());
+            shapes.add(0, ShapeFactory.createSimpleRectangle());
         if(!containsPolygon)
-            shapes.add(1, ShapeFactory.makeHexagon());
+            shapes.add(1, ShapeFactory.createSimpleHexagon());
     }
 }

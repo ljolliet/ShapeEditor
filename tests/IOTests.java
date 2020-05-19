@@ -59,7 +59,7 @@ public class IOTests {
         Editor e = Editor.getInstance();
         File f = new File(".test.json");
         //Scene
-        e.getScene().addShape(ShapeFactory.makeHexagon());
+        e.getScene().addShape(ShapeFactory.createSimpleHexagon());
         List<Shape> shapesBeforeSave = e.getScene().getShapes();
         e.saveScene(f);
         e.getScene().setShapes(new ArrayList<>()); // erase data in scene
@@ -87,7 +87,7 @@ public class IOTests {
         Editor e = Editor.getInstance();
         File f = new File(".test.json");
         //toolbar
-        e.getToolbar().addShape(ShapeFactory.makeRectangle());
+        e.getToolbar().addShape(ShapeFactory.createSimpleRectangle());
         List<Shape> toolbarBefore = e.getToolbar().getShapes();
         //save
         ExportManager exportManager = e.getExportVisitor();

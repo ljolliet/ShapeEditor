@@ -9,12 +9,12 @@ public class ShapeTests {
 
     @Test
     public void cloneTest() {
-        Shape s1 = ShapeFactory.makeHexagon();
+        Shape s1 = ShapeFactory.createSimpleHexagon();
         Shape cloneS1 = s1.clone();
         assertNotEquals(s1, cloneS1);
         assertEquals(s1.getPosition(), cloneS1.getPosition());
 
-        Shape s2 = ShapeFactory.makeHexagon();
+        Shape s2 = ShapeFactory.createSimpleHexagon();
         Shape cloneS2 = s2.clone();
         assertNotSame(s2.getObservers(), cloneS2.getObservers());
         assertEquals(s1.getPosition(), cloneS1.getPosition());
@@ -29,7 +29,7 @@ public class ShapeTests {
         assertNotSame(group.getChildren(), groupClone.getChildren());
         assertFalse(groupClone.getChildren().contains(s1));
 
-        Shape s3 = ShapeFactory.makeHexagon();
+        Shape s3 = ShapeFactory.createSimpleHexagon();
         groupClone.addShape(s3);
         assertFalse(group.getChildren().contains(s3));
     }
