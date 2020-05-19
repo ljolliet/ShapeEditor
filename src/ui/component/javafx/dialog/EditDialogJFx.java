@@ -12,15 +12,19 @@ import ui.component.DialogBox;
 import ui.Mediator;
 
 public class EditDialogJFx extends GridPane implements DialogBox {
+    private static final double DIALOG_MIN_WIDTH = 500.;
+    private static final double DIALOG_MIN_HEIGHT = 200.;
+    private static final double DIALOG_PADDING = 10.;
+    private static final double ELEMENTS_MARGIN = 5.;
     private Mediator mediator;
 
     public EditDialogJFx(){
         super();
-        this.setMinSize(500, 200);
-        this.setPadding(new Insets(10, 10, 10, 10));
+        this.setMinSize(DIALOG_MIN_WIDTH, DIALOG_MIN_HEIGHT);
+        this.setPadding(new Insets(DIALOG_PADDING));
         //Setting the vertical and horizontal gaps between the columns
-        this.setVgap(5);
-        this.setHgap(5);
+        this.setVgap(ELEMENTS_MARGIN);
+        this.setHgap(ELEMENTS_MARGIN);
         this.setButtons();
     }
 
