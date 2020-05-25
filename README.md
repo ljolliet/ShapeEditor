@@ -2,7 +2,9 @@
 A simple shape editor that embeds different design patterns in Java. This editor contains features explained below, but the main goal 
 was to create a software that could easily be extended. That's why we used a lot of Design Patterns, to allow other developers to extend the features, and facilitate maintenance.
 
-![alt text](resources/editor-screenshot.png "Editor Screenshot")
+<p align="center">
+  <img width="600" height="487" src="resources/editor-screenshot.png">
+</p>
 
 ## Run
 This project has been developed with JAVA 11. To build this project, you will have to add the following libraries :
