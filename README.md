@@ -3,7 +3,7 @@ A simple shape editor that embeds different design patterns in Java. This editor
 was to create a software that could easily be extended. That's why we used a lot of Design Patterns, to allow other developers to extend the features, and facilitate maintenance.
 
 <p align="center">
-  <img width="600" height="487" src="resources/editor-screenshot.png">
+  <img width="600" height="510" src="resources/editor-screenshot.png">
 </p>
 
 ## Run
