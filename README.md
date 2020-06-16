@@ -28,3 +28,16 @@ We added some other features :
 - Edit a group
 - Safety on toolbar save/load (if there is no more rectangle or polygon, a new instance will be added automatically)
  
+ ## Design Patterns
+ - Creation
+   - Singleton
+   - Prototype
+   - Factory Method
+ - Structural
+   - Composite
+   - Bridge
+ - Behavior
+   - Mediator
+   - Observer
+   - Memento
+   - Visitor
